@@ -61,14 +61,14 @@ function getSidebar(dir) {
   mdFileList = mdFileList
     .sort((a, b) => a.id - b.id)
     .map((item) => item.listItem);
-  const listMdContent = `---\ntitle: BEE 全列表\n---\n# BEE 全列表\n\n${mdFileList.join('\n')}\n`;
+  const listMdContent = `---\ntitle: FEE 全列表\n---\n# FEE 全列表\n\n${mdFileList.join('\n')}\n`;
   fs.writeFileSync(resolve(docsPath, 'list.md'), listMdContent);
   return sidebar;
 }
 
 export const zhTW = {
-  title: '後端工程精要',
-  description: '後端工程精要與最佳實踐',
+  title: '前端工程精要',
+  description: '前端工程精要與最佳實踐',
   lang: 'zh-tw',
   lastUpdated: {
     text: '最後更新於',
@@ -88,6 +88,7 @@ export const zhTW = {
       {
         text: '相關站點',
         items: [
+          { text: 'BEE -- 後端工程精要', link: 'https://alivedise.github.io/backend-engineering-essentials/' },
           { text: 'ADE -- API 設計精要', link: 'https://alivedise.github.io/api-design-essentials/' },
           { text: 'DEE -- 資料庫工程精要', link: 'https://alivedise.github.io/database-engineering-essentials/' },
         ],

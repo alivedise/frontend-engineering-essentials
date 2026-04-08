@@ -61,14 +61,14 @@ function getSidebar(dir) {
   mdFileList = mdFileList
     .sort((a, b) => a.id - b.id)
     .map((item) => item.listItem);
-  const listMdContent = `---\ntitle: BEE list\n---\n# BEE Document List\n\n${mdFileList.join('\n')}\n`;
+  const listMdContent = `---\ntitle: FEE list\n---\n# FEE Document List\n\n${mdFileList.join('\n')}\n`;
   fs.writeFileSync(resolve(docsPath, 'list.md'), listMdContent);
   return sidebar;
 }
 
 export const en = {
-  title: 'Backend Engineering Essentials',
-  description: 'Backend Engineering Essentials documentation',
+  title: 'Frontend Engineering Essentials',
+  description: 'Frontend Engineering Essentials documentation',
   lang: 'en',
   lastUpdated: true,
   themeConfig: {
@@ -82,6 +82,7 @@ export const en = {
       {
         text: 'Related Sites',
         items: [
+          { text: 'BEE -- Backend Engineering Essentials', link: 'https://alivedise.github.io/backend-engineering-essentials/' },
           { text: 'ADE -- API Design Essentials', link: 'https://alivedise.github.io/api-design-essentials/' },
           { text: 'DEE -- Database Engineering Essentials', link: 'https://alivedise.github.io/database-engineering-essentials/' },
         ],
