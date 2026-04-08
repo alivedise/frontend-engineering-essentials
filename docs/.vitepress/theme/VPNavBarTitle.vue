@@ -1,10 +1,10 @@
 <template>
-  <div class="bee-nav-container" v-if="hasSidebar">
+  <div class="fee-nav-container" v-if="hasSidebar">
     <div>
-      <div class="bee-nav-hero">
-        BEE
+      <div class="fee-nav-hero">
+        FEE
       </div>
-      <span class="nav-sub">Backend Engineering Essentials</span>
+      <span class="nav-sub">Frontend Engineering Essentials</span>
     </div>
   </div>
 </template>
@@ -15,16 +15,16 @@ const { hasSidebar } = useSidebar();
 </script>
 
 <style>
-.bee-nav-container {
+.fee-nav-container {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   padding: 15px 0;
 }
-.bee-nav-hero {
+.fee-nav-hero {
   font-size: 20px;
-  background: -webkit-linear-gradient(left, #d35400, white, #e67e22);
+  background: -webkit-linear-gradient(left, #2980b9, white, #3498db);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
