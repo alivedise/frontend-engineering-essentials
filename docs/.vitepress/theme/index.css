@@ -1,5 +1,5 @@
 :root {
-  --vp-c-brand-1: #e67e22;
+  --vp-c-brand-1: #3498db;
 }
 
 .VPSidebarItem .text {
@@ -18,14 +18,14 @@
 }
 
 .VPHero .clip {
-  background: linear-gradient(to right, #d35400, #eeeeee);
+  background: linear-gradient(to right, #2980b9, #eeeeee);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .nav-badge {
   display: inline-block;
-  background-color: orange;
+  background-color: #3498db;
   color: white;
   border-radius: 3px;
   font-size: 12px;

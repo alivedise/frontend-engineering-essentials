@@ -58,12 +58,12 @@ ul li, ol li {
 }
 
 .markdown-body a {
-  color: #e67e22;
+  color: #3498db;
   text-decoration: none;
 }
 
 .markdown-body a:hover {
-  color: #d35400;
+  color: #2980b9;
 }
 
 .markdown-body p {
