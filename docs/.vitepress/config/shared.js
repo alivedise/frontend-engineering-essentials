@@ -4,7 +4,7 @@ export const shared = {
   transformPageData(pageData) {
     pageData.frontmatter.head ??= [];
     if (pageData.frontmatter.id != null) {
-      pageData.title = `BEE-${pageData.frontmatter.id}: ${pageData.frontmatter.title}`;
+      pageData.title = `FEE-${pageData.frontmatter.id}: ${pageData.frontmatter.title}`;
     } else if (pageData.frontmatter.title != null) {
       pageData.title = `${pageData.frontmatter.title}`;
     }
@@ -13,18 +13,18 @@ export const shared = {
       {
         name: 'og:title',
         content: pageData.frontmatter.id != null
-          ? `BEE-${pageData.frontmatter.id}: ${pageData.frontmatter.title}`
-          : pageData.frontmatter.title || 'Backend Engineering Essentials',
+          ? `FEE-${pageData.frontmatter.id}: ${pageData.frontmatter.title}`
+          : pageData.frontmatter.title || 'Frontend Engineering Essentials',
       },
     ]);
   },
   cleanUrls: true,
-  base: '/backend-engineering-essentials/',
+  base: '/frontend-engineering-essentials/',
   lastUpdated: true,
   themeConfig: {
     logo: 'favicon.svg',
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/alivedise/backend-engineering-essentials' },
+      { icon: 'github', link: 'https://github.com/alivedise/frontend-engineering-essentials' },
     ],
     search: {
       provider: 'local',
@@ -58,10 +58,10 @@ export const shared = {
       maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
     },
     manifest: {
-      name: 'Backend Engineering Essentials',
-      short_name: 'BEE',
-      description: 'Backend Engineering Essentials documentation',
-      theme_color: '#e67e22',
+      name: 'Frontend Engineering Essentials',
+      short_name: 'FEE',
+      description: 'Frontend Engineering Essentials documentation',
+      theme_color: '#3498db',
       icons: [
         {
           src: 'favicon.svg',

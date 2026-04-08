@@ -1,8 +1,8 @@
 {
-  "name": "backend-engineering-essentials",
+  "name": "frontend-engineering-essentials",
   "version": "0.1.0",
   "private": true,
-  "description": "Backend Engineering Essentials documentation site",
+  "description": "Frontend Engineering Essentials documentation site",
   "scripts": {
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
