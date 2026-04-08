@@ -1,10 +1,10 @@
-# Backend Engineering Essentials (BEE)
+# Frontend Engineering Essentials (FEE)
 
-A collection of vendor-agnostic backend engineering principles and best practices, built as a bilingual (English / Traditional Chinese) documentation site.
+A collection of vendor-agnostic frontend engineering principles and best practices, built as a bilingual (English / Traditional Chinese) documentation site.
 
 ## Overview
 
-BEE provides numbered, structured guidelines for backend engineering -- from authentication and networking to distributed systems and observability. Each principle includes context, actionable guidance, visual diagrams, examples, and common mistakes.
+FEE provides numbered, structured guidelines for frontend engineering -- from HTML and CSS fundamentals to component architecture, performance, and developer tooling. Each principle includes context, actionable guidance, visual diagrams, examples, and common mistakes.
 
 ## Development
 
@@ -19,24 +19,24 @@ pnpm docs:preview  # Preview production build
 
 | Range | Category |
 |-------|----------|
-| 0-9 | BEE Overall |
-| 10-29 | Authentication & Authorization |
-| 30-49 | Security Fundamentals |
-| 50-69 | Networking Fundamentals |
-| 70-89 | API Design & Communication Protocols |
-| 100-119 | Architecture Patterns |
-| 120-139 | Data Storage & Database Fundamentals |
-| 140-159 | Data Modeling & Schema Design |
-| 160-179 | Transactions & Data Integrity |
-| 200-219 | Caching |
-| 220-239 | Messaging & Event-Driven |
-| 240-259 | Concurrency & Async |
-| 260-279 | Resilience & Reliability |
-| 300-319 | Performance & Scalability |
-| 320-339 | Observability |
-| 340-359 | Testing Strategies |
-| 360-379 | CI/CD & DevOps |
+| 0-99 | FEE Overall |
+| 100-199 | HTML & Semantic Markup |
+| 200-299 | CSS & Layout Systems |
+| 300-399 | JavaScript Core & Runtime |
+| 400-499 | Browser APIs & Web Platform |
+| 500-599 | Component Architecture & Design Patterns |
+| 600-699 | State Management |
+| 700-799 | Rendering & Performance |
+| 800-899 | Build Tooling & Module Systems |
+| 900-999 | Design Systems & UI Libraries |
+| 1000-1099 | Accessibility (a11y) |
+| 1100-1199 | Testing Strategies |
+| 1200-1299 | Security (XSS, CSP, CORS, etc.) |
+| 1300-1399 | Progressive Web Apps & Offline |
+| 1400-1499 | Observability & Error Tracking |
+| 1500-1599 | CI/CD & Deployment |
+| 1600-1699 | Developer Experience & Tooling |
 
 ## Contributing
 
-Follow the template in [BEE-0](docs/en/BEE%20Overall/0.md) and submit a pull request.
+Follow the template in [FEE-0](docs/en/FEE%20Overall/0.md) and submit a pull request.
