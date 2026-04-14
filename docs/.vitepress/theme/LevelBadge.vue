@@ -1,6 +1,6 @@
 <template>
   <div v-if="level" class="level-badge-wrapper">
-    <span :class="`vp-badge ${badgeType}`">{{ badgeLabel }}</span>
+    <span :class="['vp-badge', badgeType]">{{ badgeLabel }}</span>
   </div>
 </template>
 
@@ -25,3 +25,9 @@ const badgeLabel = computed(() => {
   return map[level.value] ?? level.value;
 });
 </script>
+
+<style scoped>
+.level-badge-wrapper {
+  margin-bottom: 8px;
+}
+</style>
