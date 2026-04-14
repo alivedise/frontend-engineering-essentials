@@ -224,5 +224,5 @@ title: FEE list
 - [11301.field-sizing — Self-Sizing Form Controls](11301)
 - [<span class="VPBadge danger">PLACE</span> 12000.HTML & DOM Proposals Overview](12000)
 - [<span class="VPBadge danger">PLACE</span> 13000.Browser Compute Overview](13000)
-- [FEE-11302.Customizable `<select>` — CSS-Styleable Select](FEE-11302)
+- [FEE-11302.Customizable &lt;select&gt; — CSS-Styleable Select](FEE-11302)
 - [<span class="VPBadge danger">PLACE</span> 14000.WebAssembly Proposals Overview](14000)

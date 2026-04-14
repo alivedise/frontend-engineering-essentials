@@ -224,5 +224,5 @@ title: FEE 全列表
 - [11301.field-sizing — 自動調整尺寸的表單控件](11301)
 - [<span class="VPBadge danger">暫定</span> 12000.HTML & DOM 提案概覽](12000)
 - [<span class="VPBadge danger">暫定</span> 13000.瀏覽器運算概覽](13000)
-- [FEE-11302.Customizable `<select>` — CSS-Styleable Select](FEE-11302)
+- [FEE-11302.Customizable &lt;select&gt; — CSS-Styleable Select](FEE-11302)
 - [<span class="VPBadge danger">暫定</span> 14000.WebAssembly 提案概覽](14000)
