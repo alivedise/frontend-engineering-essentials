@@ -306,7 +306,7 @@ Before writing any article, read `docs/en/Developer Experience and Tooling/1603.
   **`## Design Thinking` subsections:**
   - `### Derivation vs. duplication` — A type that duplicates a subset of another type's fields will silently fall out of sync when the source type evolves. `Pick<User, 'id' | 'name'>` automatically reflects any changes to `User`'s `id` and `name` fields.
   - `### Mapped types: the engine behind utility types` — Explain that `Partial<T>`, `Readonly<T>` etc. are built on mapped types: `{ [K in keyof T]?: T[K] }`. Understanding the pattern lets developers build custom utilities when the built-ins don't fit.
-  - `### Template literal types for string transformation` — TypeScript 4.1+ supports `Uppercase<S>`, `Lowercase<S>`, `Capitalize<S>`, `Uncapitalize<S>` and template literal types (`type EventName = \`on${Capitalize<string>}\``). These enable type-level string manipulation for event names, CSS property derivation, and API key naming.
+  - `### Template literal types for string transformation` — TypeScript 4.1+ supports `Uppercase<S>`, `Lowercase<S>`, `Capitalize<S>`, `Uncapitalize<S>` and template literal types (``type EventName = `on${Capitalize<string>}``). These enable type-level string manipulation for event names, CSS property derivation, and API key naming.
 
   **`## Best Practices`:**
 
