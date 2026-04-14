@@ -198,7 +198,7 @@ title: FEE 全列表
 - [1706.tsconfig 與嚴格模式](1706)
 - [1707.TypeScript 與 React](1707)
 - [1708.執行時期驗證與結構描述函式庫](1708)
-- [<span class="VPBadge danger">暫定</span> 10000.TC39 & JS Proposals Overview](10000)
+- [<span class="VPBadge danger">暫定</span> 10000.TC39 & JS 提案概覽](10000)
 - [<span class="VPBadge danger">暫定</span> 11000.CSS 實驗性功能概覽](11000)
 - [<span class="VPBadge danger">暫定</span> 12000.HTML & DOM 提案概覽](12000)
 - [<span class="VPBadge danger">暫定</span> 13000.瀏覽器運算概覽](13000)
