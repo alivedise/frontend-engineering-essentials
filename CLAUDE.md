@@ -22,10 +22,75 @@ This is a VitePress-based bilingual (EN + zh-TW) documentation site for Frontend
 
 - Each FEE file uses frontmatter: `id` (number), `title`, `state` (draft/reviewing/approved), `overview` (boolean)
 - File names match the FEE id: e.g., `300.md` for FEE-300
-- FEE articles follow a template: Context, Principle, Visual, Example, Common Mistakes, Related FEEs, References
-- Sections after "Principle" are optional
 - Uses RFC 2119 keywords (MUST, SHOULD, MAY) for guidance levels
 - EN and zh-TW content are parallel -- every EN file has a zh-TW counterpart
+
+## FEE Article Template
+
+Current canonical template (supersedes all prior versions):
+
+```
+---
+id: {ID}
+title: "{TITLE}"
+state: draft
+---
+
+# [FEE-{ID}] {TITLE}
+
+:::info
+One-sentence hook.
+:::
+
+## Context
+Why the problem exists, historical design, why existing tools fail. 3-5 sentences.
+
+## Scenario
+Concrete situation where a developer encounters this problem. Shows the pain before the solution.
+
+## Best Practices
+Actionable MUST/SHOULD/MAY bullets.
+
+## Design Thinking (optional)
+Two parts:
+1. Why the platform/language was designed the old way -- root causes, historical constraints
+2. How the ecosystem has already solved this in userland, and how the proposal/feature relates
+
+## Deep Dive (optional)
+Internals, edge cases, advanced mechanics. Skip if topic doesn't warrant it.
+
+## Visual (optional)
+Mermaid diagram. Include when a diagram genuinely clarifies structure or flow.
+
+## Example (optional)
+Concrete runnable code. No pseudocode.
+
+## {Topic-specific section} (optional)
+E.g. "Migration Guide", "Type Reference", "Browser Support Matrix" -- name it to match the topic.
+
+## Internal References
+Cross-links to related content. Format:
+- FEE-{ID} — {brief relational phrase}
+- AEE/BEE/ADE/DEE-{ID} — {brief relational phrase} (when cross-family links exist)
+
+## References
+3+ verified URLs. No upper limit -- include all authoritative and relevant links.
+
+## Changelog (optional)
+Track significant spec/API changes over time. Include only when the proposal has had breaking changes.
+```
+
+**zh-TW section header map:**
+- Context → 背景
+- Scenario → 情境
+- Best Practices → 最佳實踐
+- Design Thinking → 設計思維
+- Deep Dive → 深入探討
+- Visual → 圖解
+- Example → 範例
+- Internal References → 內部參考
+- References → 參考資料
+- Changelog → 變更紀錄
 
 ## Content Quality
 
