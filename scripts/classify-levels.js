@@ -155,6 +155,7 @@ async function main() {
     if (data.level != null) { skippedCount++; continue; }
 
     const id = Number(data.id);
+    if (isNaN(id)) { skippedCount++; continue; }
 
     // Web Platform Proposals: hardcode senior
     if (id >= 10000) {
