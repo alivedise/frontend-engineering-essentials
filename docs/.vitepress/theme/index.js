@@ -5,11 +5,14 @@ import './index.css';
 import './md.css';
 import './sw';
 import createScrollHandler from './scrollhandler';
+import LevelBadge from './LevelBadge.vue';
 
 export default {
   extends: DefaultTheme,
   Layout: () => {
-    return h(DefaultTheme.Layout, null, {});
+    return h(DefaultTheme.Layout, null, {
+      'doc-before': () => h(LevelBadge),
+    });
   },
   enhanceApp({ router }) {
     if (!import.meta.env.SSR) {
