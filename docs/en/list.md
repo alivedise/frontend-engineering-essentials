@@ -198,3 +198,8 @@ title: FEE list
 - [1706.tsconfig & Strict Mode](1706)
 - [1707.TypeScript in React](1707)
 - [1708.Runtime Validation & Schema Libraries](1708)
+- [<span class="VPBadge danger">PLACE</span> 10000.TC39 & JS Proposals Overview](10000)
+- [<span class="VPBadge danger">PLACE</span> 11000.CSS Experimental Overview](11000)
+- [<span class="VPBadge danger">PLACE</span> 12000.HTML & DOM Proposals Overview](12000)
+- [<span class="VPBadge danger">PLACE</span> 13000.Browser Compute Overview](13000)
+- [<span class="VPBadge danger">PLACE</span> 14000.WebAssembly Proposals Overview](14000)
