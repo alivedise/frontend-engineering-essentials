@@ -130,4 +130,4 @@ Pass 1 must be fully committed before Pass 2 begins, so Scenario is always added
 - Every 100–400 series article after Pass 2 contains a `## Scenario` / `## 使用情境` section immediately before `## Design Thinking`
 - No Scenario section exists in any article outside the 100–400 series
 - FEE-0 accurately documents the updated template after both passes
-- All articles remain 301+ lines after edits
+- All articles remain 301+ lines after edits (301 is the floor; no upper limit — do not truncate content to hit a number)

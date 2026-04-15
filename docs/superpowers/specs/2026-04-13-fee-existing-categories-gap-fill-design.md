@@ -18,7 +18,7 @@ All articles follow the Batch 12+ FEE template:
 8. **## Related FEEs** — 3+ cross-references.
 9. **## References** — 3+ URLs.
 
-Target: 300+ lines per file.
+Minimum: 301 lines per file. This is a floor, not a target. There is no upper limit — write as much depth as the topic genuinely requires. Hitting exactly 301 and stopping is wrong.
 
 zh-TW section headers: 原則 / 設計思維 / 最佳實踐 / 視覺呈現 / 範例 / 常見錯誤 / 相關 FEE / 參考資料
 
