@@ -2,6 +2,25 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+## Scope Correction (2026-04-19, during execution)
+
+The research pass at the start of plan execution discovered that **Invoker Commands (Baseline 2025)** and **Navigation API (Baseline 2026)** had both reached Baseline stability and must not live in the 12xxx pre-stable range per the spec's own rule. Inventory was reduced from five articles to three. The corrected inventory is:
+
+| ID    | Title                          | Status                |
+|-------|--------------------------------|-----------------------|
+| 12001 | Scoped Custom Element Registry | Limited availability  |
+| 12002 | Document Picture-in-Picture    | Limited availability  |
+| 12003 | Speculation Rules              | Limited availability  |
+
+The full task list below remains the authoritative per-article workflow, but:
+
+- **Task 2 (originally FEE-12001 Invoker Commands) is skipped.** Execution jumps from Task 1 to Task 3 (now the first sub-article task). The mandatory review checkpoint originally at the end of Task 2 moves to the end of Task 3 (the new first sub-article).
+- **Task 5 (originally FEE-12004 Navigation API) is skipped.**
+- **IDs shift down:** the article at "Task 3" is now FEE-12001 (was 12002); "Task 4" is now FEE-12002 (was 12003); "Task 6" is now FEE-12003 (was 12005).
+- Total commits: **4** (one overview edit + three sub-article commits) instead of six.
+
+All other execution mechanics (template, verification, polish, Vue safety grep, bilingual parallel) are unchanged.
+
 **Goal:** Ship five pre-stable HTML/DOM sub-articles (FEE-12001 through FEE-12005) in EN and zh-TW, with a preliminary edit to FEE-12000 so its Visual diagram and range table match the new sequential IDs.
 
 **Architecture:** One preliminary overview-edit commit, then five article commits (one per sub-article, each covering both languages), with a mandatory user-review pause after the first article ships. Each sub-article follows the canonical FEE template from `CLAUDE.md`, is ≥301 lines, cites ≥5 live-verified URLs, and passes Vue template safety checks.

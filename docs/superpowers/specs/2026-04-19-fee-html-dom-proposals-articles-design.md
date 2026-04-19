@@ -1,7 +1,24 @@
 # FEE HTML & DOM Proposals Articles Design
 
-> **Status:** Approved
+> **Status:** Approved (amended 2026-04-19 — see Scope Correction below)
 > **Date:** 2026-04-19
+
+## Scope Correction (2026-04-19)
+
+Research performed at the start of plan execution surfaced that two articles planned in the original inventory had already reached Baseline stability and therefore should not be in the 12xxx pre-stable range per this spec's own out-of-scope rule (the rule applied to Popover). The inventory is reduced from five articles to three:
+
+**Dropped (Baseline-stable at time of execution; moved to future stable-range follow-up alongside Popover):**
+
+- Invoker Commands (`command` / `commandfor`) — Baseline 2025, newly available since December 2025.
+- Navigation API — Baseline 2026, newly available since January 2026.
+
+**Retained (Limited availability; correctly scoped to 12xxx):**
+
+- FEE-12001 Scoped Custom Element Registry (was 12002)
+- FEE-12002 Document Picture-in-Picture (was 12003)
+- FEE-12003 Speculation Rules (was 12005)
+
+The sections below retain their original wording for historical record; the inventory, path table, and per-article outlines are no longer authoritative. The FEE-12000 overview commit `274e15a` (and its follow-up scope-correction commit) carries the correct current-state numbering.
 
 ## Goal
 
