@@ -3,6 +3,9 @@ import { resolve } from 'path';
 import fs from 'fs';
 
 function getMinId(node) {
+  if (typeof node.id === 'number') {
+    return node.id;
+  }
   if (node.link) {
     const id = parseInt(node.link.replace(/^\/[^/]*\//, '').replace(/^\//, ''), 10);
     return isNaN(id) ? Infinity : id;
@@ -61,13 +64,15 @@ function getSidebar(dir) {
             title = `<span class="VPBadge danger">暫定</span> ${title}`;
           }
 
+          const basename = file.replace(/\.md$/, '');
           mdFileList.push({
-            listItem: `- [${title}](${data.id})`,
+            listItem: `- [${title}](${basename})`,
             id: data.id,
           });
           result.push({
             text: title,
-            link: `/zh-tw/${data.id}`,
+            link: `/zh-tw/${basename}`,
+            id: data.id,
           });
         }
       }
