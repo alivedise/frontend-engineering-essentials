@@ -151,6 +151,16 @@ A union `A | B | C | ...` is not free. To keep unions normalised, "to eliminate 
 
 The native rewrite announced in March 2025 is framed by the TypeScript team as "drastically improve editor startup, reduce most build times by 10x, and substantially reduce memory usage." The published VS Code self-compile number dropped from 77.8 seconds to 7.5 seconds. The port ships as TypeScript 7.0. The wiki's authoring advice is about the type system, not the host language, and `skipLibCheck`, `incremental`, and project references remain part of the compiler surface.
 
+## Native Go Port (TypeScript 7.0)
+
+In March 2025 Microsoft announced a port of the TypeScript compiler and language service from TypeScript to Go. The announcement states the target impact: "The native implementation will drastically improve editor startup, reduce most build times by 10x, and substantially reduce memory usage." The measured data point Microsoft cited in the same post is VS Code's self-compile dropping from 77.8 seconds to 7.5 seconds.
+
+The port ships as TypeScript 7.0. The existing JavaScript-codebased compiler continues as the TypeScript 6.x line to give ecosystem tools time to migrate, so current projects do not have to adopt the Go-based build chain until they are ready.
+
+What stays constant: the language surface is identical. tsconfig options, `@types` packages, declaration-file emission, and the editor integrations that consume `tsserver` all keep their shape. What changes: startup cost for large projects (previously dominated by JIT warmup on the TypeScript host) falls sharply, memory ceilings loosen, and end-to-end CI build times on large codebases compress into the same order as a `gopls` cycle rather than a `node --max-old-space-size` cycle.
+
+Practical stance for 2026 projects: keep the TypeScript-6.x-based `tsc` in your build chain today. Watch the 7.0 preview release channel. When TypeScript 7.0 ships a stable tag, evaluate it first on non-critical builds (documentation pipelines, lint-only CI jobs) and migrate the hot path only once editor integrations you rely on have confirmed parity. The `--extendedDiagnostics` trace from your current build is directly comparable against a 7.0 trace, which is the cheapest way to confirm the expected speedup on a representative project.
+
 ## Related Topics
 
 - [tsconfig & Strict Mode](/en/TypeScript/1706)

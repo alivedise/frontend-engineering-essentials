@@ -151,6 +151,16 @@ trace
 
 TypeScript 團隊把 2025 年 3 月宣佈的原生改寫定位為「drastically improve editor startup, reduce most build times by 10x, and substantially reduce memory usage.」已公佈的 VS Code 自編譯數字從 77.8 秒降到 7.5 秒。該移植以 TypeScript 7.0 發佈。Wiki 的撰寫建議針對的是型別系統，與宿主語言無關，`skipLibCheck`、`incremental` 與專案參考仍屬編譯器表面的一部分。
 
+## Go 原生移植（TypeScript 7.0）
+
+2025 年 3 月，Microsoft 宣布將 TypeScript 編譯器與語言服務由 TypeScript 移植到 Go。公告明言目標衝擊：「The native implementation will drastically improve editor startup, reduce most build times by 10x, and substantially reduce memory usage.」同一篇公告所引的實測數據是 VS Code 的自我編譯從 77.8 秒縮短至 7.5 秒。
+
+此移植將以 TypeScript 7.0 發佈。現有以 JavaScript 為基底的編譯器會沿用 TypeScript 6.x 版號，給生態系工具遷移時間，因此既有專案無須立刻採用 Go 為基礎的建置鏈。
+
+保持不變的是語言表面：tsconfig 選項、`@types` 套件、宣告檔產出、以及依賴 `tsserver` 的編輯器整合都維持原樣。改變的是：大型專案的啟動成本（先前受 TypeScript 主機端 JIT 暖機影響最鉅）顯著下降，記憶體上限鬆綁，大型程式碼庫的端到端 CI 編譯時長會壓縮到與 `gopls` 週期同量級，而非 `node --max-old-space-size` 週期。
+
+2026 年專案的務實策略：建置鏈先維持在 TypeScript 6.x 基礎的 `tsc`。關注 7.0 preview release channel。一旦 TypeScript 7.0 發佈穩定版標籤，先在非關鍵建置（文件 pipeline、僅跑 lint 的 CI）上評估；等到所需編輯器整合都確認行為對齊，再將主路徑切換過去。現有建置以 `--extendedDiagnostics` 產出的 trace 可直接與 7.0 的 trace 比對，是以代表性專案驗證預期加速幅度的最省成本作法。
+
 ## 延伸閱讀
 
 - [tsconfig 與 Strict Mode](/zh-tw/TypeScript/1706)
