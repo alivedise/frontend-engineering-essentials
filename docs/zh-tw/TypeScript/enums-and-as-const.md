@@ -104,6 +104,14 @@ function move(d: DirectionValue) {
 
 TypeScript 5.0 重新設計了 enum 成員的型別化方式。發行公告指出「TypeScript 5.0 設法為每個計算成員建立獨特型別，使所有 enum 都成為 union enum。這代表所有 enum 現在都可以被收斂，並讓成員也能被當成型別參照」。在 5.0 之前，「每當 TypeScript 遇到這些情況，便會默默退回並採用舊的 enum 策略。這等同放棄聯集與字面型別的所有好處」。單一計算成員過去會使整個 enum 降級為舊策略，破壞 `switch` 敘述內的收斂，也禁止逐成員的型別參照。仰賴含計算成員 enum 收斂的程式碼需要 TS 5.0 或更新版本。
 
+## TypeScript 5.0 Union Enum 轉換
+
+在 TypeScript 5.0 之前，一個 enum 是否會被視為字面型別的聯集，取決於它的每個成員是否都以簡單常數初始化。只要有任一成員帶有計算式初始化，編譯器就會悄悄退回舊的非聯集表示法，使整個 enum 失去窄化與字面型別存取能力。TS 5.0 release notes 對此描述如下：「Whenever TypeScript ran into these issues, it would quietly back out and use the old enum strategy. That meant giving up all the advantages of unions and literal types.」
+
+TypeScript 5.0 透過為每個計算成員指派一個專屬的字面型別來消除此缺口：「TypeScript 5.0 manages to make all enums into union enums by creating a unique type for each computed member. That means that all enums can now be narrowed and have their members referenced as types as well.」
+
+實務影響：在 TS 5.0 之後，`type Direction = Direction.Up | Direction.Down` 始終是合法構造；針對 enum 的 `switch` 即使含有計算成員也能取得窮盡檢查；`if (value === Direction.Up)` 的窄化不再受初始化方式影響。針對舊版 TS 依賴 fallback 的程式（例如改以 `type Direction = Direction` 取代成員聯集）仍可通過型別檢查，但這類 workaround 已非必要。
+
 ## 延伸閱讀
 
 - [型別系統基礎與型別推論](/zh-tw/TypeScript/1701)

@@ -104,6 +104,14 @@ The handbook warns that `const enum` "can easily inline values from version A of
 
 TypeScript 5.0 reworked how enum members are typed. The release announcement states that "TypeScript 5.0 manages to make all enums into union enums by creating a unique type for each computed member. That means that all enums can now be narrowed and have their members referenced as types as well." Before 5.0, "whenever TypeScript ran into these issues, it would quietly back out and use the old enum strategy. That meant giving up all the advantages of unions and literal types." A single computed member used to downgrade the entire enum to the old strategy, breaking narrowing inside `switch` statements and forbidding per-member type references. Code that depends on narrowing enums with computed members requires TS 5.0 or newer.
 
+## TypeScript 5.0 Union Enum Transition
+
+Before TypeScript 5.0, whether an enum became a union of literal types depended on whether every member initializer was a simple constant. If any member carried a computed initializer, the compiler silently reverted to the older non-union representation, losing narrowing and literal-type access for the whole enum. The TS 5.0 release notes describe the fallback directly: "Whenever TypeScript ran into these issues, it would quietly back out and use the old enum strategy. That meant giving up all the advantages of unions and literal types."
+
+TypeScript 5.0 closed the gap by assigning each computed member its own unique literal type: "TypeScript 5.0 manages to make all enums into union enums by creating a unique type for each computed member. That means that all enums can now be narrowed and have their members referenced as types as well."
+
+Practical consequence: under TS 5.0 and later, `type Direction = Direction.Up | Direction.Down` is always a well-formed construction, switch statements over an enum get exhaustiveness checking even when computed members are present, and narrowing with `if (value === Direction.Up)` works regardless of how the enum was initialized. Code written against a pre-5.0 TypeScript that relied on the old fallback (e.g., explicit `type Direction = Direction` rather than the member union) continues to type-check but no longer needs the workaround.
+
 ## Related Topics
 
 - [Type System Fundamentals & Type Inference](/en/TypeScript/1701)
