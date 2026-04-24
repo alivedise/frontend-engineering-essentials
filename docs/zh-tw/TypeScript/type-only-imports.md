@@ -5,6 +5,8 @@ state: draft
 slug: type-only-imports
 category: TypeScript
 level: mid
+allow_no_custom_section: true
+# reason: verbatimModuleSyntax semantics are fully exhausted by Context/Example/Deep Dive; elision subtleties belong in Design Thinking, not a separate section.
 ---
 
 # [FEE-1712] 型別專用匯入與 `verbatimModuleSyntax`

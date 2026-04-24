@@ -5,6 +5,8 @@ state: draft
 slug: classes-and-private-fields
 category: TypeScript
 level: mid
+allow_no_custom_section: true
+# reason: article fully covered by standard sections; soft-vs-hard privacy and the deep dive already occupy the topic-specific angle without needing a separate heading.
 ---
 
 # [FEE-1710] 類別、存取修飾詞與 `#` 私有欄位

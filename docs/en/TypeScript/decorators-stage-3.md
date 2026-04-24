@@ -5,6 +5,8 @@ state: draft
 slug: decorators-stage-3
 category: TypeScript
 level: senior
+allow_no_custom_section: true
+# reason: decorator mechanics fill the standard sections end-to-end; no stage-specific subtopic warrants its own heading beyond what Deep Dive already covers.
 ---
 
 # [FEE-1711] Decorators (Stage 3 ECMAScript)
