@@ -27,70 +27,79 @@ This is a VitePress-based bilingual (EN + zh-TW) documentation site for Frontend
 
 ## FEE Article Template
 
-Current canonical template (supersedes all prior versions):
+Current canonical template (supersedes all prior versions). Mirrors the
+`expanding-category-articles` skill template with Changelog retained as an
+optional trailing section.
 
 ```
 ---
 id: {ID}
 title: "{TITLE}"
 state: draft
+slug: {kebab-slug}
 ---
 
 # [FEE-{ID}] {TITLE}
 
 :::info
-One-sentence hook.
+One-paragraph hook (3-5 sentences). Every claim traces to the findings doc.
 :::
 
 ## Context
-Why the problem exists, historical design, why existing tools fail. 3-5 sentences.
+History, landscape, prior attempts, the gap this article fills. 3-5 sentences.
 
-## Scenario
-Concrete situation where a developer encounters this problem. Shows the pain before the solution.
+## Visual
+One Mermaid diagram OR one structured table. Visualize the core mechanic.
+
+## Example
+Concrete walkthrough. Real code, real input/output, named systems. No pseudocode.
 
 ## Best Practices
-Actionable MUST/SHOULD/MAY bullets.
+MUST / SHOULD / MAY bullets. Each grounded in a specific finding.
 
 ## Design Thinking (optional)
-Two parts:
-1. Why the platform/language was designed the old way -- root causes, historical constraints
-2. How the ecosystem has already solved this in userland, and how the proposal/feature relates
+Trade-offs, calibration choices. Name what gets traded against what.
 
 ## Deep Dive (optional)
-Internals, edge cases, advanced mechanics. Skip if topic doesn't warrant it.
+Internals, edge cases, formal properties.
 
-## Visual (optional)
-Mermaid diagram. Include when a diagram genuinely clarifies structure or flow.
+## {Topic-specific section}
+REQUIRED. Rename the heading to name the angle (e.g. "Migration Guide",
+"Version Reference", "Failure Modes", "Footgun Matrix"). If the topic
+genuinely has no such angle, set `allow_no_custom_section: true` in
+frontmatter with an adjacent `# reason: <prose>` comment.
 
-## Example (optional)
-Concrete runnable code. No pseudocode.
-
-## {Topic-specific section} (optional)
-E.g. "Migration Guide", "Type Reference", "Browser Support Matrix" -- name it to match the topic.
-
-## Internal References
-Cross-links to related content. Format:
-- FEE-{ID} — {brief relational phrase}
-- AEE/BEE/ADE/DEE-{ID} — {brief relational phrase} (when cross-family links exist)
+## Related Topics
+Cross-links to sibling articles. Format:
+- [<Title>](/en/<category>/<slug>) or (/en/<category>/<id>) for pre-slug files.
 
 ## References
-3+ verified URLs. No upper limit -- include all authoritative and relevant links.
+3+ verified URLs. Format: `- <Author>, "<Title>," <Venue> (<year>). <URL>`
 
 ## Changelog (optional)
-Track significant spec/API changes over time. Include only when the proposal has had breaking changes.
+Track significant spec or API changes over time. Include only when the
+topic has had breaking changes.
 ```
 
 **zh-TW section header map:**
 - Context → 背景
-- Scenario → 情境
+- Visual → 視覺對比
+- Example → 範例
 - Best Practices → 最佳實踐
 - Design Thinking → 設計思維
 - Deep Dive → 深入探討
-- Visual → 圖解
-- Example → 範例
-- Internal References → 內部參考
+- Related Topics → 延伸閱讀
 - References → 參考資料
 - Changelog → 變更紀錄
+
+The topic-specific section's heading is authored-specific — translate it
+naturally alongside the prose (e.g. "Migration Guide" → 「遷移指南」,
+"Version Reference" → 「版本對照」).
+
+Retired sections (kept for pre-2026-04-24 articles; not used in new work):
+- `## Scenario` — scenario content folds into `## Context` or the
+  topic-specific section.
+- `## Internal References` — renamed to `## Related Topics`.
 
 ## Content Quality
 
