@@ -105,6 +105,21 @@ export function area(r: number): number {
 
 **雙套件風險。** 以單一套件名出貨兩種格式並非沒有代價。`dual-package-hazard` 說明表示：「雙套件風險發生於同時出貨 CJS 與 ESM 進入點的套件，使同一套件得以被載入兩次：一次經由 CJS 載入器，一次經由 ESM 載入器。」兩個實例代表兩份私有狀態：類別的 `instanceof` 失敗、singletons 分歧、registries 被切開。緩解方案包含讓套件保持無狀態、只匯出資料，或為需要 CJS 建置的消費者另外發佈獨立套件。
 
+## 雙套件風險（Dual Package Hazard）
+
+同時釋出 ESM 與 CJS 兩種進入點的套件，會讓使用者暴露於雙套件風險：同一個套件會被載入兩次——CJS loader 一次、ESM loader 一次——產生兩個彼此獨立的模組實體。GeoffreyBooth 的示範 repo 直接說明此失效模式：「The dual package hazard occurs in packages that ship both CJS and ESM entry points, allowing the same package to get loaded twice: once through the CJS loader and once through the ESM loader.」
+
+常見症狀有兩個。首先，singleton 不再是 singleton：從套件匯出的 cache 或 registry，會在兩份 loader 的副本中各自持有狀態。其次，跨邊界的 `instanceof` 檢查會悄然失敗，因為兩份模組副本的 class identity 不同，即便這兩個 class「出自同一個套件」。
+
+實務上有效的緩解方式：
+
+- **能只釋出 ESM 就只釋出 ESM。** Node 20+ 消費者與所有現代 bundler 都能直接處理 ESM；保留 CJS fallback 多半是為了歷史相容，不是為了觸及率。
+- **若必須雙釋出，將狀態集中到單一 CJS-only 或 ESM-only 的輔助套件。** 從 CJS 與 ESM 進入點共同 import 該輔助套件，使有狀態的模組僅被載入一次，不受外層套件由哪個 loader 解析影響。
+- **嚴格使用 `exports` 條件欄位。** `package.json` 的 `"exports"` 欄位中，`"import"` 與 `"require"` 條件互斥。手寫繞過條件的 subpath import 會破壞原本的解析，可能引入錯誤副本。
+- **切勿跨邊界暴露 class identity。** 若消費者需要 `instanceof` 檢查，改以品牌檢查函式（`isFoo(x)`）在單一模組副本中完成比較。
+
+此風險本身並非 TypeScript 的問題——只要 Node runtime 同時支援兩種 loader 便會存在——但 TypeScript 的 emit 決策會決定每位消費者遇到的是哪個 loader，因此 `nodenext` 模組解析正是將問題在編譯期浮現的正確設定。
+
 ## 延伸閱讀
 
 - [型別專用匯入與 `verbatimModuleSyntax`](/zh-tw/TypeScript/type-only-imports)

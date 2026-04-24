@@ -105,6 +105,21 @@ Second, TypeScript must infer the runtime format for each file because guessing 
 
 **Dual package hazard.** Shipping both formats from one package name is not free. The `dual-package-hazard` write-up states: "The dual package hazard occurs in packages that ship both CJS and ESM entry points, allowing the same package to get loaded twice: once through the CJS loader and once through the ESM loader." Two instances mean two sets of private state: classes fail `instanceof`, singletons diverge, and registries split. Mitigations include keeping the package stateless, exporting only data, or publishing separate packages for consumers who need the CJS build.
 
+## Dual Package Hazard
+
+Publishing a package that ships both ESM and CJS entry points exposes consumers to the dual package hazard: the same package gets loaded twice — once by the CJS loader, once by the ESM loader — producing two independent module instances. GeoffreyBooth's illustrative repository states the failure mode precisely: "The dual package hazard occurs in packages that ship both CJS and ESM entry points, allowing the same package to get loaded twice: once through the CJS loader and once through the ESM loader."
+
+Two visible symptoms follow. First, singletons are no longer singletons: a cache or registry exported from the package holds separate state in each loader's copy. Second, `instanceof` checks across the boundary silently fail because the class identity differs between the two module copies, even though the classes came from "the same" package.
+
+Mitigations that work in practice:
+
+- **Ship ESM-only when you can.** Node 20+ consumers and every modern bundler handle ESM directly; CJS fallback is carried for historical parity, not real reach.
+- **When dual-shipping is required, keep state in a single CJS-only or ESM-only helper package.** Import that package from both the CJS and ESM entry points so the stateful module is loaded once regardless of which loader resolved the outer package.
+- **Use `exports` conditions strictly.** The `package.json` `"exports"` field's `"import"` and `"require"` conditions are mutually exclusive. Hand-written paths that bypass the conditions (e.g. a direct subpath import) defeat the intended resolution and can pull in the wrong copy.
+- **Never expose class identity across the boundary.** If consumers need an `instanceof` check, expose a brand-check function (`isFoo(x)`) that performs the check internally, so the identity comparison stays inside a single copy of the module.
+
+The hazard is not a TypeScript problem — it exists in any Node runtime that supports both loaders — but TypeScript's emit decisions determine which loader each consumer gets, so the `nodenext` module resolution is the right setting to surface the problem at compile time.
+
 ## Related Topics
 
 - [Type-Only Imports & `verbatimModuleSyntax`](/en/TypeScript/type-only-imports)
