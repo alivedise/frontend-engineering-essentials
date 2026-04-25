@@ -153,5 +153,5 @@ function SubmitButton() {
 - React Docs, "useActionState," react.dev. https://react.dev/reference/react/useActionState
 - React Docs, "useOptimistic," react.dev. https://react.dev/reference/react/useOptimistic
 - React DOM Docs, "useFormStatus," react.dev. https://react.dev/reference/react-dom/hooks/useFormStatus
-- React DOM Docs, "<form>," react.dev. https://react.dev/reference/react-dom/components/form
+- React DOM Docs, "`<form>`," react.dev. https://react.dev/reference/react-dom/components/form
 - React Docs, "useTransition," react.dev. https://react.dev/reference/react/useTransition
