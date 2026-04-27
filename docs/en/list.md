@@ -90,7 +90,6 @@ title: FEE list
 - [609.Form State Management](609)
 - [610.Undo/Redo Patterns](610)
 - [611.Framework Signals (Solid, Vue, Preact, Angular)](framework-signals)
-- [612.TC39 Signals Proposal](tc39-signals-proposal)
 - [613.TanStack Query v5](tanstack-query-v5)
 - [614.XState v5 — The Actor Model](xstate-v5-actor-model)
 - [615.CRDT Collaborative State (Yjs and Automerge)](yjs-and-automerge-crdts)

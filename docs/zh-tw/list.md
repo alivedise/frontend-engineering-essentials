@@ -90,7 +90,6 @@ title: FEE 全列表
 - [609.表單狀態管理](609)
 - [610.復原與重做模式](610)
 - [611.框架 Signals 比較（Solid、Vue、Preact、Angular）](framework-signals)
-- [612.TC39 Signals 提案](tc39-signals-proposal)
 - [613.TanStack Query v5](tanstack-query-v5)
 - [614.XState v5：Actor 模型](xstate-v5-actor-model)
 - [615.CRDT 協作狀態（Yjs 與 Automerge）](yjs-and-automerge-crdts)
