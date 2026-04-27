@@ -1,13 +1,34 @@
 ---
 title: Expand State Management — 8 Adoptable Gap Articles
 date: 2026-04-26
-status: Approved for writing
+status: Shipped 2026-04-26; FEE-612 retired and FEE-611 slimmed on 2026-04-28 after cross-category overlap with FEE-10005 surfaced
 category: State Management
 id_range: 611-618
 branch: expand/state-management-2026-04-26
 ---
 
 # Expand State Management — 8 Adoptable Gap Articles
+
+## Post-Merge Note (2026-04-28)
+
+The originally proposed FEE-611 and FEE-612 both overlapped with FEE-10005
+("Signals — Reactive Primitives in the Language") under Web Platform
+Proposals. The gap-discovery subagent at the time only saw articles in the
+target category; the skill has since been tightened to consume the
+repo-wide `docs/en/list.md` index for cross-category overlap detection.
+
+Retirement and slimming applied to `main`:
+
+- **FEE-612 retired**: file deleted in both locales; the polyfill
+  integration recipe (the only material not already in FEE-10005) was
+  folded into FEE-10005 Deep Dive as "Polyfill integration recipe —
+  debounced microtask flush".
+- **FEE-611 slimmed**: Context now points readers to FEE-10005 for the
+  proposal-level treatment; Design Thinking and Deep Dive sections
+  removed; the article is now a userland API-surface reference for
+  cross-framework library authors.
+
+The remaining six articles (613-618) are unaffected.
 
 ## Confirmed Topics
 
