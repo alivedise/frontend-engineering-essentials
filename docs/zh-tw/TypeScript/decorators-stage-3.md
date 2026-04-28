@@ -6,13 +6,13 @@ slug: decorators-stage-3
 category: TypeScript
 level: senior
 allow_no_custom_section: true
-# reason: decorator mechanics fill the standard sections end-to-end; no stage-specific subtopic warrants its own heading beyond what Deep Dive already covers.
+# reason: TypeScript 端的注意點（版本／旗標矩陣、Handbook 陷阱、ClassMethodDecoratorContext 型別）已填滿標準小節；提案層級的機制由 FEE-10300 涵蓋。
 ---
 
 # [FEE-1711] Decorators（Stage 3 ECMAScript）
 
 :::info
-Decorator 是用來客製化類別與其成員的函式。TypeScript 5.0 將 stage-3 ECMAScript 提案以標準語言特性形式釋出，使 `@decorator` 語法能在不啟用 `--experimentalDecorators` 旗標的情況下完成編譯。Stage-3 形式採用與先前實驗性 decorator 不同的 API：每個 decorator 會收到被裝飾的值以及一個具型別的 context 物件，而合法目標的範圍也更窄。本文涵蓋 stage-3 的語意、套用模型，以及與實驗性 decorator 之間的遷移落差。
+TypeScript 5.0 將 TC39 Stage 3 decorator 以非實驗性語言特性形式釋出，使 `@decorator` 在不啟用 `--experimentalDecorators` 旗標的情況下即可編譯。本文聚焦於 TypeScript 端的議題：決定使用哪一套 decorator 系統的 TS 版本×旗標矩陣、仍然殘留的 Handbook 陷阱、具型別的 `ClassMethodDecoratorContext` API，以及與實驗性 decorator 之間的遷移落差。提案層級的說明（六種 decorator 形式的完整簽章、`addInitializer` 語意、`Symbol.metadata`，以及跨語言歷史）由 [FEE-10300](../Web%20Platform%20Proposals/TC39%20and%20JS%20Proposals/10300.md) 涵蓋。
 :::
 
 ## 背景
@@ -25,15 +25,15 @@ TypeScript 5.0 將 stage-3 形式以非實驗性語言特性形式釋出，支�
 
 ## 視覺對比
 
-堆疊的 decorator 以由下往上的順序套用：最靠近成員的 decorator 先行包裝，每個外層 decorator 再包裝其下層的結果。規範將此流程拆為類別定義期間執行的三個階段（TC39, proposal-decorators）。
+某個 TypeScript 專案實際使用哪一套 decorator 系統，由 TypeScript 版本與 `tsconfig.json` 中的 `experimentalDecorators` 設定共同決定：
 
-| 階段 | 發生的事 | 出處 |
+| TypeScript 版本 | tsconfig 中的 `experimentalDecorators` | 實際使用的系統 |
 | --- | --- | --- |
-| 1. Evaluate | Decorator 運算式以由左至右（依原始碼順序由上至下）求值，產生 decorator 函式。 | TC39 proposal-decorators |
-| 2. Call | 每個 decorator 於類別定義期間被呼叫，時機在方法已求值、但建構子與原型尚未組裝之前。最內層（最靠近成員）先被呼叫；外層 decorator 會收到內層呼叫的結果。 | TC39 proposal-decorators |
-| 3. Apply | 所有 decorator 的結果一起套用，在每個 decorator 都被呼叫後，才對建構子與原型進行變更。 | TC39 proposal-decorators |
+| < 5.0 | `true`（必要） | 舊版 stage-2 |
+| 5.0+ | `true` | 舊版 stage-2（旗標覆寫預設） |
+| 5.0+ | `false` 或未設定 | **TC39 Stage 3（預設）** |
 
-以經典堆疊範例 `@bound @loggedMethod greet()` 為例：`@loggedMethod` 首先套用於原方法，接著 `@bound` 套用於 `@loggedMethod` 的結果（TypeScript 5.0 release notes）。
+採用 TC39 風格簽章 `(value, context) => …` 的函式庫，無法在舊版設定下被消費；編譯器會回報簽章不相容的錯誤。反之亦然：使用 `(target, key, descriptor)` 的舊版 decorator 在 stage-3 下也不會通過型別檢查或正確執行。
 
 ## 範例
 
@@ -94,29 +94,13 @@ function bound(
 
 - **MUST** 在 TS 5.0 或之後的版本撰寫新 decorator 時以 stage-3 API 為目標。Stage-3 的簽章與 emit 結果與實驗性 decorator 差異足以讓「任何既有 decorator 函式都不太可能」在未經改寫的情況下同時支援兩種模式（TypeScript 5.0 release notes）。
 - **MUST NOT** 在 stage-3 下嘗試裝飾建構子參數或方法參數。該提案「不允許裝飾參數」（Microsoft DevBlog, "Announcing TypeScript 5.0"）；參數 decorator 仍屬實驗性專屬功能。
-- **MUST** 將 stage-3 decorator 限制於六種可被尋址的元素類型：類別、方法、getter、setter、欄位與 auto-accessor（TC39 proposal-decorators）。
 - **MUST NOT** 在 stage-3 decorator 下依賴 `reflect-metadata` 或 `--emitDecoratorMetadata`。Stage-3 提案「與 `--emitDecoratorMetadata` 不相容」（Microsoft DevBlog, "Announcing TypeScript 5.0"）。執行期型別 metadata 不在 stage-3 範圍內，另以獨立 TC39 提案追蹤。
 - **SHOULD** 在匯出類別上選擇單一 decorator 位置。Stage-3 允許 `@register export default class Foo {}` 或 `export default @register class Bar {}`，但對同一類別「前 *且* 後皆寫是不被允許的」（TypeScript 5.0 release notes）。
 - **MAY** 讓依賴參數 decorator 或 emit metadata 的框架程式碼（例如以參數注入為基礎建構的 DI 容器）繼續使用 `--experimentalDecorators`。這些框架在未經原上游重新設計前無法遷移至 stage-3。
 
-## 設計思維
-
-Stage-3 decorator 是形如 `(value, context) => replacement | void` 的函式。Context 物件帶有 `kind`、`name`、`access`，以及可選的 `private` / `static` 旗標，再加上 `addInitializer` 掛鉤：「type Decorator = (value: Input, context: { kind: string; name: string | symbol; access: { get?(): unknown; set?(value: unknown): void }; private?: boolean; static?: boolean; addInitializer(initializer: () => void): void; }) => Output | void」（TC39 proposal-decorators）。Decorator 擁有的每項能力都呈現在該 context 上，使契約在局部便可推理。
-
-Stage-3 設計比 TypeScript 原本實作的 stage-2 提案更窄。Stage-2 允許 decorator 新增任意類別元素、以對引擎建模而言成本高昂的方式重塑類別。Stage-3 有意識地移除這些能力：該提案之所以更窄，是「為了讓 decorator 的語意保持『範圍良好』且符合直覺，並簡化實作」（TC39 proposal-decorators）。此取捨以彈性換取可預測性：stage-3 decorator 無法將類別改寫為結構上不同的東西，作為回報，讀者與引擎只需檢視它所作用的六種元素類型，即可推理被裝飾的類別。
-
-參數 decorator 是此收斂下最顯眼的犧牲品。原本依賴參數 decorator 搭配 emit metadata 進行依賴注入（DI）的框架，並沒有等價替代可供遷移；它們在 stage-3 下需要另一種機制，通常是透過類別 decorator 做顯式註冊。
-
-## 深入探討
-
-Auto-accessor 是隨 stage-3 decorator 一同導入的新類別成員形式。`accessor foo = 0;` 會宣告一個儲存槽，並產生對應的 get 與 set 方法。裝飾 auto-accessor 可提供具型別的 `get`、`set` 與 `init` 掛鉤，使 decorator 能攔截讀取、寫入與初始化，而不必手寫成對的 accessor。規範將 auto-accessor 與類別、方法、getter、setter、欄位並列為六種可被裝飾的 kind 之一：「Decorators apply to these kinds: \"class\", \"method\", \"getter\", \"setter\", \"field\", and \"accessor\"」（TC39 proposal-decorators）。
-
-回傳值語意相當嚴格。Decorator「可以用一個具有相同語意的匹配值取代被裝飾的值」（TC39 proposal-decorators）。方法 decorator 可以回傳一個函式；欄位 decorator 可以回傳一個 initializer 函式；類別 decorator 可以回傳一個新類別。回傳 `undefined` 保留原值不變。回傳與被裝飾 kind 不相符的形狀則為錯誤。
-
-當多個 decorator 互動時，三階段套用模型至關重要。所有 decorator 運算式在任一 decorator 執行之前全部求值完畢，因此運算式中的副作用（例如讀取 decorator factory 的引數）會依原始碼順序發生，與 decorator 彼此包裝的方式無關。Decorator 接著在類別定義期被呼叫，「時機在方法已求值、但建構子與原型尚未組裝之前」。最後，所有結果一同套用，「在全部 decorator 都被呼叫完之後，一口氣」對建構子與原型進行變更（TC39 proposal-decorators）。因此 decorator 無法觀察組裝中途的類別；它只看到被交給它的那個值。
-
 ## 延伸閱讀
 
+- [FEE-10300 Decorators — Class、Method 與 Field Decorators](../Web%20Platform%20Proposals/TC39%20and%20JS%20Proposals/10300.md) — 提案層級的完整參考：六種 decorator 形式的完整簽章、`addInitializer` 規則、`Symbol.metadata`，以及跨語言歷史。
 - [類別、存取修飾詞與 `#` 私有欄位](/zh-tw/TypeScript/classes-and-private-fields)
 - [型別系統基礎與型別推論](/zh-tw/TypeScript/1701)
 - [tsconfig 與 Strict Mode](/zh-tw/TypeScript/1706)

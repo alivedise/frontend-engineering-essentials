@@ -6,13 +6,13 @@ slug: decorators-stage-3
 category: TypeScript
 level: senior
 allow_no_custom_section: true
-# reason: decorator mechanics fill the standard sections end-to-end; no stage-specific subtopic warrants its own heading beyond what Deep Dive already covers.
+# reason: TypeScript-side gotchas (version-and-flag matrix, the Handbook trap, ClassMethodDecoratorContext typing) fill the standard sections; proposal-level mechanics live at FEE-10300.
 ---
 
 # [FEE-1711] Decorators (Stage 3 ECMAScript)
 
 :::info
-Decorators are functions that customize classes and their members. TypeScript 5.0 shipped the stage-3 ECMAScript proposal as a standard language feature, so `@decorator` syntax now compiles without the `--experimentalDecorators` flag. The stage-3 form uses a different API from the earlier experimental decorators: each decorator receives the decorated value plus a typed context object, and the set of legal targets is narrower. This article covers the stage-3 semantics, the application model, and the migration gap from experimental decorators.
+TypeScript 5.0 shipped TC39 Stage 3 decorators as a non-experimental language feature, so `@decorator` syntax now compiles by default without `--experimentalDecorators`. This article covers the TypeScript-side concerns: the TS version × flag matrix that determines which decorator system is in effect, the lingering Handbook trap, the typed `ClassMethodDecoratorContext` API, and the migration gap from experimental decorators. The proposal-level treatment — all decorator kinds with full signatures, the `addInitializer` semantics, `Symbol.metadata`, and the cross-language history — lives at [FEE-10300](../Web%20Platform%20Proposals/TC39%20and%20JS%20Proposals/10300.md).
 :::
 
 ## Context
@@ -25,15 +25,15 @@ One documentation hazard remains. The Handbook page at `/docs/handbook/decorator
 
 ## Visual
 
-Stacked decorators apply bottom-up: the decorator closest to the member wraps first, and each outer decorator wraps the result of the one below. The spec splits this into three phases run during class definition (TC39, proposal-decorators).
+The decorator system in effect for a TypeScript project is determined by the TypeScript version and the `experimentalDecorators` setting in `tsconfig.json`:
 
-| Phase | What happens | Source |
+| TypeScript version | `experimentalDecorators` in tsconfig | System in effect |
 | --- | --- | --- |
-| 1. Evaluate | Decorator expressions are evaluated left-to-right (top-to-bottom in source order) to produce the decorator functions. | TC39 proposal-decorators |
-| 2. Call | Each decorator is called during class definition, after the methods have been evaluated but before the constructor and prototype are assembled. Innermost (closest to the member) is called first; outer decorators receive the result of the inner call. | TC39 proposal-decorators |
-| 3. Apply | All decorator results are applied together, mutating the constructor and prototype after every decorator has been called. | TC39 proposal-decorators |
+| < 5.0 | `true` (required) | Legacy stage-2 |
+| 5.0+ | `true` | Legacy stage-2 (flag overrides default) |
+| 5.0+ | `false` or absent | **TC39 Stage 3 (default)** |
 
-For the canonical stacked example `@bound @loggedMethod greet()`: `@loggedMethod` is applied first to the original method, then `@bound` is applied to the result of `@loggedMethod` (TypeScript 5.0 release notes).
+A library that ships TC39-style decorators (`(value, context) => …`) cannot be consumed under the legacy setting; the compiler will report incompatible signature errors. The reverse is also true: legacy decorators using `(target, key, descriptor)` will not type-check or run correctly under stage-3.
 
 ## Example
 
@@ -94,29 +94,13 @@ Stacked as `@bound @loggedMethod greet()`, the logger wraps the original method 
 
 - **MUST** target the stage-3 API when writing new decorators under TS 5.0 or later. The stage-3 signature and emit differ enough from experimental decorators that "any existing decorator functions are not likely" to work under both modes without rewriting (TypeScript 5.0 release notes).
 - **MUST NOT** attempt to decorate constructor parameters or method parameters under stage-3. The proposal "does not allow decorating parameters" (Microsoft DevBlog, "Announcing TypeScript 5.0"); parameter decorators remain an experimental-only feature.
-- **MUST** restrict stage-3 decorators to the six addressable element kinds: class, method, getter, setter, field, and auto-accessor (TC39 proposal-decorators).
 - **MUST NOT** rely on `reflect-metadata` or `--emitDecoratorMetadata` with stage-3 decorators. The stage-3 proposal "is not compatible with `--emitDecoratorMetadata`" (Microsoft DevBlog, "Announcing TypeScript 5.0"). Runtime type metadata is out of scope for stage-3 and is tracked as a separate TC39 proposal.
 - **SHOULD** pick one position for decorators on exported classes. Stage-3 allows `@register export default class Foo {}` or `export default @register class Bar {}`, but a single class "before *and* after is not allowed" (TypeScript 5.0 release notes).
 - **MAY** keep framework code that depends on parameter decorators or emitted metadata (for example, DI containers built on parameter injection) on `--experimentalDecorators`. Those frameworks cannot move to stage-3 without an upstream redesign.
 
-## Design Thinking
-
-A stage-3 decorator is a function of the form `(value, context) => replacement | void`. The context object carries `kind`, `name`, `access`, and optional `private` / `static` flags, plus an `addInitializer` hook: "type Decorator = (value: Input, context: { kind: string; name: string | symbol; access: { get?(): unknown; set?(value: unknown): void }; private?: boolean; static?: boolean; addInitializer(initializer: () => void): void; }) => Output | void" (TC39 proposal-decorators). Every capability the decorator has is visible on that context, which makes the contract easy to reason about locally.
-
-The stage-3 design is narrower than the stage-2 proposal that TypeScript originally implemented. Stage-2 allowed decorators to add arbitrary extra class elements and reshape the class in ways that were expensive for engines to model. Stage-3 removes those capabilities deliberately: the proposal is narrower "in order to keep the meaning of decorators 'well-scoped' and intuitive, and to simplify implementations" (TC39 proposal-decorators). The trade is flexibility against predictability: stage-3 decorators cannot rewrite a class into something structurally different, and in exchange readers and engines can reason about a decorated class by looking at the six element kinds it addresses.
-
-Parameter decorators are the visible casualty of that narrowing. Frameworks that leaned on parameter decorators plus emitted metadata for dependency injection have nothing to migrate to; they need a different mechanism under stage-3, typically explicit registration via a class decorator.
-
-## Deep Dive
-
-Auto-accessors are a new class-member form introduced alongside stage-3 decorators. Writing `accessor foo = 0;` declares a storage slot with generated get and set methods. Decorating an auto-accessor provides typed `get`, `set`, and `init` hooks, which lets a decorator intercept reads, writes, and initialization without hand-writing accessor pairs. The spec lists auto-accessor alongside class, method, getter, setter, and field as one of the six decoratable kinds: "Decorators apply to these kinds: \"class\", \"method\", \"getter\", \"setter\", \"field\", and \"accessor\"" (TC39 proposal-decorators).
-
-Return-value semantics are strict. A decorator "can replace the value that is being decorated with a matching value that has the same semantics" (TC39 proposal-decorators). A method decorator may return a function; a field decorator may return an initializer function; a class decorator may return a new class. Returning `undefined` leaves the original in place. Returning a shape that does not match the decorated kind is an error.
-
-The three-phase application model matters when several decorators interact. All decorator expressions are evaluated before any decorator runs, so side effects in the expressions (for example, reading a decorator factory's argument) happen in source order regardless of how the decorators wrap each other. The decorators are then called during class definition, "after the methods have been evaluated but before the constructor and prototype have been put together." Finally, all results are applied together, mutating the constructor and prototype "all at once, after all of them have been called" (TC39 proposal-decorators). A decorator therefore cannot observe the partially decorated class mid-assembly; it only sees the value it was handed.
-
 ## Related Topics
 
+- [FEE-10300 Decorators — Class, Method, and Field Decorators](../Web%20Platform%20Proposals/TC39%20and%20JS%20Proposals/10300.md) — proposal-level reference: all decorator kinds with full signatures, `addInitializer` rules, `Symbol.metadata`, and the cross-language history.
 - [Classes, Access Modifiers & `#` Private Fields](/en/TypeScript/classes-and-private-fields)
 - [Type System Fundamentals & Type Inference](/en/TypeScript/1701)
 - [tsconfig & Strict Mode](/en/TypeScript/1706)
