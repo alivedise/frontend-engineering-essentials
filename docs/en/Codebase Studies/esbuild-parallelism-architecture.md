@@ -170,7 +170,7 @@ The pattern esbuild uses to organize CPU-bound work has five moving parts. Call 
 ## Internal References
 
 - [FEE-1800 Codebase Studies Overview](/en/Codebase%20Studies/codebase-studies-overview)
-- [FEE-1801 three.js dispose lifecycle](/en/Codebase%20Studies/threejs-dispose-lifecycle)
+- [FEE-1810 three.js dispose lifecycle](/en/Codebase%20Studies/threejs-dispose-lifecycle)
 
 ## References
 

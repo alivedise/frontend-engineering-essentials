@@ -384,8 +384,8 @@ Concrete recognition signals:
 ## Internal References
 
 - [FEE-1800 Codebase Studies Overview](/en/Codebase%20Studies/codebase-studies-overview)
-- [FEE-1801 esbuild Parallelism Architecture](/en/Codebase%20Studies/esbuild-parallelism-architecture)
-- [FEE-1802 three.js Dispose Lifecycle](/en/Codebase%20Studies/threejs-dispose-lifecycle)
+- [FEE-1802 esbuild Parallelism Architecture](/en/Codebase%20Studies/esbuild-parallelism-architecture)
+- [FEE-1810 three.js Dispose Lifecycle](/en/Codebase%20Studies/threejs-dispose-lifecycle)
 - [FEE-613 TanStack Query v5](/en/State%20Management/tanstack-query-v5)
 
 ## References

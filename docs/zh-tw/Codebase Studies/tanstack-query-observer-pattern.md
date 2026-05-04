@@ -377,8 +377,8 @@ rerender），再把 `'observerResultsUpdated'` 事件轉發給快取，兩者�
 ## 內部參考
 
 - [FEE-1800 Codebase Studies 概覽](/zh-tw/Codebase%20Studies/codebase-studies-overview)
-- [FEE-1801 esbuild 平行架構](/zh-tw/Codebase%20Studies/esbuild-parallelism-architecture)
-- [FEE-1802 three.js Dispose 生命週期](/zh-tw/Codebase%20Studies/threejs-dispose-lifecycle)
+- [FEE-1802 esbuild 平行架構](/zh-tw/Codebase%20Studies/esbuild-parallelism-architecture)
+- [FEE-1810 three.js Dispose 生命週期](/zh-tw/Codebase%20Studies/threejs-dispose-lifecycle)
 - [FEE-613 TanStack Query v5](/zh-tw/State%20Management/tanstack-query-v5)
 
 ## 參考資料

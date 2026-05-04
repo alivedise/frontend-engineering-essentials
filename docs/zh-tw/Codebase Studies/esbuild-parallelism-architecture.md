@@ -170,7 +170,7 @@ esbuild 用來組織 CPU 密集工作的模式有五個構件，稱之為 **Goro
 ## 內部參考
 
 - [FEE-1800 Codebase Studies 總覽](/zh-tw/Codebase%20Studies/codebase-studies-overview)
-- [FEE-1801 three.js dispose 生命週期](/zh-tw/Codebase%20Studies/threejs-dispose-lifecycle)
+- [FEE-1810 three.js dispose 生命週期](/zh-tw/Codebase%20Studies/threejs-dispose-lifecycle)
 
 ## 參考資料
 

@@ -1,12 +1,12 @@
 ---
-id: 1801
+id: 1810
 title: "Three.js — The Dispose Lifecycle Contract"
 state: draft
 slug: threejs-dispose-lifecycle
 studied_at: "three.js r172 (2025-04-15)"
 ---
 
-# [FEE-1801] Three.js — The Dispose Lifecycle Contract
+# [FEE-1810] Three.js — The Dispose Lifecycle Contract
 
 :::info
 Three.js leaves GPU-side cleanup to the application: each resource-owning class (geometry, material, texture, render target) exposes a `dispose()` that fires a single event, and renderer subsystems subscribe to that event to free the underlying WebGL handles. The universal scene-graph base `Object3D` has no `dispose()` because it owns no GPU resource — the contract is delegated downward. The transferable lesson is a pub-sub seam between "I'm done" and "free the buffer" that lets long-running interactive apps shed non-GC resources without coupling resource owners to the deallocator. This article reads the r172 source to make that contract explicit and names the pattern so it is recognisable in other codebases.

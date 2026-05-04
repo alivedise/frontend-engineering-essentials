@@ -32,7 +32,7 @@ A pattern can have articles in both categories simultaneously, with each cross-l
 
 ## Example
 
-Here is the shape of a Codebase Studies article — a one-paragraph excerpt from FEE-1801's Example section, illustrating commit-pinned source citation:
+Here is the shape of a Codebase Studies article — a one-paragraph excerpt from FEE-1810's Example section, illustrating commit-pinned source citation:
 
 > The base class for every renderable object in Three.js, `Object3D`, exposes no lifecycle method of its own; disposal is delegated to subclasses that own GPU resources. The `BufferGeometry.dispose()` implementation looks like:
 >
@@ -60,7 +60,7 @@ The link uses a tag (`r172`), not `main`. The line range is included. The code i
 
 ## Design Thinking
 
-The category's core calibration is that the **codebase is the witness**, not the subject. A reader of FEE-1801 should walk away knowing about *the dispose lifecycle pattern* (the named pattern they can apply or spot), with Three.js as the concrete witness that demonstrates it. The article's job is to teach the pattern, with Three.js's source code as the body of evidence.
+The category's core calibration is that the **codebase is the witness**, not the subject. A reader of FEE-1810 should walk away knowing about *the dispose lifecycle pattern* (the named pattern they can apply or spot), with Three.js as the concrete witness that demonstrates it. The article's job is to teach the pattern, with Three.js's source code as the body of evidence.
 
 This calibration carves a sharp line against two failure modes the spec called out during design:
 

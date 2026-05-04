@@ -1,12 +1,12 @@
 ---
-id: 1801
+id: 1810
 title: "Three.js：Dispose 生命週期契約"
 state: draft
 slug: threejs-dispose-lifecycle
 studied_at: "three.js r172 (2025-04-15)"
 ---
 
-# [FEE-1801] Three.js：Dispose 生命週期契約
+# [FEE-1810] Three.js：Dispose 生命週期契約
 
 :::info
 Three.js 將 GPU 端的資源清理交由應用程式自行處理：每個持有資源的類別（geometry、material、texture、render target）都暴露一個 `dispose()` 方法，僅觸發單一事件，由 renderer 子系統訂閱該事件以釋放底層 WebGL 句柄。場景圖通用基底 `Object3D` 並未提供 `dispose()`，因為它本身不持有 GPU 資源——契約被委派至下層。可遷移的設計教訓在於一條介於「我用完了」與「釋放 buffer」之間的 pub-sub 縫合線，讓長時間運行的互動式應用能在不將資源持有者與釋放器耦合的情況下，卸除非 GC 回收的資源。本文閱讀 r172 原始碼以使該契約具體化，並為此模式命名以便在其他程式碼中辨識。
