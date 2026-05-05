@@ -1,0 +1,37 @@
+{
+  "clone": ".worktrees/code-base-studies/clones/three",
+  "src_root": ".worktrees/code-base-studies/clones/three/src",
+  "repo_shape": {
+    "total_source_files": 685,
+    "top_dir_count": 16,
+    "license_first_line": "The MIT License",
+    "first_commit": "2024-12-31T17:51:51+08:00",
+    "latest_commit": "2024-12-31T17:51:51+08:00",
+    "total_commits": "1"
+  },
+  "class_graph": {
+    "extends_count": 377,
+    "universal_base": "Node",
+    "universal_base_subclass_count": 54,
+    "max_chain_depth": 6,
+    "longest_chain": "ViewportDepthTextureNode -> ViewportTextureNode -> TextureNode -> UniformNode -> InputNode -> Node -> EventDispatcher"
+  },
+  "modules": {
+    "entry_file": "Three.js",
+    "entry_exports_count": 8
+  },
+  "hot_path": {
+    "keyword_hits": 82
+  },
+  "extension_points": {
+    "keyword_hits": 2,
+    "dedicated_dir": "no"
+  },
+  "resource_lifecycle": {
+    "dispose_hits": 180
+  },
+  "build_test": {
+    "package_scripts": 0,
+    "test_dirs": 1
+  }
+}
