@@ -106,6 +106,21 @@ digests:             # tier 3: curated aggregation
 (`accepted` / `rejected` / `deferred`) and the FEE id if accepted. Scouts
 check this before proposing; prevents re-proposing rejected topics.
 
+**Why run state is committed (not a separate store).** Orthodox pipeline
+systems (Airflow, Airbyte, distributed cron) keep run state in a metadata
+database because they are multi-writer, high-frequency, and large-state.
+None of that holds here (single owner, manual trigger, a few KB of JSON),
+so this design follows the git-scraping pattern instead — git as the
+state store, commit history as the audit trail. Two local reasons beyond
+scale: (a) ledger entries are only meaningful against the content version
+they audited, so state and articles must share one history and revert
+atomically; (b) the dedup memory must survive re-clones and machine
+switches, which a gitignored local file would not. Each run lands exactly
+one `chore(harness)` state commit to bound history noise.
+**Revisit if**: runs become scheduled/high-frequency, multiple
+writers appear, or reports start polluting `git log` — then move state to
+a dedicated branch, git notes, or an external store.
+
 ### `/fee-harden [batch-size]` — harden existing articles
 
 Default batch: 10 articles. Pipeline (per article, no barriers between
