@@ -222,6 +222,7 @@ Candidates:
 ${JSON.stringify(candidates, null, 2)}`,
   { label: 'classify', schema: CLASSIFIED_SCHEMA }
 )
+if (!classified) throw new Error('classify agent failed; aborting run')
 const viable = classified.candidates.filter(c => c.kind !== 'skip')
 const skipped = classified.candidates.filter(c => c.kind === 'skip')
 log(`${viable.length} viable after classify (${skipped.length} skipped)`)
@@ -245,6 +246,7 @@ Candidates:
 ${JSON.stringify(viable, null, 2)}`,
     { label: 'rank', schema: RANKED_SCHEMA }
   )
+  if (!ranked) throw new Error('rank agent failed; aborting run')
   accepted = ranked.candidates.filter(c => c.disposition === 'accepted').slice(0, maxTopics)
   dispositions = dispositions.concat(
     ranked.candidates
@@ -268,6 +270,10 @@ for (const t of accepted) {
       t.feeId = nextId[t.category]++
       t.dir = dirByName[t.category]
     }
+  } else if (!t.targetArticle) {
+    log(`append candidate "${t.title}" lacks targetArticle — dropping`)
+    t.dropped = true
+    dispositions.push({ title: t.title, disposition: 'deferred', reason: 'append without targetArticle', feeId: null })
   }
 }
 const toProduce = accepted.filter(t => !t.dropped)

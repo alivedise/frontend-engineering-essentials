@@ -25,7 +25,7 @@ Argument: optional max accepted topics (default 4). `/fee-discover 2`.
 Invoke the Workflow tool:
 
 - `scriptPath`: `.claude/workflows/fee-discover.js`
-- `args`: `{ "maxTopics": <N>, "sources": <parsed sources.yaml>, "discoveryLog": <parsed discovery-log.json>, "today": "<YYYY-MM-DD>" }`
+- `args`: `{ "maxTopics": <N>, "sources": <parsed sources.yaml>, "discoveryLog": <parsed discovery-log.json> }`
 
 Wait for completion. The return value contains `produced`, `dispositions`,
 `uncovered`. If `produced` is empty, skip to step 6 (still log dispositions
@@ -58,7 +58,11 @@ For each produced article, read the EN file once end-to-end and check: the
 References URLs appear genuinely used (not decorative), the topic-specific
 section exists, frontmatter matches conventions, and the zh-TW mirror exists
 with parallel sections. Fix small issues directly; anything structural sends
-the article to the same revert-and-defer path as step 4.
+the article to the same revert-and-defer path as step 4. Also confirm each
+produced enPath/zhPath is a newly created file (`git status` shows it as
+untracked), not a modification of a pre-existing article — a modified
+pre-existing file means a slug collision: send it through step 4's
+revert-and-defer path.
 
 ### 6. Update harness state
 
@@ -80,6 +84,9 @@ the article to the same revert-and-defer path as step 4.
 ## Coverage gaps
 - <uncovered scout groups, or "none">
 ```
+
+If the report file already exists (same-day rerun), append a `## Run N`
+section instead of overwriting.
 
 ### 7. Commit
 
