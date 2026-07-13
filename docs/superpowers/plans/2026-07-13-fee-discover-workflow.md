@@ -524,13 +524,21 @@ return { produced: results, dispositions, uncovered }
 
 - [ ] **Step 2: Syntax-check the script**
 
-Workflow scripts are ES modules but the repo's package.json is CommonJS, so check via an `.mjs` copy:
+The Workflow runtime executes the script body as top-level statements inside
+an async function, so the file legitimately contains top-level `return` —
+which plain `node --check` rejects in both module and CommonJS goals.
+Compile (without executing) a check-time copy wrapped the same way the
+runtime wraps it:
 
 ```bash
-TMP="$(mktemp -d)/fee-discover-check.mjs"
-cp .claude/workflows/fee-discover.js "$TMP" && node --check "$TMP" && echo SYNTAX_OK
+node -e "
+const fs = require('fs');
+const src = fs.readFileSync('.claude/workflows/fee-discover.js', 'utf8').replace(/^export /gm, '');
+new (require('vm').Script)('(async () => {' + src + '})()');
+console.log('SYNTAX_OK');
+"
 ```
-Expected: `SYNTAX_OK` (undefined globals like `agent`/`args` are fine — `--check` only parses).
+Expected: `SYNTAX_OK` (undefined globals like `agent`/`args` are fine — `vm.Script` only compiles).
 
 - [ ] **Step 3: Commit**
 
