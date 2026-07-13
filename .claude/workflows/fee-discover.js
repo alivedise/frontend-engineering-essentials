@@ -9,9 +9,11 @@ export const meta = {
   ],
 }
 
-const maxTopics = (args && args.maxTopics) || 4
-const sources = args.sources
-const knownTopics = (args.discoveryLog.topics || [])
+// args may arrive as a JSON string depending on the invoking harness
+const input = typeof args === 'string' ? JSON.parse(args) : (args || {})
+const maxTopics = input.maxTopics || 4
+const sources = input.sources || {}
+const knownTopics = ((input.discoveryLog || {}).topics || [])
   .map(t => `- ${t.title} (${t.disposition})`)
   .join('\n') || '(none yet)'
 
