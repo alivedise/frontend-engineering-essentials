@@ -1,0 +1,61 @@
+# Tiered source registry for /fee-discover scouts.
+# Edit freely; scouts read whatever is listed here on each run.
+
+platform: # tier 1-2: specs, proposals, platform release notes
+  - name: Chrome Release Notes
+    url: https://developer.chrome.com/release-notes
+  - name: Chrome Platform Status (roadmap)
+    url: https://chromestatus.com/roadmap
+  - name: WebKit Blog
+    url: https://webkit.org/blog/
+  - name: Firefox Release Notes for Developers
+    url: https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases
+  - name: web.dev Blog
+    url: https://web.dev/blog
+  - name: TC39 Proposals
+    url: https://github.com/tc39/proposals
+  - name: WHATWG Blog
+    url: https://blog.whatwg.org/
+  - name: CSSWG Drafts (recent activity)
+    url: https://github.com/w3c/csswg-drafts
+  - name: Baseline / web-features
+    url: https://github.com/web-platform-dx/web-features
+  - name: Interop dashboard
+    url: https://wpt.fyi/interop-2026
+
+codebases: # candidates for the Codebase Studies category (FEE-18xx)
+  - name: three.js
+    url: https://github.com/mrdoob/three.js
+    status: covered # FEE-1801, FEE-1810
+  - name: esbuild
+    url: https://github.com/evanw/esbuild
+    status: covered # FEE-1802
+  - name: TanStack Query
+    url: https://github.com/TanStack/query
+    status: covered # FEE-1803
+  - name: Vite
+    url: https://github.com/vitejs/vite
+    status: candidate
+  - name: Zod
+    url: https://github.com/colinhacks/zod
+    status: candidate
+  - name: Yjs
+    url: https://github.com/yjs/yjs
+    status: candidate
+  - name: Preact Signals
+    url: https://github.com/preactjs/signals
+    status: candidate
+  - name: Vitest
+    url: https://github.com/vitest-dev/vitest
+    status: candidate
+  - name: Playwright
+    url: https://github.com/microsoft/playwright
+    status: candidate
+
+digests: # tier 3: curated aggregation archives
+  - name: JavaScript Weekly
+    url: https://javascriptweekly.com/issues
+  - name: Frontend Focus
+    url: https://frontendfoc.us/issues
+  - name: CSS Weekly
+    url: https://css-weekly.com/archives/
