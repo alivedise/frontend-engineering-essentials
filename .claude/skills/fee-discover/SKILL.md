@@ -58,11 +58,12 @@ For each produced article, read the EN file once end-to-end and check: the
 References URLs appear genuinely used (not decorative), the topic-specific
 section exists, frontmatter matches conventions, and the zh-TW mirror exists
 with parallel sections. Fix small issues directly; anything structural sends
-the article to the same revert-and-defer path as step 4. Also confirm each
-produced enPath/zhPath is a newly created file (`git status` shows it as
-untracked), not a modification of a pre-existing article — a modified
-pre-existing file means a slug collision: send it through step 4's
-revert-and-defer path.
+the article to the same revert-and-defer path as step 4. Also, for each
+`kind: new-article` entry, confirm its enPath/zhPath is a newly created file
+(`git status` shows it as untracked), not a modification of a pre-existing
+article — a modified pre-existing file means a slug collision: send it
+through step 4's revert-and-defer path. (`kind: append` entries legitimately
+modify pre-existing articles; this check does not apply to them.)
 
 ### 6. Update harness state
 
