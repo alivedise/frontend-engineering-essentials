@@ -128,20 +128,38 @@ articles):
 
 1. **Select** — wrapper reads the ledger, picks the batch, passes article
    paths + repo conventions into the workflow as `args`.
-2. **Audit** — one agent per article reads EN + zh-TW and produces
-   structured findings across three lenses:
-   - *Factual*: extract load-bearing claims; verify each against the
-     article's own References plus official docs (WebFetch/WebSearch).
-     Flag hallucinations, stale version claims, dead reference URLs.
-   - *Template*: compliance with the canonical template in CLAUDE.md
-     (section order, frontmatter, topic-specific section present,
-     Vue template safety rules).
-   - *Depth*: is the Example real runnable code with named systems? Does
-     Deep Dive add substance? What is thin enough to be worth deepening?
-3. **Adversarial verify** — every *factual* finding goes to an independent
-   verifier agent prompted to refute it using primary sources. Only
-   findings that survive proceed. This layer exists specifically to stop
-   "fixing a hallucination with another hallucination".
+2. **Audit** — one agent per article reads EN + zh-TW *as a reader first*
+   (record stumbles and the questions the text provokes, then verify), and
+   produces structured findings across four lenses. Priority order was
+   calibrated with the owner on FEE-703 (2026-07-13/14) and is binding:
+   - *Tone (highest)*: flag AI-pattern sentences in both languages —
+     negation tricolons ("buttons do not respond, forms do not validate,
+     dynamic components do not update"), "not X but Y" constructions,
+     em-dash appositive chains, paragraph-final summary flourishes. Fix by
+     replacing with one concrete example or a plain statement, not by
+     rephrasing the pattern.
+   - *Organization / reader model*: (a) dependency check — every proper
+     noun introduced or linked before first substantive use; (b)
+     provoked-question check — list the questions a reader naturally asks
+     at each section and verify the article answers them; (c) framework
+     neutrality of the main narrative.
+   - *References mining*: concepts in cited sources worth absorbing into
+     the body; references must not use terms the body never defines; the
+     annotation must match what the source actually says.
+   - *Factual/staleness*: extract load-bearing claims; verify each against
+     the article's own References plus official docs (WebFetch/WebSearch).
+     Flag hallucinations, stale version claims, dead reference URLs, and
+     claims contradicted by the article's own cited sources.
+   Template compliance (section order, frontmatter, Vue template safety)
+   rides along as a mechanical checklist, not a lens.
+3. **Adversarial verify** — the reviser and the verifier MUST be different
+   agents with separate contexts. Every revision (not only factual
+   findings) goes to an independent verifier prompted to refute it using
+   primary sources and to check for newly introduced tone/organization
+   regressions. Only revisions that survive land. Calibration evidence:
+   on FEE-703 the reviser inverted a source's meaning while fixing a
+   different source-inversion — the same failure class it was correcting —
+   and only the independent verifier caught it.
 4. **Apply** — an editor agent applies confirmed fixes to the EN file,
    then mirrors the changes into the zh-TW counterpart (parallel
    structure, translated section headings per the CLAUDE.md map).
