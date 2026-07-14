@@ -74,7 +74,11 @@ const FIX_SCHEMA = {
 const SYNC_SCHEMA = {
   type: 'object',
   required: ['zhPath', 'passagesUpdated'],
-  properties: { zhPath: { type: 'string' }, passagesUpdated: { type: 'number' } },
+  properties: {
+    zhPath: { type: 'string' },
+    passagesUpdated: { type: 'number' },
+    zhFixes: { type: 'string', description: 'zh-specific fixes applied beyond mirroring the EN diff' },
+  },
 }
 
 const TONE_BLACKLIST = `
@@ -176,7 +180,8 @@ patterns the EN edits removed (no negation tricolons, no 「不是X,而是Y」).
 
 In addition to mirroring the EN diff: the audit findings below may include
 issues specific to the zh-TW file (zh-only tone violations, translation
-drift). Fix those in the zh file too, and mention each in your work.
+drift). Fix those in the zh file too, and report each of them in the
+zhFixes field of your structured output.
 
 Audit findings:
 ${JSON.stringify((audit && audit.findings) || [], null, 2)}
@@ -189,6 +194,10 @@ Traditional Chinese is required.`
 function shortName(p) {
   const m = p.match(/([^/]+)\.md$/)
   return m ? m[1] : p
+}
+
+function hasZhFinding(findings) {
+  return (findings || []).some(f => /zh/i.test(`${f.location} ${f.statement}`))
 }
 
 phase('Audit')
@@ -207,6 +216,9 @@ const results = await pipeline(
     })
     if (!revised) return { status: 'failed', findings: counts, notes: 'revise agent failed after audit found issues' }
     if (!revised.changed) {
+      if (hasZhFinding(audit.findings)) {
+        return { status: 'zh-only', findings: counts, audit, revised }
+      }
       return { status: 'clean', findings: counts, notes: `audit findings all declined: ${revised.declined || 'no reason given'}` }
     }
     return { status: 'revised-unverified', findings: counts, audit, revised }
@@ -240,15 +252,22 @@ const results = await pipeline(
     return { ...prev, status: 'verified', verifyNotes: verdict.notes }
   },
   async (prev, a) => {
-    if (!prev || prev.status !== 'verified') return prev
+    if (!prev || (prev.status !== 'verified' && prev.status !== 'zh-only')) return prev
+    const lead = prev.status === 'zh-only'
+      ? `EN clean; zh-only findings routed to sync${prev.revised.declined ? ` | declined: ${prev.revised.declined}` : ''}`
+      : `${prev.revised.editsSummary}${prev.revised.declined ? ` | declined: ${prev.revised.declined}` : ''} | ${prev.verifyNotes}`
     const synced = await agent(syncPrompt(a, prev.audit), {
       label: `sync:${shortName(a.enPath)}`, phase: 'Sync', schema: SYNC_SCHEMA,
     })
     if (!synced) {
+      if (prev.status === 'zh-only') {
+        log(`${a.enPath}: zh-only sync failed — zh findings unresolved`)
+        return { ...prev, status: 'failed', notes: `${lead} | zh-only sync agent failed; zh findings unresolved` }
+      }
       log(`${a.enPath}: zh sync failed — EN revision stands, zh needs manual sync`)
-      return { ...prev, status: 'revised', notes: `${prev.revised.editsSummary}${prev.revised.declined ? ` | declined: ${prev.revised.declined}` : ''} | ${prev.verifyNotes} | WARNING: zh-TW sync agent failed, mirror not updated` }
+      return { ...prev, status: 'revised', notes: `${lead} | WARNING: zh-TW sync agent failed, mirror not updated` }
     }
-    return { ...prev, status: 'revised', notes: `${prev.revised.editsSummary}${prev.revised.declined ? ` | declined: ${prev.revised.declined}` : ''} | ${prev.verifyNotes} | zh synced (${synced.passagesUpdated} passages)` }
+    return { ...prev, status: 'revised', notes: `${lead} | zh synced (${synced.passagesUpdated} passages${synced.zhFixes ? `; zh fixes: ${synced.zhFixes}` : ''})` }
   }
 )
 
