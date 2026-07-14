@@ -64,6 +64,7 @@ title: FEE 全列表
 - [415.Permissions API](415)
 - [416.Web Speech API](416)
 - [417.Transferable Objects](417)
+- [418.Navigation API — 攔截與管理 SPA 導覽](navigation-api)
 - [500.元件架構與設計模式總覽](500)
 - [501.元件組合模式](501)
 - [502.響應式狀態與 Signals](502)

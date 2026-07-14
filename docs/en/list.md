@@ -64,6 +64,7 @@ title: FEE list
 - [415.Permissions API](415)
 - [416.Web Speech API](416)
 - [417.Transferable Objects](417)
+- [418.Navigation API — Intercepting and Managing SPA Navigation](navigation-api)
 - [500.Component Architecture & Design Patterns Overview](500)
 - [501.Component Composition Patterns](501)
 - [502.Reactive State & Signals](502)
