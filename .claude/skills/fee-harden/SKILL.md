@@ -40,9 +40,10 @@ const never = files.filter(f => !ledger[f]).sort();
 const stale = files.filter(f => ledger[f]).sort((a, b) => ledger[a].lastAudited.localeCompare(ledger[b].lastAudited));
 const batch = never.concat(stale).map(enPath => {
   const src = fs.readFileSync(enPath, 'utf8');
+  if (/^overview: true/m.test(src)) return null; // overview pages aggregate their category; harden targets articles
   const m = src.match(/^id:\s*(\d+)/m);
   return { enPath, zhPath: enPath.replace('docs/en/', 'docs/zh-tw/'), id: m ? Number(m[1]) : null };
-}).filter(e => {
+}).filter(Boolean).filter(e => {
   if (fs.existsSync(e.zhPath)) return true;
   console.error('dropped (missing zh mirror): ' + e.enPath);
   return false;
@@ -53,6 +54,9 @@ console.log(JSON.stringify(batch, null, 2));
 
 - Entries dropped for a missing zh mirror are printed to stderr — list them in
   the report as "missing zh mirror — needs creation, not harden".
+- Overview pages (`overview: true` frontmatter) are permanently excluded:
+  they aggregate their category, so the reader-first lenses do not apply
+  (owner decision, 2026-07-14).
 
 ### 2. Run the workflow
 
