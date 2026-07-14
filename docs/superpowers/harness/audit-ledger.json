@@ -1,1 +1,12 @@
-{}
+{
+  "docs/en/Browser APIs and Web Platform/navigation-api.md": {
+    "id": 418,
+    "lastAudited": "2026-07-13",
+    "findings": {
+      "factual": 0,
+      "depth": 0,
+      "template": 0
+    },
+    "notes": "written+verified by fee-discover run"
+  }
+}

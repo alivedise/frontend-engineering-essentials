@@ -1,3 +1,130 @@
 {
-  "topics": []
+  "topics": [
+    {
+      "title": "CSS Grid Lanes (Masonry) — Layout Model and Reading-Order Pitfalls",
+      "disposition": "rejected",
+      "reason": "Duplicate of the first candidate (CSS Grid Lanes — Native Masonry Layout): same css-grid-3 feature from the same news cycle. Its distinct value — the accessibility/reading-flow angle and the matuzo.at and drafts.csswg.org sources — has been folded into that candidate's source list so one article covers both the layout mechanic and the WCAG 2.4.3 focus-order trade-offs.",
+      "feeId": null,
+      "date": "2026-07-13"
+    },
+    {
+      "title": "URLPattern — Standard URL Matching for Routers, Service Workers, and Speculation Rules",
+      "disposition": "deferred",
+      "reason": "Near-miss, second in line. Top-tier sourcing (WHATWG spec), Baseline-stable, and 12000 names it as a 400-range graduation target — but it targets the same destination range as the Navigation API candidate, which is more load-bearing (two articles already cross-reference it). Do Navigation API first; URLPattern is the natural next pick and pairs with it as routing substrate.",
+      "feeId": null,
+      "date": "2026-07-13"
+    },
+    {
+      "title": "import defer — Deferred Module Evaluation and Module Loading Phases",
+      "disposition": "deferred",
+      "reason": "Strong first-party sourcing (TC39 spec text) and a real gap in the 10000 series, with a teachable core (deferred namespace exotic object, evaluation-on-first-access). Deferred only because Stage 3 durability is a notch below the accepted candidate's Baseline status and the batch allows one acceptance; solid pick for the next cycle.",
+      "feeId": null,
+      "date": "2026-07-13"
+    },
+    {
+      "title": "Service Worker Static Routing API — addRoutes() and Declarative Fetch Bypass",
+      "disposition": "deferred",
+      "reason": "Verified zero corpus coverage and a clean fit with the PWA category's slug-file children pattern. Cross-engine status (Chrome shipped, Safari 27 beta) and MDN reference give good sourcing. Deferred as a near-miss: no Baseline yet and the declarative condition grammar is still evolving in WICG, so it ranks below the Baseline-stable candidates on durability.",
+      "feeId": null,
+      "date": "2026-07-13"
+    },
+    {
+      "title": "Preact Signals — Doubly-Linked Dependency Graphs and Version Counting",
+      "disposition": "deferred",
+      "reason": "Best of the five Codebase Studies candidates: single readable source file, first-party 'Signal Boosting' explainer, an evergreen algorithm (intrusive doubly-linked dependency lists, version counting), and cross-ecosystem validation via Vue 3.4 adoption. Ranks below the accepted candidate only on source tier (repo/blog vs spec/MDN). Strongest internals pick for a future cycle.",
+      "feeId": null,
+      "date": "2026-07-13"
+    },
+    {
+      "title": "WebAssembly JSPI — JavaScript Promise Integration for Suspending Wasm",
+      "disposition": "deferred",
+      "reason": "Verified: WebAssembly Proposals contains only 14000.md, which reserves the child range this would fill — excellent structural fit, and v8.dev plus the proposal repo are engine-official sources. Deferred because it requires a companion touch-up to 14000's stale shipping status and serves a narrower audience than the routing/module candidates; good candidate once the overview refresh is scheduled.",
+      "feeId": null,
+      "date": "2026-07-13"
+    },
+    {
+      "title": "Playwright — Out-of-Process Protocol Architecture and the Actionability Engine",
+      "disposition": "deferred",
+      "reason": "Genuine internals sequel to 1103/1111 with first-party docs and the protocol.yml as a concrete primary source; the actionability checklist is visualizable and durable. Deferred as a near-miss behind Preact Signals within the same category: the client/server protocol split is harder to demonstrate with small runnable code, lowering teachability slightly.",
+      "feeId": null,
+      "date": "2026-07-13"
+    },
+    {
+      "title": "font-family Fallback and the CSS Font Matching Algorithm",
+      "disposition": "deferred",
+      "reason": "The most evergreen topic in the batch — per-character fallback is spec-defined in CSS Fonts 4 and will not churn — and it fills a verified gap in the 200 series. Deferred as a near-miss: the anchor narrative source is a personal blog plus a newsletter, so the article needs additional platform-official sourcing (MDN font matching, web.dev font best practices) before it clears the source-tier bar.",
+      "feeId": null,
+      "date": "2026-07-13"
+    },
+    {
+      "title": "Vitest — Worker Pool Isolation Architecture: threads, forks, and vmThreads",
+      "disposition": "deferred",
+      "reason": "Verified gap (no tinypool/vmThreads/pool hits) with first-party docs, and the isolation-vs-speed trade-off table is teachable. Deferred behind the stronger Codebase Studies picks: the v4 pool internals are mid-churn (tinypool drop just landed), so writing now risks fast staleness; revisit after v4 settles.",
+      "feeId": null,
+      "date": "2026-07-13"
+    },
+    {
+      "title": "Yjs — Inside the YATA Integration Algorithm and the Struct Store",
+      "disposition": "deferred",
+      "reason": "Durable algorithm with a first-party INTERNALS.md anchor and a natural 615 cross-link. Deferred as a near-miss: YATA integration is the hardest mechanic in the batch to demonstrate with short real code (teachability cost), and half the sourcing is third-party blogs, so it ranks below Preact Signals and Playwright within the same category.",
+      "feeId": null,
+      "date": "2026-07-13"
+    },
+    {
+      "title": "Uint8Array Base64 and Hex Conversion (ES2026)",
+      "disposition": "deferred",
+      "reason": "Good topic, wrong shelf: a finalized ES2026 feature shipping in all engines contradicts the proposals-range charter — 12000's graduation policy says finished features go directly to the stable ranges, so this belongs in JavaScript Core (300s), not Web Platform Proposals. Also two of three sources are a personal blog and a newsletter. Deferred pending recategorization and stronger sourcing (MDN, TC39 spec text).",
+      "feeId": null,
+      "date": "2026-07-13"
+    },
+    {
+      "title": "CSS Grid Lanes (display: grid-lanes) — Native Masonry Layout",
+      "disposition": "deferred",
+      "reason": "Good sourcing (WebKit official, css-grid-3 draft) and a visualizable layout mechanic, and the CSS Experimental range does admit single-engine features. Deferred on durability: the masonry syntax debate (grid-integrated vs display:masonry vs grid-lanes) has already reversed once and only one engine ships it — the syntax could still shift. Revisit when a second engine signals intent or the CSSWG resolution hardens.",
+      "feeId": null,
+      "date": "2026-07-13"
+    },
+    {
+      "title": "Vite — Environment API and the Module Runner Architecture",
+      "disposition": "deferred",
+      "reason": "Real gap (801/802 are usage-level) and first-party docs, but Vite's own documentation still marks the Environment API experimental with breaking changes expected between majors — the weakest durability of the Codebase Studies batch. Defer until the API is declared stable; then it pairs well with the Vitest pool candidate.",
+      "feeId": null,
+      "date": "2026-07-13"
+    },
+    {
+      "title": "CSS @function and @mixin — Native Sass-Style Abstractions",
+      "disposition": "deferred",
+      "reason": "Verified zero corpus coverage and the css-mixins-1 draft is a real teachable spec (call-site custom-property scoping), but two of four sources are newsletter issues and only Chromium ships @function with @mixin not yet implemented anywhere — half the article's subject is unshipped. Deferred until @mixin lands in an engine and the sourcing is upgraded to platform-official posts.",
+      "feeId": null,
+      "date": "2026-07-13"
+    },
+    {
+      "title": "Zod v4 — The zod/v4/core Rearchitecture: From Wrapper Schemas to Flattened Checks",
+      "disposition": "rejected",
+      "reason": "Poor fit on durability and source diversity: this is fundamentally a version-migration story (v3 wrappers to v4 checks) whose framing decays as v3 fades, unlike the category's existing evergreen algorithm tours (esbuild parallelism, TanStack observer pattern). All three sources are the same vendor with no third-party analysis, and 1708 already carries the selection-level guidance readers need.",
+      "feeId": null,
+      "date": "2026-07-13"
+    },
+    {
+      "title": "Zero-Runtime CSS-in-JS — StyleX, vanilla-extract, and Compile-Time Style Extraction",
+      "disposition": "rejected",
+      "reason": "Poor fit on source tier and overlap: sourcing is one vendor doc, one company migration post, and a newsletter — no spec or platform-official anchor, the weakest in the batch. The strategy-level ground is already held by 205, and a mechanics article keyed to specific libraries (StyleX momentum is uncertain, vanilla-extract maintenance has slowed) fails the evergreen bar for the stable 200 range.",
+      "feeId": null,
+      "date": "2026-07-13"
+    },
+    {
+      "title": "contrast-color() — CSS That Picks Its Own Readable Text Color",
+      "disposition": "rejected",
+      "reason": "Poor fit on durability and teachable depth: the css-color-5 design has already changed shape more than once (color-contrast() with candidate lists was replaced by the pared-down max-contrast black/white version, and the CSSWG still debates the target algorithm), only Safari ships it, and the remaining mechanic — browser picks black or white — is too small to sustain the template's Example/Deep Dive sections. Two of three sources are a personal blog and a newsletter.",
+      "feeId": null,
+      "date": "2026-07-13"
+    },
+    {
+      "title": "Navigation API — Intercepting and Managing SPA Navigation",
+      "disposition": "accepted",
+      "reason": "Highest composite score in the batch. Source tier: platform-official (MDN reference plus web.dev Baseline announcement). Durability: Baseline January 2026, stable API surface. Teachability: NavigateEvent.intercept() is a single visualizable mechanic (traversal vs push vs replace, handler promise lifecycle) demonstrable with real router code. Category fit is uniquely strong: 12000.md explicitly says this article is 'tracked for a dedicated stable-range FEE' with the technical reference placed in the 400 range and cross-references from 606/106 already waiting — the corpus itself pre-planned this exact article and destination.",
+      "feeId": 418,
+      "date": "2026-07-13"
+    }
+  ]
 }
