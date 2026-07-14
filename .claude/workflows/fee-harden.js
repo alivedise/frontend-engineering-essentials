@@ -164,7 +164,7 @@ Defects:
 ${JSON.stringify(findings, null, 2)}`
 }
 
-function syncPrompt(a) {
+function syncPrompt(a, audit) {
   return `You are syncing a revised EN article into its zh-TW mirror.
 EN (final state): ${a.enPath}. Its uncommitted changes: run
 \`git diff -- "${a.enPath}"\`. zh-TW mirror to update: ${a.zhPath}.
@@ -173,6 +173,13 @@ Apply every EN change at the corresponding location in the zh file,
 translated naturally into Traditional Chinese (Taiwan). Match the zh file's
 existing terminology and punctuation conventions. Do NOT reintroduce AI-tone
 patterns the EN edits removed (no negation tricolons, no 「不是X,而是Y」).
+
+In addition to mirroring the EN diff: the audit findings below may include
+issues specific to the zh-TW file (zh-only tone violations, translation
+drift). Fix those in the zh file too, and mention each in your work.
+
+Audit findings:
+${JSON.stringify((audit && audit.findings) || [], null, 2)}
 ${SCOPE_RULE.replace('file(s) named in this prompt', `zh-TW file ${a.zhPath} only`)}
 After editing, re-read the changed zh sections once and confirm section count
 and order still parallel the EN file. Full orthographic correctness for
@@ -210,6 +217,9 @@ const results = await pipeline(
       label: `verify:${shortName(a.enPath)}`, phase: 'Verify', schema: VERIFY_SCHEMA,
     })
     if (!verdict) return { ...prev, status: 'failed', notes: 'verify agent failed; treat article as dirty' }
+    if (verdict.verdict === 'issues' && !(verdict.findings || []).length) {
+      verdict = { verdict: 'clean', notes: `${verdict.notes} (issues verdict named no findings — treated as clean)` }
+    }
     if (verdict.verdict === 'issues' && (verdict.findings || []).length) {
       const fixed = await agent(fixPrompt(a, verdict.findings), {
         label: `fix:${shortName(a.enPath)}`, phase: 'Verify', schema: FIX_SCHEMA,
@@ -219,6 +229,9 @@ const results = await pipeline(
         label: `reverify:${shortName(a.enPath)}`, phase: 'Verify', schema: VERIFY_SCHEMA,
       })
       if (!verdict) return { ...prev, status: 'failed', notes: 'reverify agent failed; treat article as dirty' }
+      if (verdict.verdict === 'issues' && !(verdict.findings || []).length) {
+        verdict = { verdict: 'clean', notes: `${verdict.notes} (issues verdict named no findings — treated as clean)` }
+      }
     }
     if (verdict.verdict !== 'clean') {
       log(`${a.enPath}: verify still unclean after fix round — marking for revert`)
@@ -228,14 +241,14 @@ const results = await pipeline(
   },
   async (prev, a) => {
     if (!prev || prev.status !== 'verified') return prev
-    const synced = await agent(syncPrompt(a), {
+    const synced = await agent(syncPrompt(a, prev.audit), {
       label: `sync:${shortName(a.enPath)}`, phase: 'Sync', schema: SYNC_SCHEMA,
     })
     if (!synced) {
       log(`${a.enPath}: zh sync failed — EN revision stands, zh needs manual sync`)
-      return { ...prev, status: 'revised', notes: `${prev.verifyNotes} | WARNING: zh-TW sync agent failed, mirror not updated` }
+      return { ...prev, status: 'revised', notes: `${prev.revised.editsSummary}${prev.revised.declined ? ` | declined: ${prev.revised.declined}` : ''} | ${prev.verifyNotes} | WARNING: zh-TW sync agent failed, mirror not updated` }
     }
-    return { ...prev, status: 'revised', notes: `${prev.verifyNotes} | zh synced (${synced.passagesUpdated} passages)` }
+    return { ...prev, status: 'revised', notes: `${prev.revised.editsSummary}${prev.revised.declined ? ` | declined: ${prev.revised.declined}` : ''} | ${prev.verifyNotes} | zh synced (${synced.passagesUpdated} passages)` }
   }
 )
 

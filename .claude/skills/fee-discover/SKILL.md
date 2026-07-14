@@ -104,3 +104,6 @@ In this order, matching repo conventions (no emojis, no AI attribution):
 
 Summarize: produced articles (id, title, links to files), deferred/rejected
 with reasons, uncovered groups, and the report path. Do not push.
+
+Finally, confirm `git status` is clean; investigate and report anything left
+over — stray modifications mean an agent violated scope.

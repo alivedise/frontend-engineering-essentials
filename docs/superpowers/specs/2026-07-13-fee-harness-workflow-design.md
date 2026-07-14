@@ -73,11 +73,15 @@ Coupling them would make both worse.
   "docs/en/State Management/600.md": {
     "id": 600,
     "lastAudited": "2026-07-13",
-    "findings": { "factual": 2, "depth": 1, "template": 0 },
+    "findings": { "tone": 2, "organization": 1, "references": 0, "factual": 3, "template": 0 },
     "notes": "overview hallucination fixed; example verified against Zustand docs"
   }
 }
 ```
+
+fee-discover entries predate the five-lens calibration and use
+`{factual, depth, template}`; selection reads only `lastAudited`, so both
+shapes coexist.
 
 Batch selection = never-audited first, then stalest `lastAudited`.
 Articles touched by a discovery run get their ledger entry refreshed (a

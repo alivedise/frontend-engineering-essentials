@@ -16,7 +16,10 @@ Argument: optional batch size (default 5). `/fee-harden 2`.
 ### 1. Select the batch
 
 - Read `docs/superpowers/harness/audit-ledger.json`.
-- Confirm `git status` has no unrelated staged changes; stop and ask if it does.
+- Confirm the working tree has NO uncommitted changes (staged or unstaged) under
+  `docs/en/` and `docs/zh-tw/` — the workflow runs `git checkout --` on batch
+  articles and attributes their `git diff` to the reviser, so pre-existing
+  edits would be destroyed or misattributed. Stop and ask if the tree is not clean.
 - Enumerate candidates and pick the batch with:
 
 ```bash
@@ -25,26 +28,31 @@ const fs = require('fs'), path = require('path');
 const N = Number(process.argv[1] || 5);
 const ledger = JSON.parse(fs.readFileSync('docs/superpowers/harness/audit-ledger.json', 'utf8'));
 const files = [];
+// Web Platform Proposals tracks a different article template; excluded from harden v1.
 (function walk(d) {
   for (const e of fs.readdirSync(d, { withFileTypes: true })) {
     const p = path.join(d, e.name);
-    if (e.isDirectory()) walk(p);
+    if (e.isDirectory()) { if (e.name !== 'Web Platform Proposals') walk(p); }
     else if (e.name.endsWith('.md') && !['list.md', 'faq.md', 'index.md'].includes(e.name)) files.push(p);
   }
 })('docs/en');
 const never = files.filter(f => !ledger[f]).sort();
 const stale = files.filter(f => ledger[f]).sort((a, b) => ledger[a].lastAudited.localeCompare(ledger[b].lastAudited));
-const batch = never.concat(stale).slice(0, N).map(enPath => {
+const batch = never.concat(stale).map(enPath => {
   const src = fs.readFileSync(enPath, 'utf8');
   const m = src.match(/^id:\s*(\d+)/m);
   return { enPath, zhPath: enPath.replace('docs/en/', 'docs/zh-tw/'), id: m ? Number(m[1]) : null };
-});
+}).filter(e => {
+  if (fs.existsSync(e.zhPath)) return true;
+  console.error('dropped (missing zh mirror): ' + e.enPath);
+  return false;
+}).slice(0, N);
 console.log(JSON.stringify(batch, null, 2));
 " <N>
 ```
 
-- For any batch entry whose zhPath does not exist on disk, drop it from the
-  batch and note it in the report as "missing zh mirror — needs creation, not harden".
+- Entries dropped for a missing zh mirror are printed to stderr — list them in
+  the report as "missing zh mirror — needs creation, not harden".
 
 ### 2. Run the workflow
 
@@ -98,9 +106,15 @@ it was. Structural surprises send the pair to the revert path with a note.
 
 ## Reverted / Failed (needs manual attention)
 - FEE-<id> <enPath> — <notes>
+
+## zh desync (needs manual attention)
+- FEE-<id> <enPath> — EN revised and verified but the zh sync agent failed; mirror is stale.
 ```
 
 If the report file already exists (same-day rerun), append a `## Run N` section.
+
+A `revised` result whose notes contain 'zh-TW sync agent failed' goes under
+`## zh desync`, and its ledger notes must start with `revised (zh sync FAILED): `.
 
 ### 7. Commit
 
@@ -109,10 +123,16 @@ Order, matching repo conventions (no emojis, no AI attribution):
 1. Per category with revised articles: `git add` that category's revised
    EN+zh pairs, then
    `docs(<category-kebab>): harden FEE-<ids> (<dominant lenses, e.g. "tone, reader gaps, facts">)`.
+   Commit zh-desync articles' EN files too (the revision is verified), but
+   naming them in the commit body is not needed — the report and ledger
+   carry the flag.
 2. Harness state + report: `chore(harness): record harden run <today>`.
 
 ### 8. Report to user
 
 Summarize per status group with FEE ids and dominant findings; call out
-reverted/failed articles as needing manual attention; give the report path.
-Do not push.
+reverted/failed AND zh-desync articles as needing manual attention; give the
+report path. Do not push.
+
+Finally, confirm `git status` is clean; investigate and report anything left
+over — stray modifications mean an agent violated scope.
