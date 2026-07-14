@@ -8,5 +8,17 @@
       "template": 0
     },
     "notes": "written+verified by fee-discover run"
+  },
+  "docs/en/Accessibility/1001.md": {
+    "id": 1001,
+    "lastAudited": "2026-07-14",
+    "findings": {
+      "tone": 7,
+      "organization": 3,
+      "references": 3,
+      "factual": 7,
+      "template": 4
+    },
+    "notes": "reverted: revision largely verified good, but 2 findings surfaced in verify round 2 (aria-live redundancy guidance scope + unsourced compatibility rationale) and the bounded loop stopped; needs manual attention or a rerun after policy calibration"
   }
 }
