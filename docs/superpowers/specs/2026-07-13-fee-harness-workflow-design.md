@@ -33,9 +33,15 @@ in `state: draft`. Two recurring needs have no repeatable process today:
 - **Execution**: manual trigger, local machine. No cron or cloud
   scheduling in v1; the commands must be schedulable later without
   design changes.
-- **Landing**: direct commits to `main`, following existing commit-message
-  conventions (no emojis, no AI attribution). Every run writes a report
-  for after-the-fact review.
+- **Landing** (revised 2026-07-14): fully autonomous — from invoking the
+  command to opening a PR, no human intervention. Each run lands its
+  commits on a branch `harness/<command>-<date>`, pushes it, and opens a
+  PR whose body summarizes the run; the owner's only touchpoint is PR
+  review. Direct-commit-to-main (the v1 model) is retired. Commit-message
+  conventions unchanged (no emojis, no AI attribution); the run report is
+  committed on the branch. Preconditions that fail (dirty tree) abort the
+  run with a message instead of asking — an aborted run is a visible
+  non-event, not an interactive prompt.
 
 ## Architecture
 
@@ -160,7 +166,12 @@ articles):
    agents with separate contexts. Every revision (not only factual
    findings) goes to an independent verifier prompted to refute it using
    primary sources and to check for newly introduced tone/organization
-   regressions. Only revisions that survive land. Calibration evidence:
+   regressions. The verify loop runs up to three fix+verify rounds (the
+   2026-07-14 smoke run showed round two can surface NEW findings with
+   concrete fixes; a two-round cap discarded an otherwise-verified
+   revision). An article still unclean after three rounds is dropped from
+   the PR and listed in the PR body as needing attention. Only revisions
+   that survive land. Calibration evidence:
    on FEE-703 the reviser inverted a source's meaning while fixing a
    different source-inversion — the same failure class it was correcting —
    and only the independent verifier caught it.

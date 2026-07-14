@@ -17,8 +17,13 @@ Argument: optional max accepted topics (default 4). `/fee-discover 2`.
 - Read `docs/superpowers/harness/sources.yaml` and parse it (YAML).
 - Read `docs/superpowers/harness/discovery-log.json` and parse it.
 - Determine today's date as YYYY-MM-DD.
-- Confirm `git status` is clean enough that new docs commits won't tangle
-  with unrelated changes; if the working tree has unrelated staged changes, stop and ask.
+- Confirm the working tree has NO uncommitted changes under `docs/` — if not
+  clean, ABORT the run with a clear message (this command runs unattended;
+  do not ask questions).
+- Create the run branch from up-to-date main:
+  `git fetch origin && git checkout -b harness/discover-<today> main`
+  (if the branch already exists from a same-day run, suffix `-2`, `-3`, ...).
+  All commits in this run land on this branch, never on main.
 
 ### 2. Run the workflow
 
@@ -89,7 +94,7 @@ modify pre-existing articles; this check does not apply to them.)
 If the report file already exists (same-day rerun), append a `## Run N`
 section instead of overwriting.
 
-### 7. Commit
+### 7. Commit (on the run branch)
 
 In this order, matching repo conventions (no emojis, no AI attribution):
 
@@ -100,10 +105,16 @@ In this order, matching repo conventions (no emojis, no AI attribution):
 2. If list.md changed: `docs(list): regenerate sidebar for FEE-<ids>`.
 3. Harness state + report: `chore(harness): record discover run <today>`.
 
-### 8. Report to user
+### 8. Open the PR
 
-Summarize: produced articles (id, title, links to files), deferred/rejected
-with reasons, uncovered groups, and the report path. Do not push.
-
-Finally, confirm `git status` is clean; investigate and report anything left
-over — stray modifications mean an agent violated scope.
+- Confirm `git status` is clean; investigate and report anything left over —
+  stray modifications mean an agent violated scope.
+- Push the branch: `git push -u origin harness/discover-<today>`.
+- Open the PR against main:
+  `gh pr create --title "Discover run <today>: FEE-<ids>" --body <body>`
+  where the body contains: produced articles (id, title, category),
+  deferred/rejected topics with reasons, uncovered scout groups, and a
+  pointer to the committed report file. No emojis, no AI attribution.
+- Switch back to main: `git checkout main` (leave main untouched).
+- Report to the user: the PR URL plus a one-paragraph summary. The PR is the
+  human review surface — do not merge it yourself.

@@ -225,29 +225,28 @@ const results = await pipeline(
   },
   async (prev, a) => {
     if (!prev || prev.status !== 'revised-unverified') return prev
-    let verdict = await agent(verifyPrompt(a), {
-      label: `verify:${shortName(a.enPath)}`, phase: 'Verify', schema: VERIFY_SCHEMA,
-    })
-    if (!verdict) return { ...prev, status: 'failed', notes: 'verify agent failed; treat article as dirty' }
-    if (verdict.verdict === 'issues' && !(verdict.findings || []).length) {
-      verdict = { verdict: 'clean', notes: `${verdict.notes} (issues verdict named no findings — treated as clean)` }
-    }
-    if (verdict.verdict === 'issues' && (verdict.findings || []).length) {
-      const fixed = await agent(fixPrompt(a, verdict.findings), {
-        label: `fix:${shortName(a.enPath)}`, phase: 'Verify', schema: FIX_SCHEMA,
-      })
-      if (!fixed) return { ...prev, status: 'failed', notes: 'fix agent failed mid-verify; treat article as dirty' }
+    // Up to 3 verify rounds with a fix pass between rounds. Round two can
+    // surface NEW findings (observed 2026-07-14); a two-round cap discarded
+    // an otherwise-verified revision. PR review is the final human gate.
+    const MAX_ROUNDS = 3
+    let verdict = null
+    for (let round = 1; round <= MAX_ROUNDS; round++) {
       verdict = await agent(verifyPrompt(a), {
-        label: `reverify:${shortName(a.enPath)}`, phase: 'Verify', schema: VERIFY_SCHEMA,
+        label: `verify${round > 1 ? round : ''}:${shortName(a.enPath)}`, phase: 'Verify', schema: VERIFY_SCHEMA,
       })
-      if (!verdict) return { ...prev, status: 'failed', notes: 'reverify agent failed; treat article as dirty' }
+      if (!verdict) return { ...prev, status: 'failed', notes: `verify agent failed (round ${round}); treat article as dirty` }
       if (verdict.verdict === 'issues' && !(verdict.findings || []).length) {
         verdict = { verdict: 'clean', notes: `${verdict.notes} (issues verdict named no findings — treated as clean)` }
       }
+      if (verdict.verdict === 'clean' || round === MAX_ROUNDS) break
+      const fixed = await agent(fixPrompt(a, verdict.findings), {
+        label: `fix${round}:${shortName(a.enPath)}`, phase: 'Verify', schema: FIX_SCHEMA,
+      })
+      if (!fixed) return { ...prev, status: 'failed', notes: `fix agent failed after verify round ${round}; treat article as dirty` }
     }
     if (verdict.verdict !== 'clean') {
-      log(`${a.enPath}: verify still unclean after fix round — marking for revert`)
-      return { ...prev, status: 'reverted', notes: `unresolved after 2 verify rounds: ${verdict.notes}` }
+      log(`${a.enPath}: verify still unclean after ${MAX_ROUNDS} rounds — marking for revert`)
+      return { ...prev, status: 'reverted', notes: `unresolved after ${MAX_ROUNDS} verify rounds: ${verdict.notes}` }
     }
     return { ...prev, status: 'verified', verifyNotes: verdict.notes }
   },

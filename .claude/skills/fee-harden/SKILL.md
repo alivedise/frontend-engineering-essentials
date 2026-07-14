@@ -19,7 +19,13 @@ Argument: optional batch size (default 5). `/fee-harden 2`.
 - Confirm the working tree has NO uncommitted changes (staged or unstaged) under
   `docs/en/` and `docs/zh-tw/` — the workflow runs `git checkout --` on batch
   articles and attributes their `git diff` to the reviser, so pre-existing
-  edits would be destroyed or misattributed. Stop and ask if the tree is not clean.
+  edits would be destroyed or misattributed. If not clean, ABORT the run with
+  a clear message (this command runs unattended; do not ask questions).
+- Determine today's date as YYYY-MM-DD.
+- Create the run branch from up-to-date main:
+  `git fetch origin && git checkout -b harness/harden-<today> main`
+  (if the branch already exists from a same-day run, suffix `-2`, `-3`, ...).
+  All commits in this run land on this branch, never on main.
 - Enumerate candidates and pick the batch with:
 
 ```bash
@@ -90,7 +96,6 @@ it was. Structural surprises send the pair to the revert path with a note.
 
 ### 6. Update harness state
 
-- Determine today's date as YYYY-MM-DD.
 - For every article in the batch, upsert `audit-ledger.json`:
   `{"<enPath>": {"id": <id>, "lastAudited": "<today>", "findings": <findings counts or zeros>, "notes": "<status>: <notes, truncated to one line>"}}`
   (`clean`, `revised`, and `reverted`/`failed` all get ledger entries —
@@ -120,7 +125,7 @@ If the report file already exists (same-day rerun), append a `## Run N` section.
 A `revised` result whose notes contain 'zh-TW sync agent failed' goes under
 `## zh desync`, and its ledger notes must start with `revised (zh sync FAILED): `.
 
-### 7. Commit
+### 7. Commit (on the run branch)
 
 Order, matching repo conventions (no emojis, no AI attribution):
 
@@ -132,11 +137,17 @@ Order, matching repo conventions (no emojis, no AI attribution):
    carry the flag.
 2. Harness state + report: `chore(harness): record harden run <today>`.
 
-### 8. Report to user
+### 8. Open the PR
 
-Summarize per status group with FEE ids and dominant findings; call out
-reverted/failed AND zh-desync articles as needing manual attention; give the
-report path. Do not push.
-
-Finally, confirm `git status` is clean; investigate and report anything left
-over — stray modifications mean an agent violated scope.
+- Confirm `git status` is clean; investigate and report anything left over —
+  stray modifications mean an agent violated scope.
+- Push the branch: `git push -u origin harness/harden-<today>`.
+- Open the PR against main:
+  `gh pr create --title "Harden run <today>: FEE-<ids>" --body <body>`
+  where the body contains: per-status groups (revised with dominant lenses,
+  clean, reverted/failed, zh desync) with one line per article, a
+  needs-attention callout, and a pointer to the committed report file.
+  No emojis, no AI attribution in the body.
+- Switch back to main: `git checkout main` (leave main untouched).
+- Report to the user: the PR URL plus a one-paragraph summary. The PR is the
+  human review surface — do not merge it yourself.
