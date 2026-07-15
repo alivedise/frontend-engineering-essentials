@@ -343,7 +343,8 @@ Use the zh-TW section-header map in CLAUDE.md. Keep code blocks, URLs, and
 technical identifiers untranslated. Translate the topic-specific section
 heading naturally. Keep frontmatter ids/slug identical; translate title.
 Write the file with the Write tool.`,
-      { label: `translate:${t.slug || 'append'}`, phase: 'Produce', schema: TRANSLATE_SCHEMA }
+      // Translation runs on sonnet; judgment/authoring stages inherit the session model.
+      { label: `translate:${t.slug || 'append'}`, phase: 'Produce', schema: TRANSLATE_SCHEMA, model: 'sonnet' }
     ).then(z => (z ? { ...prev, zhPath: z.zhPath } : null))
   }
 )

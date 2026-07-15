@@ -13,13 +13,13 @@
     "id": 1001,
     "lastAudited": "2026-07-14",
     "findings": {
-      "tone": 7,
+      "tone": 5,
       "organization": 3,
-      "references": 3,
-      "factual": 7,
-      "template": 4
+      "references": 2,
+      "factual": 8,
+      "template": 3
     },
-    "notes": "reverted: revision largely verified good, but 2 findings surfaced in verify round 2 (aria-live redundancy guidance scope + unsourced compatibility rationale) and the bounded loop stopped; needs manual attention or a rerun after policy calibration"
+    "notes": "revised: 21 findings applied (tone tricolons/anaphora removed, select combobox role fixed, role=status atomic corrected, Using ARIA reattribution, NSAccessibility rename, template realigned + slug); verified clean; zh synced incl. zh-only tone fixes"
   },
   "docs/en/State Management/framework-signals.md": {
     "id": 611,
