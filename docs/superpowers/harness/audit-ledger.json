@@ -20,5 +20,17 @@
       "template": 4
     },
     "notes": "reverted: revision largely verified good, but 2 findings surfaced in verify round 2 (aria-live redundancy guidance scope + unsourced compatibility rationale) and the bounded loop stopped; needs manual attention or a rerun after policy calibration"
+  },
+  "docs/en/State Management/framework-signals.md": {
+    "id": 611,
+    "lastAudited": "2026-07-15",
+    "findings": {
+      "tone": 4,
+      "organization": 2,
+      "references": 3,
+      "factual": 6,
+      "template": 3
+    },
+    "notes": "revised (two passes): workflow pass fixed equality cells, phantom quotes, Angular versions, template order; owner-directed supplement reframed the invented library-author premise, added Design Thinking (push-pull, Reactively, Preact internals, alien-signals/Vue 3.6-beta), effect-vs-useEffect subsection, 11 community/primary references; adversarially verified clean over two rounds; zh fully synced"
   }
 }
