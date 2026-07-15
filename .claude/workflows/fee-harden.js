@@ -113,10 +113,23 @@ sources contradict, stale version claims (today's world, not the world at
 writing time), and dead URLs. Check whether cited sources contain concepts
 the body should absorb, and whether references use terms the body never defines.
 
+Step 3 — SWEEP THE ECOSYSTEM. Search beyond the article's own References:
+what would a practitioner in today's ecosystem expect this article to cover?
+Flag as findings (a) major implementations, libraries, or spec developments
+the article omits entirely, and (b) widely-cited, high-quality community
+articles on this topic whose insights the article should absorb — name the
+specific source and the specific insight worth folding in. An article that
+only restates official docs is under-researched by this repo's standards.
+
 Report findings in these lenses, priority order: tone (highest), organization
-(dependency check / provoked-question check / framework neutrality),
-references (mining + terminology alignment), factual, template (mechanical
-checklist: section order vs CLAUDE.md, frontmatter, Vue template safety).
+(dependency check / provoked-question check / framework neutrality /
+MOTIVATING-PREMISE check: is the audience or scenario the article claims as
+its reason to exist real, or invented to justify the content? A comparison
+or mechanism study is allowed to exist for its own sake — if the premise is
+fiction, the finding's fix is to reframe the article around its genuine
+motivation, not to delete one sentence), references (mining + terminology
+alignment), factual, template (mechanical checklist: section order vs
+CLAUDE.md, frontmatter, Vue template safety).
 ${TONE_BLACKLIST}
 Read-only: do NOT edit any file. Severity: blocker = misleads the reader on
 the article's core promise; major = a reader acting on it gets burned; minor
@@ -211,8 +224,11 @@ const results = await pipeline(
     if (!audit.findings.length) {
       return { status: 'clean', findings: counts, notes: audit.summary }
     }
+    // Model split: judgment stages (audit, verify) inherit the session model;
+    // execution stages (revise, fix, sync) run on sonnet — they act on
+    // structured findings, and the verify loop catches execution slips.
     const revised = await agent(revisePrompt(a, audit), {
-      label: `revise:${shortName(a.enPath)}`, phase: 'Revise', schema: REVISE_SCHEMA,
+      label: `revise:${shortName(a.enPath)}`, phase: 'Revise', schema: REVISE_SCHEMA, model: 'sonnet',
     })
     if (!revised) return { status: 'failed', findings: counts, notes: 'revise agent failed after audit found issues' }
     if (!revised.changed) {
@@ -240,7 +256,7 @@ const results = await pipeline(
       }
       if (verdict.verdict === 'clean' || round === MAX_ROUNDS) break
       const fixed = await agent(fixPrompt(a, verdict.findings), {
-        label: `fix${round}:${shortName(a.enPath)}`, phase: 'Verify', schema: FIX_SCHEMA,
+        label: `fix${round}:${shortName(a.enPath)}`, phase: 'Verify', schema: FIX_SCHEMA, model: 'sonnet',
       })
       if (!fixed) return { ...prev, status: 'failed', notes: `fix agent failed after verify round ${round}; treat article as dirty` }
     }
@@ -256,7 +272,7 @@ const results = await pipeline(
       ? `EN clean; zh-only findings routed to sync${prev.revised.declined ? ` | declined: ${prev.revised.declined}` : ''}`
       : `${prev.revised.editsSummary}${prev.revised.declined ? ` | declined: ${prev.revised.declined}` : ''} | ${prev.verifyNotes}`
     const synced = await agent(syncPrompt(a, prev.audit), {
-      label: `sync:${shortName(a.enPath)}`, phase: 'Sync', schema: SYNC_SCHEMA,
+      label: `sync:${shortName(a.enPath)}`, phase: 'Sync', schema: SYNC_SCHEMA, model: 'sonnet',
     })
     if (!synced) {
       if (prev.status === 'zh-only') {
