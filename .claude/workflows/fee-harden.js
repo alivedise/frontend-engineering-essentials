@@ -55,9 +55,10 @@ const VERIFY_SCHEMA = {
       type: 'array',
       items: {
         type: 'object',
-        required: ['statement', 'location', 'fix'],
+        required: ['statement', 'location', 'fix', 'severity'],
         properties: {
           statement: { type: 'string' }, location: { type: 'string' }, fix: { type: 'string' },
+          severity: { type: 'string', enum: ['blocking', 'minor'], description: 'blocking = factual error, misleading claim, or structural damage; minor = cosmetic (tone, phrasing, polish)' },
         },
       },
     },
@@ -272,8 +273,18 @@ const results = await pipeline(
       if (!fixed) return { ...prev, status: 'failed', notes: `fix agent failed after verify round ${round}; treat article as dirty` }
     }
     if (verdict.verdict !== 'clean') {
-      log(`${a.enPath}: verify still unclean after ${MAX_ROUNDS} rounds — marking for revert`)
-      return { ...prev, status: 'reverted', notes: `unresolved after ${MAX_ROUNDS} verify rounds: ${verdict.notes}` }
+      // Minor-only residuals do not condemn the article (observed 2026-07-15:
+      // a single cosmetic tricolon triggered a revert of a revision that had
+      // corrected blocker-class hallucinations). The PR is the human gate.
+      const residuals = verdict.findings || []
+      const blocking = residuals.filter(f => f.severity !== 'minor')
+      if (!blocking.length) {
+        const listed = residuals.map(f => `${f.location}: ${f.statement}`).join(' | ')
+        log(`${a.enPath}: only minor residuals after ${MAX_ROUNDS} rounds — landing with notes`)
+        return { ...prev, status: 'verified', verifyNotes: `${verdict.notes} | minor residuals (listed in report/PR for reviewer): ${listed}` }
+      }
+      log(`${a.enPath}: blocking findings still unresolved after ${MAX_ROUNDS} rounds — marking for revert`)
+      return { ...prev, status: 'reverted', notes: `unresolved blocking findings after ${MAX_ROUNDS} verify rounds: ${verdict.notes}` }
     }
     return { ...prev, status: 'verified', verifyNotes: verdict.notes }
   },
