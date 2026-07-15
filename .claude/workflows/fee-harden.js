@@ -97,10 +97,18 @@ Do not touch docs/en/list.md, docs/zh-tw/list.md, other articles, configs,
 or anything else, even if you notice problems there — report them in your
 notes instead.`
 
+function opNote(a) {
+  return a.note ? `
+OPERATOR NOTE for this article (binding, overrides generic rules where they conflict):
+${a.note}
+` : ''
+}
+
 function auditPrompt(a) {
   return `You are auditing one documentation article, reader-first. Article:
 ${a.enPath} (EN) and its mirror ${a.zhPath} (zh-TW). Read CLAUDE.md first for
 the canonical template and conventions.
+${opNote(a)}
 
 Step 1 — READ AS A READER. Read the EN article start to finish once, as a
 senior frontend engineer trying to learn from it. Record where you stumble,
@@ -138,7 +146,8 @@ the article's core promise; major = a reader acting on it gets burned; minor
 
 function revisePrompt(a, audit) {
   return `You are revising the article ${a.enPath} (EN ONLY — the zh-TW mirror
-is synced by a later agent). Read CLAUDE.md first. Apply the audit findings
+is synced by a later agent). Read CLAUDE.md first.
+${opNote(a)} Apply the audit findings
 below in lens-priority order: tone, organization, references, factual,
 template. Preserve what the audit praised; do not rewrite untouched sections.
 ${TONE_BLACKLIST}
@@ -161,7 +170,8 @@ Edit the file now with Edit/Write.`
 function verifyPrompt(a) {
   return `You are an adversarial verifier with no stake in the revision. The
 article ${a.enPath} was just revised by another agent (its uncommitted diff:
-run \`git diff -- "${a.enPath}"\`). Your job is to REFUTE the revision:
+run \`git diff -- "${a.enPath}"\`).
+${opNote(a)}Your job is to REFUTE the revision:
 assume every ADDED claim is wrong until a primary source proves otherwise
 (WebFetch/WebSearch official docs — never blogs echoing each other), and
 check whether the edits introduced NEW tone violations or reader-model
@@ -186,6 +196,7 @@ function syncPrompt(a, audit) {
 EN (final state): ${a.enPath}. Its uncommitted changes: run
 \`git diff -- "${a.enPath}"\`. zh-TW mirror to update: ${a.zhPath}.
 Read CLAUDE.md first (zh-TW section-header map, Vue template safety).
+${opNote(a)}
 Apply every EN change at the corresponding location in the zh file,
 translated naturally into Traditional Chinese (Taiwan). Match the zh file's
 existing terminology and punctuation conventions. Do NOT reintroduce AI-tone
