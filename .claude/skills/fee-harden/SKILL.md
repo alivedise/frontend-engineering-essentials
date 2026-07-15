@@ -23,7 +23,7 @@ Argument: optional batch size (default 5). `/fee-harden 2`.
   a clear message (this command runs unattended; do not ask questions).
 - Determine today's date as YYYY-MM-DD.
 - Create the run branch from up-to-date main:
-  `git fetch origin && git checkout -b harness/harden-<today> main`
+  `git fetch origin && git checkout -b harness/harden-<today> origin/main`
   (if the branch already exists from a same-day run, suffix `-2`, `-3`, ...).
   All commits in this run land on this branch, never on main.
 - Enumerate candidates and pick the batch with:
@@ -151,3 +151,9 @@ Order, matching repo conventions (no emojis, no AI attribution):
 - Switch back to main: `git checkout main` (leave main untouched).
 - Report to the user: the PR URL plus a one-paragraph summary. The PR is the
   human review surface — do not merge it yourself.
+- If the PR later reports a conflict on `audit-ledger.json` (another run's PR
+  merged first), merge origin/main into the run branch and resolve the ledger
+  as a UNION of entries: keep every article key from both sides; where both
+  sides carry the same key, the entry with the newer `lastAudited` (or, if
+  equal, the more advanced status — revised beats reverted) wins. Validate
+  with JSON.parse, commit the merge, push.

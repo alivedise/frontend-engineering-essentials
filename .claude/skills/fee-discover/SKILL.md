@@ -21,7 +21,7 @@ Argument: optional max accepted topics (default 4). `/fee-discover 2`.
   clean, ABORT the run with a clear message (this command runs unattended;
   do not ask questions).
 - Create the run branch from up-to-date main:
-  `git fetch origin && git checkout -b harness/discover-<today> main`
+  `git fetch origin && git checkout -b harness/discover-<today> origin/main`
   (if the branch already exists from a same-day run, suffix `-2`, `-3`, ...).
   All commits in this run land on this branch, never on main.
 
