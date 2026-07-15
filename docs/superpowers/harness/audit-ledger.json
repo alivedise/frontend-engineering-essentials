@@ -20,5 +20,17 @@
       "template": 3
     },
     "notes": "revised: 21 findings applied (tone tricolons/anaphora removed, select combobox role fixed, role=status atomic corrected, Using ARIA reattribution, NSAccessibility rename, template realigned + slug); verified clean; zh synced incl. zh-only tone fixes"
+  },
+  "docs/en/State Management/framework-signals.md": {
+    "id": 611,
+    "lastAudited": "2026-07-15",
+    "findings": {
+      "tone": 4,
+      "organization": 2,
+      "references": 3,
+      "factual": 6,
+      "template": 3
+    },
+    "notes": "revised (two passes): workflow pass fixed equality cells, phantom quotes, Angular versions, template order; owner-directed supplement reframed the invented library-author premise, added Design Thinking (push-pull, Reactively, Preact internals, alien-signals/Vue 3.6-beta), effect-vs-useEffect subsection, 11 community/primary references; adversarially verified clean over two rounds; zh fully synced"
   }
 }
