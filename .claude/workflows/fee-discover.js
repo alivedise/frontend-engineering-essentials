@@ -161,6 +161,11 @@ Repo conventions (all paths relative to the repo root):
 - Vendor-neutral: no company-specific references or product pitches.
 - References section: 3+ real URLs you actually fetched, format
   '- <Author>, "<Title>," <Venue> (<year>). <URL>'.
+- Tone: avoid AI-pattern prose. No negation tricolons ("no X, no Y, no Z"),
+  no "not X but Y" scaffolding, no paragraph-final summary flourishes, and
+  use em-dashes sparingly: more than ~3 in the article's prose is too many.
+  Prefer two sentences, a comma, a colon, or parentheses. No invented
+  personas or scenarios to justify the topic.
 `
 
 function scoutPrompt(group, entries) {

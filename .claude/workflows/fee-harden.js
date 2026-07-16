@@ -87,7 +87,12 @@ Named AI-tone patterns to hunt (both languages):
 - Negation tricolon: "buttons do not respond, forms do not validate, dynamic
   components do not update" / 「按鈕不會回應點擊、表單不會驗證、動態元件不會更新」
 - "not X but Y" contrast framing: "The question is not whether to hydrate, but..."
-- Em-dash appositive chains stacking three-plus glosses in one sentence
+- Em-dash sentences ("X — Y", "X -- Y", zh 「X——Y」): the reflexive
+  dash-appositive that bolts a gloss, example, or consequence onto a sentence
+  is this model's strongest tell, even one dash at a time. Rewrite as two
+  sentences, a comma, a colon, or parentheses. DENSITY RULE: more than ~3
+  em-dashes in an article's prose is a finding in itself (code, tables, and
+  frontmatter do not count). A dash marking a genuine interruption may stay.
 - Paragraph-final summary flourishes that restate the paragraph
 Fix rule: replace the pattern with ONE concrete example or a plain statement.
 Rewording the pattern into a fresh tricolon or contrast is a failed fix.`
