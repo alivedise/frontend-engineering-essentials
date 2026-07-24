@@ -188,5 +188,65 @@
       "template": 2
     },
     "notes": "revised (rescued): four-engineer-team persona removed, update-lockfile semantics corrected, Dependabot platform cell aligned with cited source, Nesbitt seven-day figure quoted accurately; re-verified clean"
+  },
+  "docs/en/Browser APIs and Web Platform/416.md": {
+    "id": 416,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 4,
+      "organization": 4,
+      "references": 4,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised (rescued): motor-impairment fictional project removed, Chrome 139 on-device recognition added, utterance-GC and user-activation mistakes added; voiceschanged rationale and one cross-reference fixed post-run, re-verified"
+  },
+  "docs/en/Build Tooling and Module Systems/807.md": {
+    "id": 807,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 3,
+      "organization": 4,
+      "references": 4,
+      "factual": 10,
+      "template": 2
+    },
+    "notes": "revised: Vite minifier corrected to Oxc, turbo.json tasks rename, moment/Brotli numbers sourced, critical-CSS tooling rewritten around real options, zstd and Compression Dictionary Transport added; verified clean"
+  },
+  "docs/en/Developer Experience and Tooling/1603.md": {
+    "id": 1603,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 4,
+      "organization": 6,
+      "references": 1,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised: 10 invented operational numbers sourced or reframed, independent hook-ecosystem sources added; verified clean (zh sync artifact stripped at landing)"
+  },
+  "docs/en/Developer Experience and Tooling/oxlint.md": {
+    "id": 1610,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 1,
+      "organization": 2,
+      "references": 2,
+      "factual": 7,
+      "template": 1
+    },
+    "notes": "revised: fabricated 250k-file monorepo story removed, oxlint current state verified; verified clean"
+  },
+  "docs/en/Developer Experience and Tooling/1607.md": {
+    "id": 1607,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 3,
+      "organization": 3,
+      "references": 3,
+      "factual": 3,
+      "template": 2
+    },
+    "notes": "revised (operator override): article-level work verified clean; the sole blocking finding indicted the sitewide link/rewrite mismatch the article correctly follows, which is a known repo-level issue, not an article defect"
   }
 }
