@@ -107,26 +107,62 @@
   },
   "docs/en/Developer Experience and Tooling/knip.md": {
     "id": 1615,
-    "lastAudited": "2026-07-24",
+    "lastAudited": "2026-07-25",
     "findings": {
       "tone": 3,
-      "organization": 3,
-      "references": 2,
-      "factual": 6,
-      "template": 2
+      "organization": 1,
+      "references": 1,
+      "factual": 3,
+      "template": 3
     },
-    "notes": "reverted: revision verified extensively good (predecessor archive claims all confirmed with quotes, persona removed) but one blocking factual error (catalog gloss) survived 3 rounds; requeue with the residual as opNote"
+    "notes": "revised (requeue clean): catalog gloss corrected (pnpm/Yarn/Bun workspace catalog entries, verified against knip.dev), --fix file-deletion error fixed, cycles rule added, Vanderkam independent refs added, persona removed; verified clean"
   },
   "docs/en/Web Platform Proposals/HTML and DOM Proposals/12003.md": {
     "id": 12003,
-    "lastAudited": "2026-07-24",
+    "lastAudited": "2026-07-25",
     "findings": {
       "tone": 3,
-      "organization": 3,
-      "references": 4,
-      "factual": 7,
+      "organization": 1,
+      "references": 2,
+      "factual": 6,
+      "template": 4
+    },
+    "notes": "revised (requeue clean): three batch-1 blockers fixed — invented DevTools panel removed, Sec-Purpose client-side impossibility corrected, Shopify year fixed; invented hit-rate thresholds cut, status block updated; verified clean"
+  },
+  "docs/en/Component Architecture and Design Patterns/508.md": {
+    "id": 508,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 1,
+      "references": 1,
+      "factual": 6,
       "template": 2
     },
-    "notes": "reverted: 3 blocking defects after 3 rounds (invented DevTools panel details, mechanically-impossible Sec-Purpose client-side claim, wrong Shopify reference year); requeue with residuals as opNote"
+    "notes": "revised: fabricated micro-frontend decision thresholds removed, Module Federation landscape verified, 15 dash sites cleared; verified clean"
+  },
+  "docs/en/Web Platform Proposals/CSS Experimental/11203.md": {
+    "id": 11203,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 5,
+      "organization": 1,
+      "references": 5,
+      "factual": 1,
+      "template": 2
+    },
+    "notes": "revised: @layer support verified, 19 dash sites cleared, retired sections removed; verified clean"
+  },
+  "docs/en/CI CD and Deployment/1506.md": {
+    "id": 1506,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 2,
+      "references": 3,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised: leaked-key-abuse timing and SLSA levels sourced, OIDC keyless-auth guidance updated, 7 tricolons and 16 dash sites cleared; verified clean"
   }
 }
