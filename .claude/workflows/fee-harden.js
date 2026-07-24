@@ -189,11 +189,17 @@ ${audit.summary}
 Edit the file now with Edit/Write.`
 }
 
-function verifyPrompt(a) {
+function verifyPrompt(a, history) {
+  const prior = (history && history.length) ? `
+ADJUDICATED IN EARLIER ROUNDS (found, fixed, and confirmed — do NOT
+relitigate these without NEW primary-source evidence; if you believe a
+prior adjudication is wrong, say so explicitly and cite the source):
+${JSON.stringify(history, null, 2)}
+` : ''
   return `You are an adversarial verifier with no stake in the revision. The
 article ${a.enPath} was just revised by another agent (its uncommitted diff:
 run \`git diff -- "${a.enPath}"\`).
-${opNote(a)}Your job is to REFUTE the revision:
+${opNote(a)}${prior}Your job is to REFUTE the revision:
 assume every ADDED claim is wrong until a primary source proves otherwise
 (WebFetch/WebSearch official docs — never blogs echoing each other), and
 check whether the edits introduced NEW tone violations or reader-model
@@ -274,13 +280,15 @@ const results = await pipeline(
   },
   async (prev, a) => {
     if (!prev || prev.status !== 'revised-unverified') return prev
-    // Up to 3 verify rounds with a fix pass between rounds. Round two can
-    // surface NEW findings (observed 2026-07-14); a two-round cap discarded
-    // an otherwise-verified revision. PR review is the final human gate.
-    const MAX_ROUNDS = 3
+    // Verify loop: deep rewrites converge over 4-6 rounds — a 3-round cap
+    // discarded three near-clean revisions on 2026-07-24. Each round's
+    // adjudicated findings are passed forward so fresh verifiers do not
+    // relitigate settled items (observed oscillation on FEE-1616).
+    const MAX_ROUNDS = 5
     let verdict = null
+    const history = []
     for (let round = 1; round <= MAX_ROUNDS; round++) {
-      verdict = await agent(verifyPrompt(a), {
+      verdict = await agent(verifyPrompt(a, history), {
         label: `verify${round > 1 ? round : ''}:${shortName(a.enPath)}`, phase: 'Verify', schema: VERIFY_SCHEMA,
       })
       if (!verdict) return { ...prev, status: 'failed', notes: `verify agent failed (round ${round}); treat article as dirty` }
@@ -292,6 +300,7 @@ const results = await pipeline(
         label: `fix${round}:${shortName(a.enPath)}`, phase: 'Verify', schema: FIX_SCHEMA, model: 'sonnet',
       })
       if (!fixed) return { ...prev, status: 'failed', notes: `fix agent failed after verify round ${round}; treat article as dirty` }
+      for (const f of verdict.findings) history.push({ round, location: f.location, statement: f.statement, appliedFix: f.fix })
     }
     if (verdict.verdict !== 'clean') {
       // Minor-only residuals do not condemn the article (observed 2026-07-15:
