@@ -117,7 +117,7 @@ title: FEE 全列表
 - [804.套件管理：npm、pnpm 與 Yarn](804)
 - [805.Monorepo 與工作區](805)
 - [806.環境變數與構建配置](806)
-- [807.構建最佳化：壓縮、快取與產出分析](807)
+- [807.構建最佳化：最小化、快取與產出分析](807)
 - [808.Module Federation](808)
 - [809.Tree-Shaking Patterns & Side-Effect Marking](809)
 - [810.TypeScript Integration in the Build Pipeline](810)
