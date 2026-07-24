@@ -206,7 +206,10 @@ check whether the edits introduced NEW tone violations or reader-model
 regressions (a term now used before introduction, a new unanswered question).
 ${TONE_BLACKLIST}
 Also check internal consistency: does any unedited sentence now contradict an
-edited one? Read-only: do NOT edit any file. Verdict "clean" only if no
+edited one? A finding that indicts a repo-wide convention the article
+correctly follows (cross-link format, template rules) is severity "minor"
+with a note for the operator, never "blocking": an article must not be
+condemned for following the repo's own rules. Read-only: do NOT edit any file. Verdict "clean" only if no
 finding survives your honest effort to refute.`
 }
 
