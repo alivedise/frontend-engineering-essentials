@@ -248,5 +248,65 @@
       "template": 2
     },
     "notes": "revised: Lit size verified against bundlephobia, fabricated 2.1.0-schema claim cut, Web Components landscape (declarative shadow DOM, custom element states) updated; verified clean"
+  },
+  "docs/en/JavaScript Core and Runtime/307.md": {
+    "id": 307,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 2,
+      "references": 3,
+      "factual": 2,
+      "template": 4
+    },
+    "notes": "revised: import attributes/import-defer/Node require(esm) landscape updated, Vite 8/Rolldown correction, circular-dep ReferenceError/TDZ fixed, 16 dash sites cleared; verified clean"
+  },
+  "docs/en/Rendering and Performance/712.md": {
+    "id": 712,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 2,
+      "organization": 3,
+      "references": 2,
+      "factual": 2,
+      "template": 2
+    },
+    "notes": "revised: latency arithmetic reframed as worked example, 3 aphorisms cleared, fetchpriority/speculation-rules currency; verified clean"
+  },
+  "docs/en/HTML and Semantic Markup/106.md": {
+    "id": 106,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 2,
+      "organization": 3,
+      "references": 2,
+      "factual": 4,
+      "template": 2
+    },
+    "notes": "revised: no-JS statistic cited honestly to GDS study with caveats, interactivity timing reframed, 11 dash sites cleared; verified clean"
+  },
+  "docs/en/Observability and Error Tracking/1401.md": {
+    "id": 1401,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 1,
+      "references": 1,
+      "factual": 5,
+      "template": 1
+    },
+    "notes": "revised: fabricated 60-90% beforeSend reduction cut, Sentry history verified, kept technique-focused (vendor-neutral), SDK v8/v9 currency, corpus-heavy tone cleared; verified clean"
+  },
+  "docs/en/Developer Experience and Tooling/1604.md": {
+    "id": 1604,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 2,
+      "references": 1,
+      "factual": 3,
+      "template": 1
+    },
+    "notes": "revised: Conventional Commits/commitlint claims verified, corpus-high 7 not-X-but-Y and 18 dash sites cleared; verified clean"
   }
 }
