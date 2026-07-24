@@ -120,7 +120,7 @@ title: FEE 全列表
 - [807.構建最佳化：壓縮、快取與產出分析](807)
 - [808.Module Federation](808)
 - [809.Tree-Shaking Patterns & Side-Effect Marking](809)
-- [810.TypeScript Integration in the Build Pipeline](810)
+- [810.TypeScript 在建置流程中的整合](810)
 - [900.設計系統與 UI 函式庫概覽](900)
 - [901.設計代幣](901)
 - [902.無樣式元件函式庫](902)
