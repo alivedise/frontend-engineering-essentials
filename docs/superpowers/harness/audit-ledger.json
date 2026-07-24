@@ -164,5 +164,65 @@
       "template": 2
     },
     "notes": "revised: leaked-key-abuse timing and SLSA levels sourced, OIDC keyless-auth guidance updated, 7 tricolons and 16 dash sites cleared; verified clean"
+  },
+  "docs/en/Rendering and Performance/708.md": {
+    "id": 708,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 2,
+      "organization": 1,
+      "references": 2,
+      "factual": 5,
+      "template": 1
+    },
+    "notes": "revised: HTTP/2 traffic share corrected to Cloudflare Radar 2025 (50/21/29), HPACK numbers sourced, Safari HTTP/3 default-on fixed, packet-loss math corrected, over-splitting tradeoff added; verified clean"
+  },
+  "docs/en/Web Platform Proposals/CSS Experimental/11202.md": {
+    "id": 11202,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 1,
+      "references": 2,
+      "factual": 5,
+      "template": 3
+    },
+    "notes": "revised: CSS nesting version/date claims verified against caniuse and postcss-nesting changelog, relaxed-syntax currency updated; verified clean"
+  },
+  "docs/en/Browser APIs and Web Platform/414.md": {
+    "id": 414,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 2,
+      "references": 1,
+      "factual": 4,
+      "template": 1
+    },
+    "notes": "revised: SharedWorker/BroadcastChannel iOS Safari support de-dated and verified, independent sources added, 17 dash sites cleared; verified clean"
+  },
+  "docs/en/Browser APIs and Web Platform/417.md": {
+    "id": 417,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 4,
+      "organization": 1,
+      "references": 3,
+      "factual": 4,
+      "template": 3
+    },
+    "notes": "revised: corpus-record 50 dash sites cleared, DataCloneError/ResizableArrayBuffer support verified, independent sources added; verified clean"
+  },
+  "docs/en/Security/1201.md": {
+    "id": 1201,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 1,
+      "references": 2,
+      "factual": 5,
+      "template": 1
+    },
+    "notes": "revised: CSP nonce/strict-dynamic claims verified against spec, 33 dash sites and 3 aphorisms cleared; verified clean"
   }
 }
