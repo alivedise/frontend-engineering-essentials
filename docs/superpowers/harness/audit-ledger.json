@@ -128,5 +128,65 @@
       "template": 2
     },
     "notes": "reverted: 3 blocking defects after 3 rounds (invented DevTools panel details, mechanically-impossible Sec-Purpose client-side claim, wrong Shopify reference year); requeue with residuals as opNote"
+  },
+  "docs/en/CI CD and Deployment/1501.md": {
+    "id": 1501,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 1,
+      "organization": 4,
+      "references": 1,
+      "factual": 9,
+      "template": 1
+    },
+    "notes": "revised (rescued): invented runner benchmarks replaced with GitHub-documented specs, GitLab CI 7.12 timeline fixed, CI coexistence history, CVE-2025-30066 added; final diagram/caption mismatch fixed by operator-directed pass and re-verified clean"
+  },
+  "docs/en/Testing Strategies/1101.md": {
+    "id": 1101,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 4,
+      "organization": 3,
+      "references": 3,
+      "factual": 7,
+      "template": 3
+    },
+    "notes": "revised (rescued): invented 8-18s/5-10x benchmarks replaced with sourced Jest 30 numbers and npm data, Jest-Vitest coexistence stated, Vitest 4 landscape updated; v8 remapping comment fixed and re-verified clean"
+  },
+  "docs/en/Testing Strategies/1102.md": {
+    "id": 1102,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 5,
+      "organization": 5,
+      "references": 3,
+      "factual": 4,
+      "template": 3
+    },
+    "notes": "revised (rescued): Enzyme fate stated honestly with real dates and downloads, jest-dom import paths corrected, Storybook 8.3/9 attribution fixed; RTL speed claims moved to suite-level framing and re-verified clean"
+  },
+  "docs/en/CI CD and Deployment/1509.md": {
+    "id": 1509,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 4,
+      "organization": 3,
+      "references": 5,
+      "factual": 3,
+      "template": 3
+    },
+    "notes": "revised: corpus-worst 12 invented operational numbers sourced (SRE Workbook 2018), reframed as worked hypotheticals, or cut; rollback-reach section added (open tabs, service workers); verified clean"
+  },
+  "docs/en/Developer Experience and Tooling/renovate.md": {
+    "id": 1616,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 2,
+      "organization": 4,
+      "references": 3,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised (rescued): four-engineer-team persona removed, update-lockfile semantics corrected, Dependabot platform cell aligned with cited source, Nesbitt seven-day figure quoted accurately; re-verified clean"
   }
 }
