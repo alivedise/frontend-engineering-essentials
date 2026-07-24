@@ -308,5 +308,65 @@
       "template": 1
     },
     "notes": "revised: Conventional Commits/commitlint claims verified, corpus-high 7 not-X-but-Y and 18 dash sites cleared; verified clean"
+  },
+  "docs/en/HTML and Semantic Markup/104.md": {
+    "id": 104,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 2,
+      "references": 1,
+      "factual": 4,
+      "template": 5
+    },
+    "notes": "revised: img/Mosaic-1993 history sourced (Andreessen+Bina), media-attribute-on-video restoration verified (all 3 engines by late 2023), loading=lazy-on-video Chrome-only noted, Footgun Matrix added; verified clean"
+  },
+  "docs/en/JavaScript Core and Runtime/303.md": {
+    "id": 303,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 3,
+      "references": 2,
+      "factual": 3,
+      "template": 3
+    },
+    "notes": "revised: JSON.parse __proto__ spec-behavior corrected (not V8 hardening), invented inheritance-depth prescription softened, 3 aphorisms cleared; verified clean"
+  },
+  "docs/en/Build Tooling and Module Systems/802.md": {
+    "id": 802,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 2,
+      "references": 2,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised (rescued): context-switch claim sourced to Gloria Mark study, sub-100ms HMR scoped to native-ESM (blocking contradiction fixed inline), Turbopack/Rspack landscape added; verified clean"
+  },
+  "docs/en/Design Systems and UI Libraries/interaction-state-rosetta.md": {
+    "id": 918,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 2,
+      "organization": 0,
+      "references": 1,
+      "factual": 2,
+      "template": 1
+    },
+    "notes": "revised (light): CSS 2.1 / WAI-ARIA 1.2 spec dates verified and anchored; otherwise strong, minimal pass; verified clean"
+  },
+  "docs/en/Testing Strategies/1111.md": {
+    "id": 1111,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 4,
+      "organization": 2,
+      "references": 2,
+      "factual": 4,
+      "template": 3
+    },
+    "notes": "revised: Testing Library 1000ms default verified, 5%-flaky threshold reframed as heuristic, 23 dash sites cleared; verified clean"
   }
 }
