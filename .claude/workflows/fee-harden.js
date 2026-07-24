@@ -152,10 +152,12 @@ motivation, not to delete one sentence. Framework neutrality includes any
 HISTORY the article tells: a timeline or genealogy built solely from one
 framework's events while claiming to describe "the JavaScript ecosystem" is
 a finding — either scope the claim honestly or widen the history to the
-tracks it erased. Same for totalizing epoch framing: "the X era" / "the Y
-reaction" narration implying each wave replaced the last is false — adoption
-is partial and parallel, and most codebases at any moment use none of the
-newest wave; the timeline must say so), references (mining + terminology
+tracks it erased. Same for history told as "the X era" / "the Y reaction":
+phrasing that implies each new tool replaced the previous one everywhere is
+false. Adoption is partial and parallel, and most codebases at any moment
+use none of the newest wave; the timeline must say so. Do not invent a name
+for a defect and cite it as if it were an established concept; describe the
+defect in plain words), references (mining + terminology
 alignment), factual, template (mechanical checklist: section order vs
 CLAUDE.md, frontmatter, Vue template safety).
 ${TONE_BLACKLIST}
