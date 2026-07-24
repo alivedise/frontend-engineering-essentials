@@ -68,5 +68,65 @@
       "template": 2
     },
     "notes": "revised: Temporal Stage 4 (2026-03, ES2026); stable in Firefox 139+/Chrome-Edge 144+/Node 26+, Safari TP-only so graduation waits per FEE-12000 policy; fabricated Cambron co-author claim removed (verified champions list); DST example math fixed; template realigned + slug; verified clean"
+  },
+  "docs/en/CSS and Layout Systems/207.md": {
+    "id": 207,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 4,
+      "organization": 4,
+      "references": 4,
+      "factual": 6,
+      "template": 2
+    },
+    "notes": "revised: 10 unsourced claims verified/anchored (@property Baseline Jul 2024 confirmed, Open Props 4KB), coexistence history fixed, Chakra v3 syntax fixed, rAF batching bug fixed, light-dark()/color-scheme/container-style-queries added, 20+ dash sites cleared, slug added; verified clean"
+  },
+  "docs/en/CSS and Layout Systems/205.md": {
+    "id": 205,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 4,
+      "organization": 3,
+      "references": 2,
+      "factual": 3,
+      "template": 3
+    },
+    "notes": "revised: pendulum-era framing replaced with coexisting approaches, @layer/nesting/@scope years verified, 26 dash sites and 6 tricolons cleared, slug added; verified clean"
+  },
+  "docs/en/CSS and Layout Systems/203.md": {
+    "id": 203,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 2,
+      "organization": 3,
+      "references": 2,
+      "factual": 4,
+      "template": 1
+    },
+    "notes": "revised: Grid-made-floats-obsolete totalizing claim corrected to honest coexistence, spec milestone dates verified, 21 dash sites cleared, slug added; verified clean"
+  },
+  "docs/en/Developer Experience and Tooling/knip.md": {
+    "id": 1615,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 3,
+      "organization": 3,
+      "references": 2,
+      "factual": 6,
+      "template": 2
+    },
+    "notes": "reverted: revision verified extensively good (predecessor archive claims all confirmed with quotes, persona removed) but one blocking factual error (catalog gloss) survived 3 rounds; requeue with the residual as opNote"
+  },
+  "docs/en/Web Platform Proposals/HTML and DOM Proposals/12003.md": {
+    "id": 12003,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 3,
+      "organization": 3,
+      "references": 4,
+      "factual": 7,
+      "template": 2
+    },
+    "notes": "reverted: 3 blocking defects after 3 rounds (invented DevTools panel details, mechanically-impossible Sec-Purpose client-side claim, wrong Shopify reference year); requeue with residuals as opNote"
   }
 }
