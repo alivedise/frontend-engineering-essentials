@@ -94,6 +94,13 @@ Named AI-tone patterns to hunt (both languages):
   em-dashes in an article's prose is a finding in itself (code, tables, and
   frontmatter do not count). A dash marking a genuine interruption may stay.
 - Paragraph-final summary flourishes that restate the paragraph
+- Empty profundity: portentous claims with no testable content — "choosing X
+  is a bet on which mental model your team will sustain", "understanding the
+  philosophy matters more than memorizing the API", "X is really about Y".
+  Detector (the owner's three questions): what exactly is at stake? what is
+  the payoff or cost? says who? If the sentence cannot answer all three,
+  replace it with the concrete stake (cost, consequence, mechanism) or
+  delete it. This is a content check, not a sentence-shape check.
 Fix rule: replace the pattern with ONE concrete example or a plain statement.
 Rewording the pattern into a fresh tricolon or contrast is a failed fix.`
 
@@ -141,7 +148,14 @@ MOTIVATING-PREMISE check: is the audience or scenario the article claims as
 its reason to exist real, or invented to justify the content? A comparison
 or mechanism study is allowed to exist for its own sake — if the premise is
 fiction, the finding's fix is to reframe the article around its genuine
-motivation, not to delete one sentence), references (mining + terminology
+motivation, not to delete one sentence. Framework neutrality includes any
+HISTORY the article tells: a timeline or genealogy built solely from one
+framework's events while claiming to describe "the JavaScript ecosystem" is
+a finding — either scope the claim honestly or widen the history to the
+tracks it erased. Same for totalizing epoch framing: "the X era" / "the Y
+reaction" narration implying each wave replaced the last is false — adoption
+is partial and parallel, and most codebases at any moment use none of the
+newest wave; the timeline must say so), references (mining + terminology
 alignment), factual, template (mechanical checklist: section order vs
 CLAUDE.md, frontmatter, Vue template safety).
 ${TONE_BLACKLIST}

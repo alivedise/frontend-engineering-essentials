@@ -165,7 +165,9 @@ Repo conventions (all paths relative to the repo root):
   no "not X but Y" scaffolding, no paragraph-final summary flourishes, and
   use em-dashes sparingly: more than ~3 in the article's prose is too many.
   Prefer two sentences, a comma, a colon, or parentheses. No invented
-  personas or scenarios to justify the topic.
+  personas or scenarios to justify the topic. No empty aphorisms ("X is a
+  bet on...", "Y matters more than Z"): a grand claim must name its concrete
+  stake; if "what exactly? how much? says who?" has no answer, cut it.
 `
 
 function scoutPrompt(group, entries) {
