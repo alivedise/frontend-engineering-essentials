@@ -44,5 +44,29 @@
       "template": 3
     },
     "notes": "revised (operator override): workflow marked reverted because one cosmetic tone finding survived round 3, but the verifier itself judged the revision factually sound and a major improvement — removed the Chrome 130+/Firefox 133+ shipping hallucination, corrected status to Stage 2.7 (demoted 2026-05-19), fixed Angular/NestJS migration claims, rebuilt addInitializer timing; operator applied the verifier-prescribed tricolon fix and landed; zh fully synced"
+  },
+  "docs/en/State Management/607.md": {
+    "id": 607,
+    "lastAudited": "2026-07-17",
+    "findings": {
+      "tone": 4,
+      "organization": 4,
+      "references": 1,
+      "factual": 6,
+      "template": 1
+    },
+    "notes": "revised: Recoil archived (2025-01-01) noted, signals-era timeline entry + FEE-611 cross-ref added, bundle table rebuilt with bundlephobia-verified per-version numbers, counter examples replaced with cart (derived+async) across three paradigms, 14 em-dash prose sites and 6 negation tricolons removed, slug added; verified clean"
+  },
+  "docs/en/Web Platform Proposals/TC39 and JS Proposals/10001.md": {
+    "id": 10001,
+    "lastAudited": "2026-07-17",
+    "findings": {
+      "tone": 3,
+      "organization": 3,
+      "references": 4,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised: Temporal Stage 4 (2026-03, ES2026); stable in Firefox 139+/Chrome-Edge 144+/Node 26+, Safari TP-only so graduation waits per FEE-12000 policy; fabricated Cambron co-author claim removed (verified champions list); DST example math fixed; template realigned + slug; verified clean"
   }
 }
