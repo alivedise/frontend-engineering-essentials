@@ -224,5 +224,65 @@
       "template": 1
     },
     "notes": "revised: CSP nonce/strict-dynamic claims verified against spec, 33 dash sites and 3 aphorisms cleared; verified clean"
+  },
+  "docs/en/State Management/610.md": {
+    "id": 610,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 2,
+      "organization": 2,
+      "references": 3,
+      "factual": 3,
+      "template": 2
+    },
+    "notes": "revised: step-count numbers reframed as illustrative, 50MB heuristic removed, Immer enablePatches (v6) verified, redux-undo archived-2026 noted, useUndoable owner corrected, Yjs UndoManager added, O(1)-vs-O(n) nuance; verified clean"
+  },
+  "docs/en/Accessibility/1008.md": {
+    "id": 1008,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 2,
+      "organization": 3,
+      "references": 2,
+      "factual": 4,
+      "template": 2
+    },
+    "notes": "revised: Grade-8 readability cited to WCAG 3.1.5, corpus-high tone load (24 dash/6 tricolon/8 not-X-but-Y/3 aphorism) cleared; verified clean"
+  },
+  "docs/en/Browser APIs and Web Platform/404.md": {
+    "id": 404,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 1,
+      "references": 3,
+      "factual": 4,
+      "template": 3
+    },
+    "notes": "revised: storage quota claims verified/corrected against current MDN (Safari limit, storage buckets), independent sources added, retired sections removed; verified clean"
+  },
+  "docs/en/CI CD and Deployment/1510.md": {
+    "id": 1510,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 2,
+      "organization": 4,
+      "references": 3,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised: isolate-vs-container cold-start sourced to Cloudflare, other ops numbers reframed as hypotheticals, edge-runtime landscape updated; verified clean"
+  },
+  "docs/en/Web Platform Proposals/CSS Experimental/11100.md": {
+    "id": 11100,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 1,
+      "references": 1,
+      "factual": 7,
+      "template": 1
+    },
+    "notes": "revised: scroll/view-timeline support verified against caniuse, off-main-thread claim checked, 15 dash sites cleared; verified clean"
   }
 }
