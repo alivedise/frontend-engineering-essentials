@@ -248,5 +248,65 @@
       "template": 2
     },
     "notes": "revised (operator override): article-level work verified clean; the sole blocking finding indicted the sitewide link/rewrite mismatch the article correctly follows, which is a known repo-level issue, not an article defect"
+  },
+  "docs/en/Rendering and Performance/706.md": {
+    "id": 706,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 3,
+      "organization": 3,
+      "references": 6,
+      "factual": 8,
+      "template": 4
+    },
+    "notes": "revised: image-weight stat corrected to Web Almanac 2024 (~40%), WebP savings unified to 25-34% (WebP study), Safari AVIF date fixed to 16.0/2022, JPEG XL/sizes=auto/fetchpriority currency added, 17 dash sites cleared; verified clean (Opus)"
+  },
+  "docs/en/Progressive Web Apps and Offline/1306.md": {
+    "id": 1306,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 4,
+      "organization": 3,
+      "references": 3,
+      "factual": 6,
+      "template": 1
+    },
+    "notes": "revised: retitled Web Push Notifications, Safari push timeline corrected, VAPID hard-date reframed with FEE-1316 cross-ref, W3C/IETF standards attribution fixed; verified clean (Opus)"
+  },
+  "docs/en/CI CD and Deployment/1502.md": {
+    "id": 1502,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 3,
+      "organization": 4,
+      "references": 3,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised: self-referential 17x fabricated ratio removed, invented latency numbers reframed as hypotheticals, independent sources added; verified clean (Opus)"
+  },
+  "docs/en/Testing Strategies/1107.md": {
+    "id": 1107,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 3,
+      "organization": 2,
+      "references": 5,
+      "factual": 9,
+      "template": 2
+    },
+    "notes": "revised: debunked \"$1 bug fix\" cost-curve folklore handled honestly (Bossavit debunking), compounding arithmetic reframed as explicit hypothetical, pyramid/trophy attribution verified; verified clean (Opus)"
+  },
+  "docs/en/Web Platform Proposals/TC39 and JS Proposals/10006.md": {
+    "id": 10006,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 3,
+      "organization": 2,
+      "references": 2,
+      "factual": 9,
+      "template": 2
+    },
+    "notes": "revised: AsyncContext TC39 stage verified, AsyncLocalStorage/async_hooks history and Zone.js bundle number checked, status block updated, retired sections removed; verified clean (Opus)"
   }
 }
