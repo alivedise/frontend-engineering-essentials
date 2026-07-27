@@ -308,5 +308,65 @@
       "template": 4
     },
     "notes": "revised: retention periods reframed policy-dependent, GDPR guidance updated, kept vendor-neutral, 16 dash sites cleared; verified clean"
+  },
+  "docs/en/Progressive Web Apps and Offline/1304.md": {
+    "id": 1304,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 4,
+      "organization": 1,
+      "references": 2,
+      "factual": 4,
+      "template": 2
+    },
+    "notes": "revised: Serwist-vs-next-pwa landscape updated, precache-vs-runtime precedence corrected, fabricated App-Router-scope claim removed, timeouts reframed illustrative; verified clean"
+  },
+  "docs/en/Rendering and Performance/711.md": {
+    "id": 711,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 3,
+      "organization": 3,
+      "references": 2,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised: connection-setup latency sourced, resource-hints/fetchpriority/speculation-rules currency, 19 dash sites cleared; verified clean"
+  },
+  "docs/en/Design Systems and UI Libraries/dtcg-token-format-spec.md": {
+    "id": 910,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 0,
+      "organization": 1,
+      "references": 1,
+      "factual": 2,
+      "template": 0
+    },
+    "notes": "revised (light): DTCG spec org-count and type-primitive counts verified/cited; tone was already clean; verified clean"
+  },
+  "docs/en/Developer Experience and Tooling/corepack-package-manager.md": {
+    "id": 1614,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 1,
+      "organization": 2,
+      "references": 2,
+      "factual": 0,
+      "template": 1
+    },
+    "notes": "revised (light): Corepack Node-inclusion and auto-pin-v0.33.0 claims verified/anchored; verified clean"
+  },
+  "docs/en/Security/1206.md": {
+    "id": 1206,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 4,
+      "organization": 2,
+      "references": 3,
+      "factual": 1,
+      "template": 3
+    },
+    "notes": "revised: HSTS preload-removal timeline verified, supply-chain claim grounded (Polyfill.io 2024), security-header currency, 7 dash sites cleared; verified clean"
   }
 }
