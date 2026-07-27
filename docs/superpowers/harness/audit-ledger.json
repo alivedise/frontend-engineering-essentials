@@ -129,6 +129,246 @@
     },
     "notes": "revised (requeue clean): three batch-1 blockers fixed — invented DevTools panel removed, Sec-Purpose client-side impossibility corrected, Shopify year fixed; invented hit-rate thresholds cut, status block updated; verified clean"
   },
+  "docs/en/CI CD and Deployment/1501.md": {
+    "id": 1501,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 1,
+      "organization": 4,
+      "references": 1,
+      "factual": 9,
+      "template": 1
+    },
+    "notes": "revised (rescued): invented runner benchmarks replaced with GitHub-documented specs, GitLab CI 7.12 timeline fixed, CI coexistence history, CVE-2025-30066 added; final diagram/caption mismatch fixed by operator-directed pass and re-verified clean"
+  },
+  "docs/en/Testing Strategies/1101.md": {
+    "id": 1101,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 4,
+      "organization": 3,
+      "references": 3,
+      "factual": 7,
+      "template": 3
+    },
+    "notes": "revised (rescued): invented 8-18s/5-10x benchmarks replaced with sourced Jest 30 numbers and npm data, Jest-Vitest coexistence stated, Vitest 4 landscape updated; v8 remapping comment fixed and re-verified clean"
+  },
+  "docs/en/Testing Strategies/1102.md": {
+    "id": 1102,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 5,
+      "organization": 5,
+      "references": 3,
+      "factual": 4,
+      "template": 3
+    },
+    "notes": "revised (rescued): Enzyme fate stated honestly with real dates and downloads, jest-dom import paths corrected, Storybook 8.3/9 attribution fixed; RTL speed claims moved to suite-level framing and re-verified clean"
+  },
+  "docs/en/CI CD and Deployment/1509.md": {
+    "id": 1509,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 4,
+      "organization": 3,
+      "references": 5,
+      "factual": 3,
+      "template": 3
+    },
+    "notes": "revised: corpus-worst 12 invented operational numbers sourced (SRE Workbook 2018), reframed as worked hypotheticals, or cut; rollback-reach section added (open tabs, service workers); verified clean"
+  },
+  "docs/en/Developer Experience and Tooling/renovate.md": {
+    "id": 1616,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 2,
+      "organization": 4,
+      "references": 3,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised (rescued): four-engineer-team persona removed, update-lockfile semantics corrected, Dependabot platform cell aligned with cited source, Nesbitt seven-day figure quoted accurately; re-verified clean"
+  },
+  "docs/en/Browser APIs and Web Platform/416.md": {
+    "id": 416,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 4,
+      "organization": 4,
+      "references": 4,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised (rescued): motor-impairment fictional project removed, Chrome 139 on-device recognition added, utterance-GC and user-activation mistakes added; voiceschanged rationale and one cross-reference fixed post-run, re-verified"
+  },
+  "docs/en/Build Tooling and Module Systems/807.md": {
+    "id": 807,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 3,
+      "organization": 4,
+      "references": 4,
+      "factual": 10,
+      "template": 2
+    },
+    "notes": "revised: Vite minifier corrected to Oxc, turbo.json tasks rename, moment/Brotli numbers sourced, critical-CSS tooling rewritten around real options, zstd and Compression Dictionary Transport added; verified clean"
+  },
+  "docs/en/Developer Experience and Tooling/1603.md": {
+    "id": 1603,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 4,
+      "organization": 6,
+      "references": 1,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised: 10 invented operational numbers sourced or reframed, independent hook-ecosystem sources added; verified clean (zh sync artifact stripped at landing)"
+  },
+  "docs/en/Developer Experience and Tooling/oxlint.md": {
+    "id": 1610,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 1,
+      "organization": 2,
+      "references": 2,
+      "factual": 7,
+      "template": 1
+    },
+    "notes": "revised: fabricated 250k-file monorepo story removed, oxlint current state verified; verified clean"
+  },
+  "docs/en/Developer Experience and Tooling/1607.md": {
+    "id": 1607,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 3,
+      "organization": 3,
+      "references": 3,
+      "factual": 3,
+      "template": 2
+    },
+    "notes": "revised (operator override): article-level work verified clean; the sole blocking finding indicted the sitewide link/rewrite mismatch the article correctly follows, which is a known repo-level issue, not an article defect"
+  },
+  "docs/en/Rendering and Performance/706.md": {
+    "id": 706,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 3,
+      "organization": 3,
+      "references": 6,
+      "factual": 8,
+      "template": 4
+    },
+    "notes": "revised: image-weight stat corrected to Web Almanac 2024 (~40%), WebP savings unified to 25-34% (WebP study), Safari AVIF date fixed to 16.0/2022, JPEG XL/sizes=auto/fetchpriority currency added, 17 dash sites cleared; verified clean (Opus)"
+  },
+  "docs/en/Progressive Web Apps and Offline/1306.md": {
+    "id": 1306,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 4,
+      "organization": 3,
+      "references": 3,
+      "factual": 6,
+      "template": 1
+    },
+    "notes": "revised: retitled Web Push Notifications, Safari push timeline corrected, VAPID hard-date reframed with FEE-1316 cross-ref, W3C/IETF standards attribution fixed; verified clean (Opus)"
+  },
+  "docs/en/CI CD and Deployment/1502.md": {
+    "id": 1502,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 3,
+      "organization": 4,
+      "references": 3,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised: self-referential 17x fabricated ratio removed, invented latency numbers reframed as hypotheticals, independent sources added; verified clean (Opus)"
+  },
+  "docs/en/Testing Strategies/1107.md": {
+    "id": 1107,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 3,
+      "organization": 2,
+      "references": 5,
+      "factual": 9,
+      "template": 2
+    },
+    "notes": "revised: debunked \"$1 bug fix\" cost-curve folklore handled honestly (Bossavit debunking), compounding arithmetic reframed as explicit hypothetical, pyramid/trophy attribution verified; verified clean (Opus)"
+  },
+  "docs/en/Web Platform Proposals/TC39 and JS Proposals/10006.md": {
+    "id": 10006,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 3,
+      "organization": 2,
+      "references": 2,
+      "factual": 9,
+      "template": 2
+    },
+    "notes": "revised: AsyncContext TC39 stage verified, AsyncLocalStorage/async_hooks history and Zone.js bundle number checked, status block updated, retired sections removed; verified clean (Opus)"
+  },
+  "docs/en/Browser APIs and Web Platform/408.md": {
+    "id": 408,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 2,
+      "organization": 3,
+      "references": 1,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised: WebGPU shipping dates corrected (Safari 26/2025 not 18, Firefox 141+ default-on), fabricated line-count comparison cut, real compute example added with named WebGPU tools; verified clean (Opus)"
+  },
+  "docs/en/Rendering and Performance/705.md": {
+    "id": 705,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 2,
+      "organization": 2,
+      "references": 1,
+      "factual": 4,
+      "template": 3
+    },
+    "notes": "revised: invented mobile-CPU/bundle-reduction benchmarks reframed as sourced ranges or hypotheticals, 11 dash sites cleared; verified clean (Opus)"
+  },
+  "docs/en/Web Platform Proposals/CSS Experimental/11300.md": {
+    "id": 11300,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 3,
+      "organization": 2,
+      "references": 2,
+      "factual": 4,
+      "template": 2
+    },
+    "notes": "revised: corpus-record 49 dash sites reduced to 4, Swiper size and CSS carousel (::scroll-button/::scroll-marker) support verified, invented carousel line counts cut; verified clean (Opus)"
+  },
+  "docs/en/Rendering and Performance/709.md": {
+    "id": 709,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 2,
+      "organization": 2,
+      "references": 3,
+      "factual": 6,
+      "template": 2
+    },
+    "notes": "revised: INP thresholds sourced to web.dev, module-size/interaction budgets reframed as hypotheticals, 21 dash sites cleared, INP-as-CWV March 2024 verified; verified clean (Opus)"
+  },
+  "docs/en/Accessibility/1003.md": {
+    "id": 1003,
+    "lastAudited": "2026-07-24",
+    "findings": {
+      "tone": 4,
+      "organization": 2,
+      "references": 1,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised: fabricated epidemiology handled (35% vestibular claim, 5-10% adoption, 20/80-vision contrast derivation) — sourced honestly or cut, 14 dash sites cleared; verified clean (Opus)"
+  },
   "docs/en/Component Architecture and Design Patterns/508.md": {
     "id": 508,
     "lastAudited": "2026-07-25",
