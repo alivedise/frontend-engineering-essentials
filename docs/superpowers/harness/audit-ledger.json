@@ -248,5 +248,65 @@
       "template": 1
     },
     "notes": "revised: cache-timeout durations reframed illustrative, idempotent rule kept, 24 dash sites cleared; verified clean"
+  },
+  "docs/en/Rendering and Performance/710.md": {
+    "id": 710,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 2,
+      "organization": 2,
+      "references": 1,
+      "factual": 4,
+      "template": 1
+    },
+    "notes": "revised: GPU-memory formula made explicit worked example (width*height*DPR^2*4), 256-512MB mobile figure generalized, compositor property list corrected (filter/clip-path), will-change cleanup fixed, 14 dash sites cleared; verified clean"
+  },
+  "docs/en/State Management/606.md": {
+    "id": 606,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 2,
+      "organization": 3,
+      "references": 1,
+      "factual": 2,
+      "template": 2
+    },
+    "notes": "revised: Navigation API availability verified/cross-ref FEE-418, URL-state libs (nuqs/TanStack) updated, 8 dash sites cleared; verified clean"
+  },
+  "docs/en/Web Platform Proposals/CSS Experimental/11101.md": {
+    "id": 11101,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 3,
+      "organization": 2,
+      "references": 1,
+      "factual": 4,
+      "template": 1
+    },
+    "notes": "revised: version claims verified against caniuse, 24 dash sites cleared, retired sections removed; verified clean"
+  },
+  "docs/en/Build Tooling and Module Systems/804.md": {
+    "id": 804,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 3,
+      "organization": 2,
+      "references": 1,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised: Windows MAX_PATH=260 sourced, npm package count verified/generalized, package-manager landscape (Bun/corepack) updated, 19 dash sites cleared; verified clean"
+  },
+  "docs/en/Observability and Error Tracking/1409.md": {
+    "id": 1409,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 3,
+      "organization": 1,
+      "references": 3,
+      "factual": 4,
+      "template": 4
+    },
+    "notes": "revised: retention periods reframed policy-dependent, GDPR guidance updated, kept vendor-neutral, 16 dash sites cleared; verified clean"
   }
 }
