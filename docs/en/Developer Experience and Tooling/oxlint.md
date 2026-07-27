@@ -8,42 +8,24 @@ slug: oxlint
 # [FEE-1610] Oxlint — Rust-based ESLint Successor and Migration Path
 
 :::info
-Oxlint is a Rust-implemented JavaScript and TypeScript linter built on the Oxc compiler stack, released as v1.0 stable on 10 June 2025 with claims of roughly 50-100x faster lint runs than ESLint on equivalent setups. It already supports more than 700 rules from ESLint core and popular plugins, ships an `@oxlint/migrate` CLI that converts an ESLint flat config to `.oxlintrc.json` in one shot, and as of October 2025 includes a preview JavaScript-plugin runtime that lets teams keep custom ESLint plugins. Production evidence includes Airbnb running Oxlint's multi-file analysis across 126,000+ files in 7 seconds in CI where the equivalent ESLint rules time out. The article frames Oxlint as a third option alongside ESLint and Biome and walks through its migration path for teams whose lint step dominates CI wall-clock time.
+Oxlint is a Rust-implemented JavaScript and TypeScript linter built on the Oxc compiler stack, released as v1.0 stable on 10 June 2025 with claims of roughly 50-100x faster lint runs than ESLint on equivalent setups. It supports more than 800 rules from ESLint core and popular plugins as of mid-2026, ships an `@oxlint/migrate` CLI that converts an ESLint flat config to `.oxlintrc.json` in one shot, and has kept shipping through the 1.7x release line: a JavaScript-plugin runtime reached alpha in March 2026 with near-complete ESLint v9+ plugin API compatibility, and type-aware linting, the classic reason teams stay on ESLint plus typescript-eslint, went stable on 22 July 2026 powered by the Go-based tsgolint engine. Production evidence includes Airbnb running Oxlint's multi-file analysis across 126,000+ files in 7 seconds in CI where the equivalent ESLint rules time out. The article frames Oxlint as a third option alongside ESLint and Biome and walks through its migration path, including the type-aware and JS-plugin escape hatches, for teams whose lint step dominates CI wall-clock time.
 :::
 
 ## Context
 
-Oxlint is positioned by the Oxc project as a high-performance linter for JavaScript and TypeScript built on the Oxc compiler stack ([oxc.rs/docs/guide/usage/linter](https://oxc.rs/docs/guide/usage/linter)). The first stable version was released on 10 June 2025 after being announced in late 2023 ([voidzero.dev announcement](https://voidzero.dev/posts/announcing-oxlint-1-stable)). Performance is the headline claim: the official stable-release blog post states Oxlint runs "around 50~100 times faster than ESLint with the same setup" ([oxc.rs/blog/2025-06-10-oxlint-stable](https://oxc.rs/blog/2025-06-10-oxlint-stable)), and InfoQ's independent reporting attributes the gap to "its Rust-based architecture and shared Oxc parser" while citing a 2x advantage over Biome ([InfoQ, August 2025](https://www.infoq.com/news/2025/08/oxlint-v1-released/)). Production evidence accompanies the benchmarks: Airbnb runs Oxlint's multi-file analysis across 126,000+ files in 7 seconds in CI, where the equivalent ESLint rules time out ([Oxc stable announcement](https://oxc.rs/blog/2025-06-10-oxlint-stable)). For senior frontend engineers, this changes the cost calculus of static analysis on large codebases.
+Oxlint is positioned by the Oxc project as a high-performance linter for JavaScript and TypeScript built on the Oxc compiler stack ([oxc.rs/docs/guide/usage/linter](https://oxc.rs/docs/guide/usage/linter)). The first stable version was released on 10 June 2025 after being announced in late 2023 ([voidzero.dev announcement](https://voidzero.dev/posts/announcing-oxlint-1-stable)). Performance is the headline claim: the official stable-release blog post states Oxlint runs "around 50~100 times faster than ESLint with the same setup" ([oxc.rs/blog/2025-06-10-oxlint-stable](https://oxc.rs/blog/2025-06-10-oxlint-stable)), and InfoQ's coverage relays the Oxc team's own benchmark claim of a 2x advantage over Biome ([InfoQ, August 2025](https://www.infoq.com/news/2025/08/oxlint-v1-released/)). Production evidence accompanies the benchmarks: Airbnb runs Oxlint's multi-file analysis across 126,000+ files in 7 seconds in CI, where the equivalent ESLint rules time out ([Oxc stable announcement](https://oxc.rs/blog/2025-06-10-oxlint-stable)).
 
-## Scenario
-
-A frontend platform team owns a TypeScript monorepo with ~250k files across packages, apps, and generated sources. ESLint runs as the slowest CI step at 33 seconds on the affected file set in pre-merge checks, and the full repo lint pass takes minutes. The pre-commit hook that was meant to catch issues locally has been disabled in `.husky/` because contributors complained that hot-reload feedback loops broke during interactive work. Lint failures are now caught only at CI, and the team has been considering whether to drop a tier of rules to recover speed. Oxlint enters this scenario as a candidate that promises the same family of correctness rules at single-second wall-clock latency, with a config format and CLI surface that mirror ESLint v8 to keep the migration cognitive load small.
-
-## Best Practices
-
-- **MUST** start from Oxlint's `correctness` category default. By default Oxlint enables rules in the correctness category and is designed to be useful with no configuration ([linter config docs](https://oxc.rs/docs/guide/usage/linter/config)). Layering additional categories should be deliberate.
-- **SHOULD** drive ESLint flat-config migrations through `@oxlint/migrate` rather than hand-translating rules. The official migration path is a single CLI invocation: `npx @oxlint/migrate <optional-eslint-flat-config-path>` ([migrate-from-eslint docs](https://oxc.rs/docs/guide/usage/linter/migrate-from-eslint)).
-- **SHOULD** audit the rule set against Oxlint's coverage list before assuming feature parity. Oxlint already supports more than 700 rules from ESLint core and various popular plugins ([migrate-from-eslint docs](https://oxc.rs/docs/guide/usage/linter/migrate-from-eslint)), but coverage is not yet exhaustive.
-- **MAY** run Oxlint and ESLint side by side when a required rule has not been ported. The recommended pattern is Oxlint first to fail fast on cheap checks, then ESLint as a fallback only when needed ([migrate-from-eslint docs](https://oxc.rs/docs/guide/usage/linter/migrate-from-eslint)).
-- **MAY** adopt the JavaScript-plugin runtime preview when a custom or unported ESLint plugin is load-bearing. The preview lets teams keep those plugins inside Oxlint while preserving the speed advantage ([Oxlint JS plugins post, October 2025](https://oxc.rs/blog/2025-10-09-oxlint-js-plugins)).
-
-## Design Thinking
-
-The Oxc team's framing is that Oxlint's architecture removes structural bottlenecks that limit performance in ESLint ([linter docs](https://oxc.rs/docs/guide/usage/linter)). The lint pipeline was rebuilt on the Oxc compiler stack rather than tuning ESLint in place. The trade this design makes is concrete: a Rust binary distribution with a fixed plugin surface in exchange for the cross-process parallelism, shared parser, and memory layout that yield the 50-100x figure. The cost shows up at the plugin boundary. ESLint's plugin ecosystem is JS-native and relies on every plugin executing in the same Node process as the linter. Oxlint's JavaScript-plugin runtime preview ([October 2025 post](https://oxc.rs/blog/2025-10-09-oxlint-js-plugins)) is the explicit answer to that trade: JS plugins ride alongside the Rust core while keeping the speed envelope. Teams choosing Oxlint accept the binary-distribution surface area in exchange for a wall-clock budget that lets pre-commit hooks come back.
-
-## Deep Dive
-
-The October 2025 JavaScript-plugin runtime preview keeps custom and unported ESLint plugins inside Oxlint while preserving the speed advantage. The Oxc team's published numbers from that post show "Oxlint with custom JS plugin 236 ms ... ESLint multi-threaded 3,710 ms ... Oxlint is still 15x faster than ESLint, even using ESLint's new multi-threaded runner" ([Oxlint JS plugins post](https://oxc.rs/blog/2025-10-09-oxlint-js-plugins)). For senior engineers, the implication is that the previously-binary choice of keeping ESLint or losing plugin compatibility no longer holds: the JS-plugin runtime gives Oxlint an escape hatch for the long tail of internal lint rules, with a measured 15x margin even against ESLint's own multi-threaded runner. The preview status matters for risk-tolerance choices, but the architectural direction is established.
+Lint wall-clock time grows with both file count and rule cost. The VoidZero benchmark measured Oxlint running 101 rules across 264,925 real files in 22.5 seconds on 10 threads ([voidzero.dev announcement](https://voidzero.dev/posts/announcing-oxlint-1-stable)), and Airbnb's 126,000-file case, documented in the same stable announcement, shows the same effect in production: a lint pass that used to time out finishes in 7 seconds in CI. At that wall-clock cost, the same pass would also fit a pre-commit hook budget. Oxlint has kept shipping since that June 2025 release; as of mid-2026 it is on the 1.7x release line, with a JavaScript-plugin runtime in alpha and type-aware linting now stable (see Design Thinking and Deep Dive below).
 
 ## Visual
 
-| Tool / Mode | Wall-clock on the same repo | Source |
+| Tool / Mode | Benchmark result | Source |
 |---|---|---|
 | Oxlint (multi-thread) | 615.3 ms | [oxc.rs/blog/2025-06-10-oxlint-stable](https://oxc.rs/blog/2025-06-10-oxlint-stable) |
 | ESLint | 33.481 s | [oxc.rs/blog/2025-06-10-oxlint-stable](https://oxc.rs/blog/2025-06-10-oxlint-stable) |
 | Oxlint at scale (10 threads, 101 rules) | 22.5 s on 264,925 files (~10,000 files/sec) | [voidzero.dev announcement](https://voidzero.dev/posts/announcing-oxlint-1-stable) |
-| Oxlint with custom JS plugin (preview) | 236 ms | [Oxlint JS plugins post](https://oxc.rs/blog/2025-10-09-oxlint-js-plugins) |
-| ESLint multi-threaded (same repo as JS plugin row) | 3,710 ms | [Oxlint JS plugins post](https://oxc.rs/blog/2025-10-09-oxlint-js-plugins) |
+| Oxlint with JS plugins vs. ESLint, same rule set (Node.js repo, 202 rules: 104 built-in Rust + 75 JS-plugin + 23 custom JS, 6,298 files) | 21 s vs 1 m 43 s (~4.8x) | [Oxlint JS Plugins Alpha post](https://oxc.rs/blog/2026-03-11-oxlint-js-plugins-alpha) |
+| Oxlint + tsgolint (type-aware) vs. ESLint + typescript-eslint (VS Code, TypeORM benchmarks) | 12-18x faster | [Type-aware linting stable post](https://oxc.rs/blog/2026-07-22-type-aware-linting-stable) |
 
 ## Example
 
@@ -80,6 +62,37 @@ Configuration lives in `.oxlintrc.json`. The format intentionally mirrors ESLint
 
 A first run with no `.oxlintrc.json` present still produces useful output because the correctness category is on by default ([linter config docs](https://oxc.rs/docs/guide/usage/linter/config)).
 
+Oxlint also accepts a typed TypeScript config file, `oxlint.config.ts` (or `.mts`), as an alternative to `.oxlintrc.json`; the two formats cannot coexist in the same directory ([linter config docs](https://oxc.rs/docs/guide/usage/linter/config)):
+
+```ts
+import { defineConfig } from 'oxlint';
+
+export default defineConfig({
+  categories: { correctness: 'error' },
+});
+```
+
+## Best Practices
+
+- **MUST** start from Oxlint's `correctness` category default. By default Oxlint enables rules in the correctness category and is designed to be useful with no configuration ([linter config docs](https://oxc.rs/docs/guide/usage/linter/config)). Layering additional categories should be deliberate.
+- **SHOULD** drive ESLint flat-config migrations through `@oxlint/migrate` rather than hand-translating rules. The official migration path is a single CLI invocation: `npx @oxlint/migrate <optional-eslint-flat-config-path>` ([migrate-from-eslint docs](https://oxc.rs/docs/guide/usage/linter/migrate-from-eslint)).
+- **SHOULD** audit the rule set against Oxlint's coverage list before assuming feature parity. Oxlint supports more than 800 rules from ESLint core and various popular plugins as of mid-2026 ([migrate-from-eslint docs](https://oxc.rs/docs/guide/usage/linter/migrate-from-eslint)), a number that grows with each release, so treat it as a floor rather than a fixed count.
+- **SHOULD** enable `--type-aware` (backed by the `oxlint-tsgolint` package) when the ESLint config relies on typescript-eslint's type-aware rules. Coverage is 59 of the 61 type-aware rules in typescript-eslint ([type-aware usage docs](https://oxc.rs/docs/guide/usage/linter/type-aware.html)).
+- **MAY** run Oxlint and ESLint side by side when a required rule has not been ported, with `eslint-plugin-oxlint` installed in the ESLint config to disable rules Oxlint already covers ([migrate-from-eslint docs](https://oxc.rs/docs/guide/usage/linter/migrate-from-eslint)).
+- **MAY** adopt the JavaScript-plugin runtime, alpha since March 2026, when a custom or unported ESLint plugin is load-bearing. It targets the ESLint v9+ plugin API directly, so most existing plugins run without a rewrite ([JS Plugins Alpha post](https://oxc.rs/blog/2026-03-11-oxlint-js-plugins-alpha); [JS plugins docs](https://oxc.rs/docs/guide/usage/linter/js-plugins)).
+
+## Design Thinking
+
+The Oxc team's framing is that Oxlint's architecture removes structural bottlenecks that limit performance in ESLint ([linter docs](https://oxc.rs/docs/guide/usage/linter)). The lint pipeline was rebuilt on the Oxc compiler stack rather than tuning ESLint in place. The trade is concrete: a Rust binary distribution in exchange for the multi-threaded parallelism, shared parser, and memory layout that yield the 50-100x figure. The cost showed up first at the plugin boundary. ESLint's plugin ecosystem is JS-native and every plugin runs inside the same Node process as the linter, a design Oxlint's native Rust rule set could not reuse directly.
+
+The JavaScript-plugin runtime is the Oxc team's answer to that gap. It has been in alpha since March 2026, passing 99.6-100% of the original plugins' own test suites (33,006 ESLint core tests at 100%, ESLint Stylistic at 99.99%), with TypeScript plugin support, auto-fixes, and IDE integration; the Oxc team states most existing ESLint plugins now work out of the box ([JS Plugins Alpha post](https://oxc.rs/blog/2026-03-11-oxlint-js-plugins-alpha); [JS plugins docs](https://oxc.rs/docs/guide/usage/linter/js-plugins)). Framework-specific plugins, such as Vue or Svelte support, are still pending. An earlier, October 2025 preview of this runtime published benchmark figures that an editor's note on the same post later called "way overestimated" because a bug in Oxlint caused JS plugins to be skipped on many files, invalidating the comparison ([Oxlint JS plugins preview post](https://oxc.rs/blog/2025-10-09-oxlint-js-plugins)); the alpha-era numbers above supersede it. Teams choosing Oxlint accept the remaining framework-plugin gap in exchange for the wall-clock budget the JS-plugin runtime and the Rust core together provide.
+
+## Deep Dive
+
+Type-aware linting is the rule category typescript-eslint uses for checks that need the full TypeScript type-checker output, such as `no-unsafe-assignment` and `no-floating-promises`, and it was the last major gap in an ESLint-to-Oxlint migration: a preview shipped in August 2025 and an alpha (43 rules) in December 2025, but it only went stable on 22 July 2026. Oxlint's answer is tsgolint v7, a separate Go binary built on typescript-go (the Go rewrite that underlies TypeScript v7), rather than the Rust core the rest of Oxlint runs on.
+
+The split is architectural. Oxlint's Rust process handles file traversal, configuration, and the roughly 800 non-type-aware rules. tsgolint builds the TypeScript program once and runs the type-aware checks against it, then reports results back to the Oxlint process. Enabling it is a single flag, `oxlint --type-aware`, backed by the `oxlint-tsgolint@7` package. Coverage is 59 of the 61 type-aware rules in typescript-eslint, and the Oxc team's benchmarks on VS Code and TypeORM show the combination running 12-18x faster than ESLint with typescript-eslint on the same rule set ([type-aware linting stable post](https://oxc.rs/blog/2026-07-22-type-aware-linting-stable); [type-aware usage docs](https://oxc.rs/docs/guide/usage/linter/type-aware.html); [tsgolint repository](https://github.com/oxc-project/tsgolint)).
+
 ## Migration from ESLint
 
 The migration path depends on which ESLint config format the project uses.
@@ -94,9 +107,11 @@ The command emits `.oxlintrc.json` derived from the flat config's rules and over
 
 **Legacy `.eslintrc.*`.** These configs cannot be migrated automatically by `@oxlint/migrate` ([migrate-from-eslint docs](https://oxc.rs/docs/guide/usage/linter/migrate-from-eslint)). Convert to flat config first (e.g. via `@eslint/migrate-config`), then run `@oxlint/migrate` against the resulting flat config.
 
-**Coverage check.** Oxlint already supports more than 700 rules from ESLint core and various popular plugins ([migrate-from-eslint docs](https://oxc.rs/docs/guide/usage/linter/migrate-from-eslint)). After running the migrator, diff the generated `.oxlintrc.json` against the original ESLint config to identify any rules that did not carry over.
+**Coverage check.** Oxlint supports more than 800 rules from ESLint core and various popular plugins as of mid-2026 ([migrate-from-eslint docs](https://oxc.rs/docs/guide/usage/linter/migrate-from-eslint)). After running the migrator, diff the generated `.oxlintrc.json` against the original ESLint config to identify any rules that did not carry over.
 
-**Side-by-side fallback.** When required rules are absent from Oxlint, the recommended pattern is to run Oxlint and ESLint side by side. Because Oxlint is significantly faster than ESLint, run Oxlint first to catch errors early, then fall back to ESLint only if needed ([migrate-from-eslint docs](https://oxc.rs/docs/guide/usage/linter/migrate-from-eslint)). In package scripts:
+**Type-aware rules.** If the ESLint config relies on typescript-eslint's type-aware rules, run `oxlint --type-aware` (requires the `oxlint-tsgolint` package) after the flat-config migration; it covers 59 of the 61 type-aware rules in typescript-eslint ([type-aware usage docs](https://oxc.rs/docs/guide/usage/linter/type-aware.html)). The remaining two rules, and anything else unported, fall to the side-by-side fallback below.
+
+**Side-by-side fallback.** When required rules are still absent from Oxlint, the recommended pattern is to run Oxlint and ESLint side by side, with `eslint-plugin-oxlint` installed in the ESLint config to turn off every rule Oxlint already covers ([migrate-from-eslint docs](https://oxc.rs/docs/guide/usage/linter/migrate-from-eslint); [eslint-plugin-oxlint repository](https://github.com/oxc-project/eslint-plugin-oxlint)). Oxlint runs first to fail fast on cheap checks, and ESLint runs only the unported remainder instead of its full rule set. In package scripts:
 
 ```json
 {
@@ -106,7 +121,7 @@ The command emits `.oxlintrc.json` derived from the flat config's rules and over
 }
 ```
 
-## Internal References
+## Related Topics
 
 - [FEE-1601 Linting & Static Analysis](/en/Developer%20Experience%20and%20Tooling/1601) — foundational linting article framing ESLint and Biome; Oxlint sits alongside them as a third option.
 - [FEE-1611 Biome v2](/en/Developer%20Experience%20and%20Tooling/biome-v2) — parallel Rust-based toolchain article; Oxlint differentiates via ESLint-config compatibility and the JS plugin runtime.
@@ -118,7 +133,13 @@ The command emits `.oxlintrc.json` derived from the flat config's rules and over
 - Oxc project, "Linter Configuration," Oxc docs (2025). https://oxc.rs/docs/guide/usage/linter/config
 - Oxc project, "Migrate from ESLint," Oxc docs (2025). https://oxc.rs/docs/guide/usage/linter/migrate-from-eslint
 - Oxc project, "Announcing Oxlint 1.0 Stable," Oxc blog (2025). https://oxc.rs/blog/2025-06-10-oxlint-stable
-- Oxc project, "Oxlint JavaScript Plugins," Oxc blog (2025). https://oxc.rs/blog/2025-10-09-oxlint-js-plugins
+- Oxc project, "Oxlint JavaScript Plugins," Oxc blog (2025; benchmark figures corrected 18 Oct 2025). https://oxc.rs/blog/2025-10-09-oxlint-js-plugins
+- Oxc project, "Oxlint JS Plugins Alpha," Oxc blog (2026). https://oxc.rs/blog/2026-03-11-oxlint-js-plugins-alpha
+- Oxc project, "JS Plugins," Oxc docs (2026). https://oxc.rs/docs/guide/usage/linter/js-plugins
+- Oxc project, "Type-Aware Linting Stable," Oxc blog (2026). https://oxc.rs/blog/2026-07-22-type-aware-linting-stable
+- Oxc project, "Type-Aware Linting," Oxc docs (2026). https://oxc.rs/docs/guide/usage/linter/type-aware.html
+- Oxc project, "tsgolint," GitHub repository (2026). https://github.com/oxc-project/tsgolint
+- Oxc project, "eslint-plugin-oxlint," GitHub repository (2026). https://github.com/oxc-project/eslint-plugin-oxlint
 - VoidZero, "Announcing Oxlint 1 Stable," VoidZero blog (2025). https://voidzero.dev/posts/announcing-oxlint-1-stable
 - InfoQ, "Oxlint v1 Released," InfoQ news (2025). https://www.infoq.com/news/2025/08/oxlint-v1-released/
 - Oxc project, "oxlint-migrate," GitHub repository (2025). https://github.com/oxc-project/oxlint-migrate
