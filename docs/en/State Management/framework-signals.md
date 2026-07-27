@@ -3,6 +3,8 @@ id: 611
 title: "Framework Signals (Solid, Vue, Preact, Angular)"
 state: draft
 slug: framework-signals
+reviewed: hardened
+reviewed_on: 2026-07-15
 ---
 
 # [FEE-611] Framework Signals (Solid, Vue, Preact, Angular)

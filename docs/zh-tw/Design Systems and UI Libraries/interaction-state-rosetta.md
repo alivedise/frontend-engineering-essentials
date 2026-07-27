@@ -3,6 +3,8 @@ id: 918
 title: "互動狀態對照表 — Focused、Activated、Selected、Pressed、Current"
 state: draft
 slug: interaction-state-rosetta
+reviewed: hardened
+reviewed_on: 2026-07-25
 ---
 
 # [FEE-918] 互動狀態對照表 — Focused、Activated、Selected、Pressed、Current

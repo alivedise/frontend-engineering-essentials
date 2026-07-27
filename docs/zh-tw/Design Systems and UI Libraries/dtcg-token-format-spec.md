@@ -5,6 +5,8 @@ state: draft
 slug: dtcg-token-format-spec
 category: Design Systems and UI Libraries
 level: mid
+reviewed: hardened
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-910] W3C DTCG Format Module — 完整 Token 規格參考

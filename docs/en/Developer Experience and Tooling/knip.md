@@ -3,6 +3,8 @@ id: 1615
 title: "Knip — Unused Files, Exports, and Dependency Detection"
 state: draft
 slug: knip
+reviewed: hardened
+reviewed_on: 2026-07-25
 ---
 
 # [FEE-1615] Knip — Unused Files, Exports, and Dependency Detection

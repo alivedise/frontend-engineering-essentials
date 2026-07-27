@@ -3,6 +3,8 @@ id: 1615
 title: "Knip：偵測未使用的檔案、export 與相依套件"
 state: draft
 slug: knip
+reviewed: hardened
+reviewed_on: 2026-07-25
 ---
 
 # [FEE-1615] Knip：偵測未使用的檔案、export 與相依套件

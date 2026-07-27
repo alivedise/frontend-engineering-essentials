@@ -3,6 +3,8 @@ id: 611
 title: "框架 Signals 比較（Solid、Vue、Preact、Angular）"
 state: draft
 slug: framework-signals
+reviewed: hardened
+reviewed_on: 2026-07-15
 ---
 
 # [FEE-611] 框架 Signals 比較（Solid、Vue、Preact、Angular）
