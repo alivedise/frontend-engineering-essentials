@@ -10,7 +10,7 @@ level: mid
 # [FEE-910] W3C DTCG Format Module — Complete Token Spec Reference
 
 :::info
-The W3C Design Tokens Community Group (DTCG) Format Module defines a JSON-based interchange format for design tokens. It reached its first stable version, 2025.10, on 28 October 2025. This article covers the file shape, the type primitives, the seven composite types, alias resolution, and tooling. Use it as a reference when adopting `.tokens.json` across design tools and code pipelines.
+The W3C Design Tokens Community Group (DTCG) Format Module defines a JSON-based interchange format for design tokens. It reached its first stable version, 2025.10, on 28 October 2025. This article covers the file shape, the seven basic types, the six composite types, alias resolution, and tooling. Use it as a reference when adopting `.tokens.json` across design tools and code pipelines.
 :::
 
 ## Context
@@ -81,27 +81,27 @@ Dollar-prefixed reserved keys (`$value`, `$type`, `$description`, `$extensions`,
 
 **Composite member aliases.** Inside composite types, each member field MAY itself be an alias. This is what lets a shadow's `color` member point at a brand colour while the rest of the shadow stays inline.
 
+**Property-level references.** The `{group.token}` syntax always resolves to another token's entire `$value`. The 2025.10 spec adds a second mechanism for reaching into a single sub-value: a `$ref` property that uses JSON Pointer notation per RFC 6901. The spec requires that "Tools MUST support JSON Pointer references as defined by [RFC 6901], using the `$ref` property." A pointer such as `#/colors/blue/$value/components/0` resolves to one component of a color value, which `{group.token}` cannot express because it only ever returns a whole `$value`.
+
 ## DTCG Composite Type Reference
 
-The Format Module defines eight type primitives and seven composite types. Composite types reference primitives; some composites also reference other composites (e.g. `border.style` is a `strokeStyle`).
+The Format Module defines seven basic types and six composite types. Composite types reference basic types; some composites also reference other composites (e.g. `border.style` is a `strokeStyle`).
 
 | Type | Category | `$value` shape | Notes |
 | --- | --- | --- | --- |
-| `color` | Primitive | Hex string or structured object | Represents a colour in the UI |
-| `dimension` | Primitive | Numeric + unit (e.g. `"16px"`, `"1rem"`) | Represents an amount of distance |
-| `duration` | Primitive | Milliseconds (number or `"100ms"`) | Length of time, used by transitions |
-| `fontFamily` | Primitive | String or array of strings | Single family or fallback stack |
-| `fontWeight` | Primitive | Number 1-1000 or named keyword | E.g. `400`, `"bold"` |
-| `number` | Primitive | Number | Unitless scalar |
-| `cubicBezier` | Primitive (composite-feeder) | `[x1, y1, x2, y2]` | Used by `transition.timingFunction` |
-| `strokeStyle` | Primitive (composite-feeder) | String keyword or dashed pattern object | Used by `border.style` |
+| `color` | Basic | Hex string or structured object | Represents a colour in the UI |
+| `dimension` | Basic | Numeric + unit (e.g. `"16px"`, `"1rem"`) | Represents an amount of distance |
+| `duration` | Basic | Milliseconds (number or `"100ms"`) | Length of time, used by transitions |
+| `fontFamily` | Basic | String or array of strings | Single family or fallback stack |
+| `fontWeight` | Basic | Number 1-1000 or named keyword | E.g. `400`, `"bold"` |
+| `number` | Basic | Number | Unitless scalar |
+| `cubicBezier` | Basic | `[x1, y1, x2, y2]` | Used by `transition.timingFunction` |
 | `shadow` | Composite | `{color, offsetX, offsetY, blur, spread}` or array | Single shadow or stacked array; each member MAY alias |
 | `border` | Composite | `{color, width, style}` | `style` is a `strokeStyle` |
+| `strokeStyle` | Composite | String keyword or dashed pattern object | Defined in Format Module section 9.3; used by `border.style` |
 | `transition` | Composite | `{duration, delay, timingFunction}` | `timingFunction` is a `cubicBezier` |
-| `typography` | Composite | `{fontFamily, fontSize, fontWeight, letterSpacing, lineHeight}` | Aggregates five primitives |
+| `typography` | Composite | `{fontFamily, fontSize, fontWeight, letterSpacing, lineHeight}` | Aggregates five basic types |
 | `gradient` | Composite | Array of colour stops | See Format Module draft for full member shape |
-| Stroke style (composite) | Composite | Dashed pattern object | Object form of `strokeStyle`; used inside borders |
-| Composed token | Composite | Variant-specific | Spec leaves room for additional composites |
 
 The spec text anchors these directly: "Represents a shadow style. The $type property MUST be set to the string shadow"; "Represents a border style. The $type property MUST be set to the string border"; "Represents a animated transition between two states"; and the typography type "An object with the following properties: ... fontFamily ... fontSize ... fontWeight ... letterSpacing ... lineHeight."
 
@@ -109,9 +109,9 @@ The spec text anchors these directly: "Represents a shadow style. The $type prop
 
 Three reference implementations cover most production pipelines as of 2025.10:
 
-- **Style Dictionary 4+.** Per the [DTCG integration page](https://styledictionary.com/info/dtcg/), "As of version 4, Style Dictionary has first-class support for the DTCG format." Version 5 tracks 2025.10 follow-ups. Style Dictionary remains the most common transform pipeline from `.tokens.json` to platform outputs (CSS variables, iOS, Android, Tailwind config).
+- **Style Dictionary 4+.** Per the [DTCG integration page](https://styledictionary.com/info/dtcg/), "As of version 4, Style Dictionary has first-class support for the DTCG format," referring to the pre-2025.10 editor's-draft format. Full 2025.10 support is a work in progress in version 5. Style Dictionary remains the most common transform pipeline from `.tokens.json` to platform outputs (CSS variables, iOS, Android, Tailwind config).
 - **Tokens Studio for Figma.** The [token format docs](https://docs.tokens.studio/manage-settings/token-format) note that "The DTCG format prefixes the properties of a design token in the JSON file with the dollar sign ($)." Tokens Studio defaults to DTCG and offers a one-shot conversion of an entire token JSON between legacy and DTCG layouts.
-- **Terrazzo.** Listed in the 2025.10 announcement as a reference implementation alongside Style Dictionary and Tokens Studio.
+- **[Terrazzo](https://terrazzo.app/docs/reference/about/).** An open-source, MIT-licensed design-token CLI and build pipeline, formerly named Cobalt (also known as Cobalt UI). Terrazzo was listed in the 2025.10 announcement as a reference implementation alongside Style Dictionary and Tokens Studio.
 
 Figma's first-party Variables REST API export still has gaps for typography, shadow, and gradient round-trips. If you need full composite fidelity from Figma, route through Tokens Studio or post-process the Variables export.
 
@@ -127,4 +127,5 @@ Figma's first-party Variables REST API export still has gaps for typography, sha
 - Design Tokens Community Group, "Glossary," designtokens.org (2025). https://www.designtokens.org/glossary/
 - Style Dictionary, "DTCG Format Support," styledictionary.com (2025). https://styledictionary.com/info/dtcg/
 - Tokens Studio, "Token Format," docs.tokens.studio (2025). https://docs.tokens.studio/manage-settings/token-format
+- Terrazzo, "About Terrazzo," terrazzo.app (2025). https://terrazzo.app/docs/reference/about/
 - Design Tokens Community Group, "community-group repository," GitHub (2025). https://github.com/design-tokens/community-group
