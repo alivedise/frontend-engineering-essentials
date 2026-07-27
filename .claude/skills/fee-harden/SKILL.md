@@ -11,11 +11,31 @@ adversarially verifies with a separate agent, syncs zh-TW, commits to main.
 
 Argument: optional batch size (default 5). `/fee-harden 2`.
 
+## Run-state lives OFF the content-PR path
+
+Bookkeeping (`audit-ledger.json`, `reports/`, `discovery-log.json`) is
+maintained on the dedicated `harness-state` branch via a worktree at
+`.worktrees/harness-state` (git-ignored), NOT on the content run branch.
+This is why every wave used to conflict on the ledger: the shared
+append-only files rode inside content PRs. Rule now:
+
+- Read/write the ledger and reports through the worktree path
+  `.worktrees/harden-state/docs/superpowers/harness/...` (create the worktree
+  with `git worktree add .worktrees/harness-state harness-state` if absent;
+  `git -C .worktrees/harness-state pull` first to get the latest).
+- Commit bookkeeping ON the harness-state branch and push it directly (no PR
+  — it is internal state the owner does not review):
+  `git -C .worktrees/harness-state add -A && git -C .worktrees/harness-state commit -m "chore(harness): record <cmd> run <date>" && git -C .worktrees/harness-state push`.
+- Content run branches commit ONLY article files and `list.md`. Never
+  `git add docs/superpowers/harness/**` on a content branch.
+
 ## Steps
 
 ### 1. Select the batch
 
-- Read `docs/superpowers/harness/audit-ledger.json`.
+- Read the ledger from the worktree:
+  `.worktrees/harness-state/docs/superpowers/harness/audit-ledger.json`
+  (`git -C .worktrees/harness-state pull` first).
 - Confirm the working tree has NO uncommitted changes (staged or unstaged) under
   `docs/en/` and `docs/zh-tw/` — the workflow runs `git checkout --` on batch
   articles and attributes their `git diff` to the reviser, so pre-existing
@@ -94,9 +114,12 @@ confirm edits stay inside the article, tone fixes did not reword the pattern
 into a new pattern, and the zh mirror was actually updated when the notes say
 it was. Structural surprises send the pair to the revert path with a note.
 
-### 6. Update harness state
+### 6. Update harness state (in the worktree, on harness-state)
 
-- For every article in the batch, upsert `audit-ledger.json`:
+All writes here target `.worktrees/harness-state/docs/superpowers/harness/...`,
+NOT the content run branch.
+
+- For every article in the batch, upsert the worktree `audit-ledger.json`:
   `{"<enPath>": {"id": <id>, "lastAudited": "<today>", "findings": <findings counts or zeros>, "notes": "<status>: <notes, truncated to one line>"}}`
   (`clean`, `revised`, and `reverted`/`failed` all get ledger entries —
   a reverted article records what went wrong and stays at the head of the
@@ -130,12 +153,14 @@ A `revised` result whose notes contain 'zh-TW sync agent failed' goes under
 Order, matching repo conventions (no emojis, no AI attribution):
 
 1. Per category with revised articles: `git add` that category's revised
-   EN+zh pairs, then
+   EN+zh pairs (and `list.md` if titles changed), then
    `docs(<category-kebab>): harden FEE-<ids> (<dominant lenses, e.g. "tone, reader gaps, facts">)`.
    Commit zh-desync articles' EN files too (the revision is verified), but
    naming them in the commit body is not needed — the report and ledger
    carry the flag.
-2. Harness state + report: `chore(harness): record harden run <today>`.
+   NEVER `git add docs/superpowers/harness/**` on the content branch — that
+   bookkeeping was already committed to harness-state in step 6, and adding it
+   here is what reintroduces the ledger merge conflicts.
 
 ### 8. Open the PR
 

@@ -103,7 +103,13 @@ In this order, matching repo conventions (no emojis, no AI attribution):
    (match category token style from `git log` for that directory).
    Per append: `docs(<category>): extend FEE-<target id> with <topic>`.
 2. If list.md changed: `docs(list): regenerate sidebar for FEE-<ids>`.
-3. Harness state + report: `chore(harness): record discover run <today>`.
+3. Harness state (discovery-log, audit-ledger entries for produced articles,
+   report): commit ON the `harness-state` branch via its worktree
+   (`.worktrees/harness-state`), pushed directly — NOT on the content run
+   branch. Never `git add docs/superpowers/harness/**` on the content branch;
+   that is what makes content PRs conflict on the shared append-only state.
+   See fee-harden/SKILL.md "Run-state lives OFF the content-PR path" for the
+   worktree recipe.
 
 ### 8. Open the PR
 
