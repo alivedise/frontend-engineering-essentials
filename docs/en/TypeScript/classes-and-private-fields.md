@@ -7,6 +7,8 @@ category: TypeScript
 level: mid
 allow_no_custom_section: true
 # reason: article fully covered by standard sections; soft-vs-hard privacy and the deep dive already occupy the topic-specific angle without needing a separate heading.
+reviewed: tone
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-1710] Classes, Access Modifiers & `#` Private Fields
@@ -98,7 +100,7 @@ The brand check succeeds for instances the class itself constructed and fails fo
 - **MAY** omit `public`: the default visibility is `public`, so writing the keyword is a style choice. The Handbook notes: "The default visibility of class members is `public`. A `public` member can be accessed anywhere."
 - **SHOULD** use `protected` for base-class extension points. `protected` members are visible to subclasses of the declaring class and a subclass may widen them to `public`, but sibling access is disallowed.
 - **MUST** reach for `#` private fields when the goal is true encapsulation. External JavaScript callers cannot read `#` fields through bracket access or any reflection API; TypeScript `private` is erased at emit.
-- **MUST NOT** combine TypeScript modifiers with `#` syntax. "TypeScript accessibility modifiers like `public` or `private` can't be used on private fields" — the `#` prefix is already the sole visibility marker.
+- **MUST NOT** combine TypeScript modifiers with `#` syntax. "TypeScript accessibility modifiers like `public` or `private` can't be used on private fields." The `#` prefix is already the sole visibility marker.
 - **SHOULD** mark ingest-only properties with `readonly` to forbid reassignment outside the constructor: "Fields may be prefixed with the `readonly` modifier. This prevents assignments to the field outside of the constructor."
 - **MAY** model open hierarchies with `abstract`. Abstract members have no implementation; the class cannot be instantiated directly, and a concrete subclass must supply the missing parts.
 - **SHOULD** prefer `#` fields for library internals. The TS 3.8 release notes highlight the contract: "If you're a library author, removing or renaming a private field should never cause a breaking change."
@@ -107,9 +109,9 @@ The brand check succeeds for instances the class itself constructed and fails fo
 
 TypeScript's original `private` sits on the type-checking side of the compiler. The type system knows a member is private; the runtime does not. The TS 3.8 release notes spell this out: "TypeScript's `private` modifiers are fully erased — that means that at runtime, it acts entirely like a normal property and there's no way to tell that it was declared with a `private` modifier." That design is usually called "soft privacy" because determined callers can still reach the field through bracket access or by dropping the type annotation.
 
-The TC39 proposal made a different trade. Private fields use closure- or WeakMap-like semantics that resist reflection and metaprogramming: "This differs from JavaScript properties, which support various kinds of reflection and metaprogramming, and is instead analogous to mechanisms like closures and WeakMap." That closes the backdoor that soft privacy leaves open, at the cost of giving up features callers sometimes rely on — iteration via `Object.keys`, cloning via spread, and so on.
+The TC39 proposal made a different trade. Private fields use closure- or WeakMap-like semantics that resist reflection and metaprogramming: "This differs from JavaScript properties, which support various kinds of reflection and metaprogramming, and is instead analogous to mechanisms like closures and WeakMap." That closes the backdoor that soft privacy leaves open, at the cost of giving up features callers sometimes rely on: iteration via `Object.keys`, cloning via spread, and so on.
 
-Stage 4 standardisation matters for two reasons. First, the feature is now part of the language rather than a transpiler affordance, so older down-level targets are no longer the baseline assumption. Second, downstream tooling — type-checkers, bundlers, debuggers — can rely on the semantics being stable. Use `#` when the field must never leak. Use TypeScript `private` when the goal is an API contract that code review can enforce without runtime support.
+Stage 4 standardisation matters for two reasons. First, the feature is now part of the language rather than a transpiler affordance, so older down-level targets are no longer the baseline assumption. Second, downstream tooling (type-checkers, bundlers, debuggers) can rely on the semantics being stable. Use `#` when the field must never leak. Use TypeScript `private` when the goal is an API contract that code review can enforce without runtime support.
 
 ## Deep Dive
 
@@ -119,7 +121,7 @@ Stage 4 standardisation matters for two reasons. First, the feature is now part 
 
 **Prototype non-inheritance.** Private elements are not part of the prototype chain and are not inherited by subclasses. MDN: "Private elements are not part of the prototypical inheritance model since they can only be accessed within the current class's body and aren't inherited by subclasses. Private elements with the same name within different classes are entirely different and do not interoperate with each other." A method that touches `this.#foo` only works on instances of the class that declared `#foo`.
 
-**Hard privacy boundary.** The combination of the rules above produces what the TypeScript team labels "hard privacy": "Private fields can't be accessed or even detected outside of the containing class — even by JS users! Sometimes we call this hard privacy." No test from outside the class — `in`, `hasOwnProperty`, debugger inspection, `JSON.stringify` — can surface the field.
+**Hard privacy boundary.** The combination of the rules above produces what the TypeScript team labels "hard privacy": "Private fields can't be accessed or even detected outside of the containing class — even by JS users! Sometimes we call this hard privacy." No test from outside the class (`in`, `hasOwnProperty`, debugger inspection, `JSON.stringify`) can surface the field.
 
 **Polymorphic `this`.** Separate from privacy, TypeScript provides a polymorphic `this` type inside class bodies: "In classes, a special type called `this` refers dynamically to the type of the current class." A builder method that returns `this` retains the subclass type when called on a subclass instance, which makes fluent APIs survive inheritance without generic gymnastics.
 

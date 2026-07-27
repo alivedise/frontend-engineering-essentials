@@ -5,6 +5,8 @@ state: draft
 slug: html-sanitizer-api
 category: HTML and Semantic Markup
 level: senior
+reviewed: tone
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-115] HTML Sanitizer API — setHTML() vs setHTMLUnsafe() vs innerHTML
@@ -17,9 +19,9 @@ HTML Sanitizer API 引入兩個元素方法 `setHTML()` 與 `setHTMLUnsafe()`，
 
 HTML Sanitizer API 讓開發者能把 HTML 字串插入 DOM 或 shadow DOM 時，過濾掉不想要的元素、屬性及其他 HTML 實體 ([MDN HTML Sanitizer API](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API))。目前字串轉 DOM 的邊界有三個進入點，各自有明確的契約：
 
-- `Element.innerHTML` — 將字串解析進宿主元素，不做清毒，且會靜默丟棄宣告式 shadow root。
-- `Element.setHTMLUnsafe(input, options?)` — 解析字串，預設不清毒；若未傳入 sanitizer，輸入中的所有 HTML 實體都會被注入 ([MDN setHTMLUnsafe](https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTMLUnsafe))。它也會將 `<template shadowrootmode>` 解析為真正的 shadow root。
-- `Element.setHTML(input, options?)` — 解析並依 XSS 安全允許清單清毒，單一步驟完成。
+- `Element.innerHTML` 將字串解析進宿主元素，不做清毒，且會靜默丟棄宣告式 shadow root。
+- `Element.setHTMLUnsafe(input, options?)` 解析字串，預設不清毒；若未傳入 sanitizer，輸入中的所有 HTML 實體都會被注入 ([MDN setHTMLUnsafe](https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTMLUnsafe))。它也會將 `<template shadowrootmode>` 解析為真正的 shadow root。
+- `Element.setHTML(input, options?)` 解析並依 XSS 安全允許清單清毒，單一步驟完成。
 
 `Unsafe` 版本之所以存在，是因為 `innerHTML` 會靜默丟棄 declarative shadow DOM：使用 `setHTMLUnsafe()` 時，輸入中的宣告式 shadow root 會被解析進 DOM，這與 `Element.innerHTML` 的行為不同 ([MDN setHTMLUnsafe](https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTMLUnsafe))。伺服器渲染元件若輸出 `<template shadowrootmode="open">` 標記，需要這項行為，因此平台在 API 層面將 parser 與 sanitizer 拆開。
 

@@ -5,6 +5,8 @@ state: draft
 slug: satisfies-operator
 category: TypeScript
 level: mid
+reviewed: tone
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-1709] The `satisfies` Operator
@@ -100,7 +102,7 @@ If you want both literal precision and contract checking at a declaration site, 
 
 ## Deep Dive
 
-`satisfies` does not confer `as const` behaviour. It does not convert properties to `readonly`, does not narrow primitive literals to their literal types, and does not fold array types to tuple types. Those effects come from `as const`. The combination `as const satisfies T` is therefore ordered: `as const` narrows and freezes the literal, then `satisfies T` validates the narrowed type against `T`.
+`satisfies` does not confer `as const` behaviour. `as const` is what converts properties to `readonly`, narrows primitive literals to their literal types, and folds array types to tuple types. The combination `as const satisfies T` is therefore ordered: `as const` narrows and freezes the literal, then `satisfies T` validates the narrowed type against `T`.
 
 Reversing the order fails. The TypeScript repo issue `#51173` records that `const` assertions can only be applied to references to enum members, or to string, number, boolean, array, or object literals. After `satisfies` runs, the expression is no longer treated as one of those forms, so `satisfies T as const` is rejected at parse/check time.
 

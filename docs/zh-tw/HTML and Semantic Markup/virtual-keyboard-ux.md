@@ -5,6 +5,8 @@ state: draft
 slug: virtual-keyboard-ux
 category: HTML and Semantic Markup
 level: mid
+reviewed: tone
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-114] 虛擬鍵盤 UX：inputmode、enterkeyhint 與純文字編輯
@@ -63,7 +65,7 @@ level: mid
 </form>
 ```
 
-前兩個輸入框的 Enter 鍵帶有往前指向的標籤；最後一個顯示為 "Done"（或作業系統對應的圖示）。在 Enter 時移動焦點仍需 JavaScript，該屬性只更動標籤（詳見深入探討）。
+前兩個輸入框的 Enter 鍵帶有往前指向的標籤；最後一個顯示為 "Done"（或作業系統對應的圖示）。在 Enter 時移動焦點仍需 JavaScript。該屬性只更動標籤（詳見深入探討）。
 
 ### 聊天輸入框搭配 `plaintext-only`
 

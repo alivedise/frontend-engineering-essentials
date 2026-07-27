@@ -5,6 +5,8 @@ state: draft
 slug: popover-states-and-anchor-positioning
 category: HTML and Semantic Markup
 level: senior
+reviewed: tone
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-111] Popover API States and Anchor Positioning Integration
@@ -17,7 +19,7 @@ The Popover API exposes three declarative states (`auto`, `manual`, `hint`) that
 
 The HTML `popover` global attribute accepts three state values: `auto`, `hint`, and `manual` (Claim 1). Each state changes what the user agent does when the popover is shown and how it interacts with other visible popovers:
 
-- **`popover="auto"`** is the default menu/dialog behavior. The popover light-dismisses on outside click or Esc, and showing a new auto popover closes any unrelated auto popover that was already visible — only one auto popover at a time, unless nested (Claim 2).
+- **`popover="auto"`** is the default menu/dialog behavior. The popover light-dismisses on outside click or Esc, and showing a new auto popover closes any unrelated auto popover that was already visible. Only one auto popover is visible at a time, unless nested (Claim 2).
 - **`popover="manual"`** opts out of light-dismiss entirely. Multiple independent manual popovers may be visible simultaneously, and each is shown or hidden only through declarative invokers or the `showPopover()` / `hidePopover()` / `togglePopover()` methods (Claim 3).
 - **`popover="hint"`** light-dismisses on outside interaction and closes other visible hints, yet leaves any open auto popover alone. That makes `hint` suitable for hover or focus tooltips layered over an open menu (Claim 4).
 
@@ -98,7 +100,7 @@ The `beforetoggle` and `toggle` events expose `oldState` and `newState`, each be
 ## Best Practices
 
 - **MUST** let the user agent manage focus on popover open/close. Showing a popover inserts its contents into keyboard tab order, and Esc-close returns focus to the invoker (Claim 8). Custom focus traps compete with that behavior and regress Esc handling.
-- **MUST** feature-detect before depending on `popover="hint"`. It ships in Chromium 133+, Firefox 149+, and Opera 118+ but remains unimplemented in Safari and Safari iOS through 26.5 (Claim 16). The core API — `auto`, `manual`, `popovertarget`, the DOM methods — reached Baseline 2025 and works across every evergreen engine (Claim 15).
+- **MUST** feature-detect before depending on `popover="hint"`. It ships in Chromium 133+, Firefox 149+, and Opera 118+ but remains unimplemented in Safari and Safari iOS through 26.5 (Claim 16). The core API (`auto`, `manual`, `popovertarget`, the DOM methods) reached Baseline 2025 and works across every evergreen engine (Claim 15).
 - **SHOULD** pick the state by interaction model. Use `auto` for menus, dialogs, and disclosure surfaces where only one should be visible. Use `manual` for persistent floating panels (chat drawers, inspector widgets) that must survive outside clicks. Use `hint` for tooltips layered over an open menu, where light-dismiss on outside interaction is acceptable but auto popovers must remain open (Claim 4).
 - **SHOULD** provide a fallback for `hint` where it is unavailable. Degrade to `popover="auto"` behind a feature test, or render the tooltip content inline with `role="tooltip"` when layered interaction is not required (Claim 16).
 - **SHOULD** prefer declarative invocation (`popovertarget` + `popovertargetaction`) over scripted `togglePopover()` calls. The declarative path needs no JavaScript, participates in form semantics, and stays accessible when scripts fail to load (Claim 5).
@@ -125,15 +127,15 @@ Choose implicit binding when the popover has exactly one invoker and no other an
 
 ## Anchor Positioning Integration
 
-The CSS anchor positioning module promotes a long-standing tooltip-library responsibility — tracking a reference element's box and placing a floating element beside it — into a browser primitive. Three pieces matter for popover work.
+The CSS anchor positioning module promotes a long-standing tooltip-library responsibility into a browser primitive: tracking a reference element's box and placing a floating element beside it. Three pieces matter for popover work.
 
 **Implicit anchor through the invoker.** The Popover API already creates an anchor reference whenever a control is associated with a popover through `popovertarget` or through the `source` option of `togglePopover()` (Claim 11). No `anchor-name` declaration is needed for the common "button opens a menu below itself" layout: the popover's CSS reads edges of the invoker directly with `anchor(bottom)`, `anchor(center)`, and the other `anchor()` keywords.
 
 **Explicit anchor binding.** For layouts where the anchor is a different element from the invoker, or where one popover pins to several anchors, declare `anchor-name: --my-anchor` on the anchor and `position-anchor: --my-anchor` on the positioned element. Both properties accept `<dashed-ident>` values, and `anchor-name` can hold a comma-separated list so a single element serves multiple positioned consumers (Claim 12).
 
-**Overflow fallbacks.** `position-try-fallbacks` takes an ordered list of alternative placements — keywords such as `flip-block` and `flip-inline`, or named `@position-try` rules — and the browser picks the first option that keeps the popover inside its containing block. If none of the options fit, it reverts to the default placement (Claim 13). That replaces the flip-and-reposition logic that tooltip libraries historically implemented in JavaScript with `getBoundingClientRect()` and resize/scroll observers.
+**Overflow fallbacks.** `position-try-fallbacks` takes an ordered list of alternative placements (keywords such as `flip-block` and `flip-inline`, or named `@position-try` rules), and the browser picks the first option that keeps the popover inside its containing block. If none of the options fit, it reverts to the default placement (Claim 13). That replaces the flip-and-reposition logic that tooltip libraries historically implemented in JavaScript with `getBoundingClientRect()` and resize/scroll observers.
 
-**Baseline timeline.** `anchor-name`, `position-anchor`, and `position-try-fallbacks` reached Baseline 2026 — newly available since January 2026, working across the latest devices and browser versions (Claim 14). The Popover API itself reached Baseline 2025 one year earlier (Claim 15), so teams on Baseline 2025 can ship popovers today and layer anchor positioning on once their support matrix catches up, degrading to a static placement in the interim.
+**Baseline timeline.** `anchor-name`, `position-anchor`, and `position-try-fallbacks` reached Baseline 2026, newly available since January 2026 and working across the latest devices and browser versions (Claim 14). The Popover API itself reached Baseline 2025 one year earlier (Claim 15), so teams on Baseline 2025 can ship popovers today and layer anchor positioning on once their support matrix catches up, degrading to a static placement in the interim.
 
 ## Related Topics
 

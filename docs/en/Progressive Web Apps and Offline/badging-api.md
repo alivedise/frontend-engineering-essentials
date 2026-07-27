@@ -3,6 +3,8 @@ id: 1317
 title: "Badging API and Re-Engagement Surfaces for Installed PWAs"
 state: draft
 slug: badging-api
+reviewed: tone
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-1317] Badging API and Re-Engagement Surfaces for Installed PWAs
