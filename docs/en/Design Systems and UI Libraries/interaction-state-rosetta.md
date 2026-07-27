@@ -13,7 +13,7 @@ The word "active" carries four unrelated meanings across the disciplines that bu
 
 ## Context
 
-The five-state vocabulary has three independent histories that were never reconciled. CSS pseudo-classes such as `:active`, `:focus`, and `:hover` arrived through CSS 2.1 (2011) and were designed before "interaction state" existed as a design-system concept. WAI-ARIA 1.0 (2014) introduced semantic state attributes — `aria-selected`, `aria-pressed`, `aria-current`, `aria-activedescendant` — for assistive technologies. Material Design, also in 2014, introduced "activated" as a persistent visual state for the current item in a list, distinct from "selected" and "pressed". The current authoritative reference for the ARIA half of the rosetta is WAI-ARIA 1.2, which became a W3C Recommendation on 6 June 2023. The singleton nature of DOM focus is normatively defined by the HTML Living Standard, with `document.activeElement` as its JavaScript handle.
+The five-state vocabulary has three independent histories that were never reconciled. The dynamic CSS pseudo-classes `:hover` and `:focus` were first defined in CSS2 (W3C Recommendation, May 1998), and `:active` dates back further still to CSS1 (W3C Recommendation, December 1996); all three were carried forward, unchanged in their basic behavior, into the stable CSS 2.1 revision (W3C Recommendation, 2011), and were designed before "interaction state" existed as a design-system concept. WAI-ARIA 1.0 (2014) introduced semantic state attributes: `aria-selected`, `aria-pressed`, and `aria-activedescendant`. WAI-ARIA 1.1 (W3C Recommendation, 14 December 2017) later added `aria-current`, completing the set this rosetta relies on for assistive technologies. Material Design, also introduced in 2014, brought "activated" as a persistent visual state for the current item in a list, distinct from "selected" and "pressed". The current authoritative reference for the ARIA half of the rosetta is WAI-ARIA 1.2, which became a W3C Recommendation on 6 June 2023. The singleton nature of DOM focus is normatively defined by the HTML Living Standard, with `document.activeElement` as its JavaScript handle.
 
 ## Visual
 
@@ -195,7 +195,7 @@ Naming a component prop `isActive` costs reading time on every consumer site. A 
 
 State stacking is the usual case in a real component: a row in a multi-select grid can be hovered, the keyboard cursor (active descendant), and `aria-selected="true"` all at once. Most of these dimensions are independent. Being focused does not imply being selected, and being selected does not imply being current. The design system carries the burden of defining visual precedence when two state visuals would conflict, since the browser will paint every matching rule.
 
-The load-bearing ARIA pitfall sits with `aria-activedescendant`. The MDN reference is explicit that the attribute "manages providing assistive technologies with information as to which element has focus, but doesn't actually create focus". The W3C WAI-ARIA 1.2 specification gives the underlying user-agent contract: when implementing `aria-activedescendant`, the user agent keeps the DOM focus on the container element or on an input element that controls the container element, while communicating desktop focus events and states to the assistive technology as if the element referenced by `aria-activedescendant` has focus. CSS rules that target `:focus` on individual options will never match in this pattern, because DOM focus is on the composite container and not on the option the user perceives as focused. A visual cursor on the option must be styled through an attribute-selector chain that pairs the container's `aria-activedescendant` value with the option's `id`, or through `:has()`, never through `:focus`. Mixing the two patterns — moving DOM focus among options while also setting `aria-activedescendant` — is invalid: the ARIA Authoring Practices Guide treats `aria-activedescendant` and DOM-focus-moving (roving tabindex) as two alternatives, not composable strategies, inside one composite widget.
+The load-bearing ARIA pitfall sits with `aria-activedescendant`. The MDN reference is explicit that the attribute "manages providing assistive technologies with information as to which element has focus, but doesn't actually create focus". The W3C WAI-ARIA 1.2 specification gives the underlying user-agent contract: when implementing `aria-activedescendant`, the user agent keeps the DOM focus on the container element or on an input element that controls the container element, while communicating desktop focus events and states to the assistive technology as if the element referenced by `aria-activedescendant` has focus. CSS rules that target `:focus` on individual options will never match in this pattern, because DOM focus is on the composite container and not on the option the user perceives as focused. A visual cursor on the option must be styled through an attribute-selector chain that pairs the container's `aria-activedescendant` value with the option's `id`, or through `:has()`, never through `:focus`. Mixing the two patterns (moving DOM focus among options while also setting `aria-activedescendant`) is invalid: the ARIA Authoring Practices Guide treats `aria-activedescendant` and DOM-focus-moving (roving tabindex) as two alternatives, not composable strategies, inside one composite widget.
 
 ## State Cardinality Rules
 
@@ -227,6 +227,19 @@ Implication: a "pressed" mockup almost always describes the persistent toggle-on
 
 "Activated" and `:focus` cannot be the same engineering concept because they sit in different cardinality classes. "Activated" is plural-permissible across items in a list or grid, while `:focus` is strictly singular per browsing context. Any vocabulary that collapses the two will lose either the multi-item case or the singleton DOM-focus invariant. The rosetta table holds because every row chooses one cardinality class and stays in it.
 
+### Quick State Reference
+
+A handful of related states outside the five-row vocabulary follow the same cardinality logic and are useful to have on hand.
+
+| State | CSS | ARIA | Cardinality | Notes |
+|---|---|---|---|---|
+| Hover | `:hover` | none | Moment-bounded | Pointer-only; releases when pointer leaves |
+| Disabled | `:disabled`, `[aria-disabled]` | `aria-disabled` | Per element | `:disabled` only matches form controls; `aria-disabled` works on any role |
+| Checked | `:checked` | `aria-checked` | Per element | `:checked` only matches form controls |
+| Target | `:target` | none | Strictly singular | URL-fragment-driven; one element matches per document |
+| Focus-within | `:focus-within` | none | Implied by descendant focus | Matches the element or any of its descendants, including through shadow DOM |
+| Expanded | `[aria-expanded]` | `aria-expanded` | Per element | Used on disclosure widgets, comboboxes, and tree branches |
+
 ## Related Topics
 
 - [Keyboard Navigation & Focus Management](/en/Accessibility/1002)
@@ -251,15 +264,5 @@ Implication: a "pressed" mockup almost always describes the persistent toggle-on
 - WHATWG, "HTML Living Standard — Focus," WHATWG (2026). https://html.spec.whatwg.org/multipage/interaction.html#focus
 - Adobe, "Selection," React Aria documentation (2025). https://react-aria.adobe.com/selection
 - Adobe, "Styling," React Aria documentation (2025). https://react-aria.adobe.com/styling
+- Google, "States," Material Design 2 (describes "activated" as a more permanent highlighted-destination state, distinct from the user-choice "selected" state). https://m2.material.io/go/design-states
 - Google, "Material Design 3 — Interaction states," Material Design (named-vocabulary reference for "activated"; SPA-rendered, no verbatim quote extracted). https://m3.material.io/foundations/interaction/states/applying-states
-
-## Appendix — Quick State Reference
-
-| State | CSS | ARIA | Cardinality | Notes |
-|---|---|---|---|---|
-| Hover | `:hover` | — | Moment-bounded | Pointer-only; releases when pointer leaves |
-| Disabled | `:disabled`, `[aria-disabled]` | `aria-disabled` | Per element | `:disabled` only matches form controls; `aria-disabled` works on any role |
-| Checked | `:checked` | `aria-checked` | Per element | `:checked` only matches form controls |
-| Target | `:target` | — | Strictly singular | URL-fragment-driven; one element matches per document |
-| Focus-within | `:focus-within` | — | Implied by descendant focus | Matches the element or any of its descendants, including through shadow DOM |
-| Expanded | `[aria-expanded]` | `aria-expanded` | Per element | Used on disclosure widgets, comboboxes, and tree branches |

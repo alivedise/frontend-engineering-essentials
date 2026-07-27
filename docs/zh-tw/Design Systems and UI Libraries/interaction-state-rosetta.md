@@ -13,7 +13,7 @@ slug: interaction-state-rosetta
 
 ## 背景
 
-這五個狀態詞彙有三段彼此獨立、從未被調和的歷史。`:active`、`:focus`、`:hover` 等 CSS 偽類隨 CSS 2.1（2011）抵達，設計時「互動狀態」尚未成為設計系統概念。WAI-ARIA 1.0（2014）為輔助技術引入了語意狀態屬性：`aria-selected`、`aria-pressed`、`aria-current`、`aria-activedescendant`。同樣在 2014 年，Material Design 引入「activated」作為清單中當前項目的持久視覺狀態，與「selected」和「pressed」有所區別。對照表中 ARIA 那半邊目前的權威參考是 WAI-ARIA 1.2，於 2023 年 6 月 6 日成為 W3C Recommendation。DOM 焦點的單一性質則由 HTML Living Standard 規範定義，`document.activeElement` 是其 JavaScript 把手。
+這五個狀態詞彙有三段彼此獨立、從未被調和的歷史。動態 CSS 偽類 `:hover` 與 `:focus` 最早定義於 CSS2（W3C Recommendation，1998 年 5 月），`:active` 則可追溯至更早的 CSS1（W3C Recommendation，1996 年 12 月）；三者的基本行為原封不動地延續進穩定版的 CSS 2.1 修訂版（W3C Recommendation，2011 年），而它們的設計時間都早於「互動狀態」成為設計系統概念之前。WAI-ARIA 1.0（2014）為輔助技術引入了語意狀態屬性：`aria-selected`、`aria-pressed`、`aria-activedescendant`。WAI-ARIA 1.1（W3C Recommendation，2017 年 12 月 14 日）之後補上 `aria-current`，補齊了本對照表所依賴的屬性集合。同樣於 2014 年推出的 Material Design，引入「activated」作為清單中當前項目的持久視覺狀態，與「selected」和「pressed」有所區別。對照表中 ARIA 那半邊目前的權威參考是 WAI-ARIA 1.2，於 2023 年 6 月 6 日成為 W3C Recommendation。DOM 焦點的單一性質則由 HTML Living Standard 規範定義，`document.activeElement` 是其 JavaScript 存取入口。
 
 ## 視覺對比
 
@@ -205,7 +205,7 @@ ARIA 陷阱在於 `aria-activedescendant`。MDN 文件明確指出該屬性「�
 
 - DOM `:focus` 在每個瀏覽情境中為單一。HTML Living Standard 指定每個 Document 中只有一個可聚焦區域作為該文件的 focused area。
 - `aria-current` 在每個邏輯集合中為單一。MDN 指引指示作者僅將集合中的一個元素以 `aria-current` 標記為當前。
-- `document.activeElement` 是單一 DOM focus 狀態的 JavaScript 把手，回傳那個接收鍵盤事件的元素。
+- `document.activeElement` 是單一 DOM focus 狀態的 JavaScript 存取入口，回傳那個接收鍵盤事件的元素。
 
 意涵：設計師要求「每一個選中列都顯示 focus」時，這在工程層次是錯誤的請求。他們想要的視覺是每一列上的環或填色，對應到允許多重的 `aria-selected`，而非字面上對每一列的 focus。
 
@@ -226,6 +226,19 @@ ARIA 陷阱在於 `aria-activedescendant`。MDN 文件明確指出該屬性「�
 意涵：「pressed」設計稿幾乎總是描述持久的切換開啟狀態（`aria-pressed="true"`）；瞬時界定的 `:active` 在語意上屬於不同範疇。基數的判斷線索是「使用者是否預期放開滑鼠後仍看到此狀態？」若是，該狀態屬於第 2 類（允許多重），需要 ARIA 屬性，而非 CSS 偽類。
 
 「Activated」與 `:focus` 不能是同一個工程概念，因為它們位於不同的基數類別。「Activated」在清單或 grid 中跨項目允許多重，而 `:focus` 在每個瀏覽情境中嚴格單一。任何把兩者合併的詞彙都會喪失多項目情況或 DOM-focus 單一不變量的其中之一。對照表能成立，是因為每一列都選定一個基數類別並維持其中。
+
+### 快速狀態對照
+
+還有一些不在五列詞彙表中的相關狀態，遵循相同的基數邏輯，值得放在手邊參考。
+
+| 狀態 | CSS | ARIA | 基數 | 備註 |
+|---|---|---|---|---|
+| Hover | `:hover` | 無 | 瞬時界定 | 僅限指標；指標離開即釋放 |
+| Disabled | `:disabled`、`[aria-disabled]` | `aria-disabled` | 每個元素 | `:disabled` 僅命中表單控制項；`aria-disabled` 可用於任何角色 |
+| Checked | `:checked` | `aria-checked` | 每個元素 | `:checked` 僅命中表單控制項 |
+| Target | `:target` | 無 | 嚴格單一 | 由 URL 片段驅動；每份文件僅一個元素命中 |
+| Focus-within | `:focus-within` | 無 | 由後代焦點蘊含 | 命中元素本身或其任一後代，包含跨 shadow DOM |
+| Expanded | `[aria-expanded]` | `aria-expanded` | 每個元素 | 用於 disclosure 元件、combobox 與樹狀分支 |
 
 ## 延伸閱讀
 
@@ -251,15 +264,5 @@ ARIA 陷阱在於 `aria-activedescendant`。MDN 文件明確指出該屬性「�
 - WHATWG, "HTML Living Standard — Focus," WHATWG (2026). https://html.spec.whatwg.org/multipage/interaction.html#focus
 - Adobe, "Selection," React Aria documentation (2025). https://react-aria.adobe.com/selection
 - Adobe, "Styling," React Aria documentation (2025). https://react-aria.adobe.com/styling
+- Google, "States," Material Design 2 (describes "activated" as a more permanent highlighted-destination state, distinct from the user-choice "selected" state). https://m2.material.io/go/design-states
 - Google, "Material Design 3 — Interaction states," Material Design (named-vocabulary reference for "activated"; SPA-rendered, no verbatim quote extracted). https://m3.material.io/foundations/interaction/states/applying-states
-
-## 附錄 — 快速狀態對照
-
-| 狀態 | CSS | ARIA | 基數 | 備註 |
-|---|---|---|---|---|
-| Hover | `:hover` | — | 瞬時界定 | 僅限指標；指標離開即釋放 |
-| Disabled | `:disabled`、`[aria-disabled]` | `aria-disabled` | 每個元素 | `:disabled` 僅命中表單控制項；`aria-disabled` 可用於任何角色 |
-| Checked | `:checked` | `aria-checked` | 每個元素 | `:checked` 僅命中表單控制項 |
-| Target | `:target` | — | 嚴格單一 | 由 URL 片段驅動；每份文件僅一個元素命中 |
-| Focus-within | `:focus-within` | — | 由後代焦點蘊含 | 命中元素本身或其任一後代，包含跨 shadow DOM |
-| Expanded | `[aria-expanded]` | `aria-expanded` | 每個元素 | 用於 disclosure 元件、combobox 與樹狀分支 |
