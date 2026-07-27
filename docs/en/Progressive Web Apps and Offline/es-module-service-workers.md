@@ -8,12 +8,12 @@ slug: es-module-service-workers
 # [FEE-1315] ES Module Service Workers (type: 'module') and Static Import Migration
 
 :::info
-Module service workers let you replace `importScripts('./x.js')` with top-level `import { x } from './x.js'` by passing `{ type: 'module' }` to `navigator.serviceWorker.register()`. Chrome and Edge shipped this in version 91 (April–May 2021), Safari shipped it in version 15, and Firefox 147 (Bugzilla 1360870 RESOLVED FIXED) closed the four-year gap. Two constraints carry over from classic service workers: dynamic `import()` is disallowed by the specification and throws, and top-level await is intentionally not allowed. The migration path is mechanical for source code but introduces a bundler decision for browsers without module-SW support.
+Module service workers let you replace `importScripts('./x.js')` with top-level `import { x } from './x.js'` by passing `{ type: 'module' }` to `navigator.serviceWorker.register()`. Chrome and Edge shipped this in version 91 (April–May 2021), Safari shipped it in version 15, and Firefox 147 (Bugzilla 1360870 RESOLVED FIXED), released 2026-01-13, closed the roughly four-and-a-half-year gap. Two module features remain off-limits even in module mode: dynamic `import()` is disallowed by the specification and throws, and top-level await is intentionally not allowed. Both prohibitions are enforced only in module mode. What carries over from classic service workers is the underlying reasoning: the dependency graph must be resolvable at install time, and event listeners must attach synchronously. The migration path is mechanical for source code but introduces a bundler decision for browsers without module-SW support.
 :::
 
 ## Context
 
-`importScripts()` has been the only way to compose service worker code since the API shipped in 2014. Module-script support for workers landed in stages: dedicated workers first, then shared workers, and finally service workers. W3C ServiceWorker issue #831, opened by domenic on 2016-02-12, tracked the work of adding `WorkerType type = "classic"` to `RegistrationOptions` and updating the registration processes. Chromium shipped first in version 91; Mozilla's Bugzilla 1360870 sat open until Firefox 147 marked it RESOLVED FIXED. With Firefox 147 the feature is Baseline-newly-available across all major engines (caniuse global usage 95.17%).
+`importScripts()` has been the only way to compose service worker code since the API shipped in 2014. Module-script support for workers landed in stages: dedicated workers first, then shared workers, and finally service workers. W3C ServiceWorker issue #831, opened by domenic on 2016-02-12, tracked the work of adding `WorkerType type = "classic"` to `RegistrationOptions` and updating the registration processes. Chromium shipped first in version 91; Mozilla's Bugzilla 1360870 sat open until Firefox 147 marked it RESOLVED FIXED. With Firefox 147 the feature is Baseline-newly-available across all major engines (~93% of tracked global usage per caniuse).
 
 ## Visual
 
@@ -61,9 +61,9 @@ When the contents of `./cache.js` or `./router.js` change, the browser triggers 
 - **MUST NOT** use top-level await in a module service worker. jakearchibald on issue #1407: "service workers that use top-level await would be considered bad practice"; wanderview added that "top-level await would not be protected by a `waitUntil()`" and "we probably couldn't automatically keep it alive because then it would become an abuse vector."
 - **MUST NOT** call `import()` (dynamic import) inside a service worker. MDN: "Dynamic import is disallowed by the specification — calling `import()` will throw." web.dev confirms: "Inside of a service worker, only the static syntax is currently supported."
 - **MUST NOT** call `importScripts()` from a module-mode service worker. MDN states the call throws `TypeError` with the message advising `import` instead.
-- **SHOULD** ship a bundled fallback service worker for browsers that predate module-SW support, and feature-detect at register time. web.dev: "Once you have two versions of your service worker available — one that uses ES modules, and the other that doesn't — you'll need to detect what the current browser supports, and register the corresponding service worker script."
+- **SHOULD** ship a bundled fallback service worker for browsers that predate module-SW support. web.dev: "Once you have two versions of your service worker available — one that uses ES modules, and the other that doesn't — you'll need to detect what the current browser supports, and register the corresponding service worker script." web.dev also states that "the best practices for detecting support are currently in flux," and points readers to W3C ServiceWorker issue #1582 for the current recommendations; there is no settled synchronous feature-detection test as of this writing.
 - **SHOULD** move one-time async setup into the `install` event with `event.waitUntil(...)` rather than attempting top-level async initialization. This follows from the no-TLA constraint above and the synchronous-listener requirement.
-- **MAY** rely on the import graph for the SW update check. Per web.dev (Claim 8), changes to imported module contents trigger the same update flow that `importScripts()` targets did.
+- **MAY** rely on the import graph for the SW update check. Per web.dev, changes to imported module contents trigger the same update flow that `importScripts()` targets did.
 
 ## Design Thinking
 
@@ -76,6 +76,8 @@ The Chromium "ES Modules in Service Workers" design doc states: "A module script
 The browser-support timeline as recorded by caniuse: Chrome 91, Edge 91, Opera 77, Samsung Internet 16.0, Safari 15, Firefox 147. The Firefox 147 ship was preceded by an attempt in Firefox 146 that was backed out due to crash bug 1998332 before re-landing.
 
 ## Migration from importScripts
+
+Most teams migrating away from `importScripts()` are migrating away from Workbox, Google's widely used service worker library, rather than a hand-rolled script. Workbox's CDN loader, `importScripts('https://storage.googleapis.com/workbox-cdn/releases/<version>/workbox-sw.js')`, and its `generateSW` build mode both produce an `importScripts()`-based service worker by default.
 
 Six steps. The first three are source changes; the last three concern the build and rollout.
 
@@ -116,8 +118,9 @@ MDN: "'module' — The loaded service worker is in an ES module and the import s
 
 - **Webpack 5:** set `experiments.outputModule: true` and `output.module: true`. The Webpack docs: "Output JavaScript files as module type. … Disabled by default as it's an experimental feature. … `output.module` is an experimental feature and can only be enabled by setting `experiments.outputModule` to `true`." Effects: "When enabled, webpack will set `output.iife` to `false`, `output.scriptType` to `'module'` and `terserOptions.module` to `true` internally."
 - **Vite:** native. The Vite docs note "The worker script can also use ESM `import` statements instead of `importScripts()`," that the worker constructor "accepts options, which can be used to create 'module' workers" with `{ type: 'module' }`, and that "by default, the worker script will be emitted as a separate chunk in the production build."
+- **Workbox (`workbox-build`):** if the pre-migration service worker was generated by Workbox's `injectManifest` mode, the migration is narrower than a full rewrite. `injectManifest` "will generate a list of URLs to precache, and add that precache manifest to an existing service worker file. It will otherwise leave the file as-is," per the Workbox documentation, so the source file passed to it can already be an ES module with static `import` declarations; the Webpack or Vite configuration above then emits that source as a module. Teams on Workbox's `generateSW` mode, which owns the entire service worker file, need to move to `injectManifest` before this applies.
 
-**5. Ship two service worker files for the long-tail compatibility window** with browsers that predate module SW support. web.dev: "To accommodate browsers that don't have built-in support, you can run your service worker script through an ES module-compatible bundler to create a service worker that includes all of the module code inline, and will work in older browsers." Feature-detect at register time and register the corresponding script.
+**5. Ship two service worker files for the long-tail compatibility window** with browsers that predate module SW support. web.dev: "To accommodate browsers that don't have built-in support, you can run your service worker script through an ES module-compatible bundler to create a service worker that includes all of the module code inline, and will work in older browsers." Detecting which script to register is unsettled: web.dev states "the best practices for detecting support are currently in flux" and points to W3C ServiceWorker issue #1582 for current recommendations, rather than prescribing one synchronous test.
 
 **6. Verify the update flow.** Module imports trigger the SW update check the same way `importScripts()` targets did, per web.dev.
 
@@ -127,17 +130,22 @@ A note on the dynamic-loading pattern proposed in W3C issue #1407 — `const mod
 
 - [FEE-307 ES Modules](/en/JavaScript%20Modern%20Capabilities/307)
 - [FEE-1302 Service Workers](/en/Progressive%20Web%20Apps%20and%20Offline/1302)
+- [FEE-1304 Workbox & PWA Tooling](/en/Progressive%20Web%20Apps%20and%20Offline/1304)
 
 ## References
 
-- Jeff Posnick, "ES modules in service workers," web.dev. https://web.dev/articles/es-modules-in-sw
-- MDN contributors, "ServiceWorkerContainer.register()," MDN Web Docs. https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerContainer/register
-- MDN contributors, "WorkerGlobalScope.importScripts()," MDN Web Docs. https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/importScripts
-- MDN contributors, "ServiceWorker," MDN Web Docs. https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorker
-- caniuse, "ServiceWorker API: Support for ECMAScript modules." https://caniuse.com/mdn-api_serviceworker_ecmascript_modules
-- Chromium project, "ES Modules in Service Workers," chromium.googlesource.com. https://chromium.googlesource.com/chromium/src/+/refs/heads/main/content/browser/service_worker/es_modules.md
-- W3C ServiceWorker, issue #1407, "Top-level await integration for ServiceWorkers running modules." https://github.com/w3c/ServiceWorker/issues/1407
-- W3C ServiceWorker, issue #831, "Support module service workers, and update for ES6." https://github.com/w3c/ServiceWorker/issues/831
-- Mozilla Bugzilla, bug 1360870, "Implement 'module' service workers." https://bugzilla.mozilla.org/show_bug.cgi?id=1360870
-- Webpack documentation, "output.module." https://webpack.js.org/configuration/output/#outputmodule
-- Vite documentation, "Web Workers." https://vite.dev/guide/features.html#web-workers
+- Jeff Posnick, "ES modules in service workers," web.dev (2021). https://web.dev/articles/es-modules-in-sw
+- MDN contributors, "ServiceWorkerContainer.register()," MDN Web Docs (2026). https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerContainer/register
+- MDN contributors, "WorkerGlobalScope.importScripts()," MDN Web Docs (2026). https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/importScripts
+- MDN contributors, "ServiceWorker," MDN Web Docs (2026). https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorker
+- caniuse, "ServiceWorker API: Support for ECMAScript modules" (2026). https://caniuse.com/mdn-api_serviceworker_ecmascript_modules
+- Chromium project, "ES Modules in Service Workers," chromium.googlesource.com (2026). https://chromium.googlesource.com/chromium/src/+/refs/heads/main/content/browser/service_worker/es_modules.md
+- W3C ServiceWorker, issue #1407, "Top-level await integration for ServiceWorkers running modules" (2019). https://github.com/w3c/ServiceWorker/issues/1407
+- W3C ServiceWorker, issue #831, "Support module service workers, and update for ES6" (2016). https://github.com/w3c/ServiceWorker/issues/831
+- W3C ServiceWorker, issue #1582, "Feature detection for type=\"module\" support" (2021). https://github.com/w3c/ServiceWorker/issues/1582
+- Mozilla Bugzilla, bug 1360870, "Implement 'module' service workers" (2017). https://bugzilla.mozilla.org/show_bug.cgi?id=1360870
+- Mozilla Bugzilla, bug 1998332, "Crash in [@ mozilla::dom::ThreadSafeWorkerRef::Private] when opening Instagram" (2025). https://bugzilla.mozilla.org/show_bug.cgi?id=1998332
+- Webpack documentation, "output.module," webpack.js.org (2026). https://webpack.js.org/configuration/output/#outputmodule
+- Vite documentation, "Web Workers," vite.dev (2026). https://vite.dev/guide/features.html#web-workers
+- Chrome for Developers, "workbox-sw," developer.chrome.com (2026). https://developer.chrome.com/docs/workbox/modules/workbox-sw/
+- Chrome for Developers, "workbox-build," developer.chrome.com (2026). https://developer.chrome.com/docs/workbox/modules/workbox-build
