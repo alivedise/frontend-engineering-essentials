@@ -107,27 +107,27 @@
   },
   "docs/en/Developer Experience and Tooling/knip.md": {
     "id": 1615,
-    "lastAudited": "2026-07-24",
+    "lastAudited": "2026-07-25",
     "findings": {
       "tone": 3,
-      "organization": 3,
-      "references": 2,
-      "factual": 6,
-      "template": 2
+      "organization": 1,
+      "references": 1,
+      "factual": 3,
+      "template": 3
     },
-    "notes": "reverted: revision verified extensively good (predecessor archive claims all confirmed with quotes, persona removed) but one blocking factual error (catalog gloss) survived 3 rounds; requeue with the residual as opNote"
+    "notes": "revised (requeue clean): catalog gloss corrected (pnpm/Yarn/Bun workspace catalog entries, verified against knip.dev), --fix file-deletion error fixed, cycles rule added, Vanderkam independent refs added, persona removed; verified clean"
   },
   "docs/en/Web Platform Proposals/HTML and DOM Proposals/12003.md": {
     "id": 12003,
-    "lastAudited": "2026-07-24",
+    "lastAudited": "2026-07-25",
     "findings": {
       "tone": 3,
-      "organization": 3,
-      "references": 4,
-      "factual": 7,
-      "template": 2
+      "organization": 1,
+      "references": 2,
+      "factual": 6,
+      "template": 4
     },
-    "notes": "reverted: 3 blocking defects after 3 rounds (invented DevTools panel details, mechanically-impossible Sec-Purpose client-side claim, wrong Shopify reference year); requeue with residuals as opNote"
+    "notes": "revised (requeue clean): three batch-1 blockers fixed — invented DevTools panel removed, Sec-Purpose client-side impossibility corrected, Shopify year fixed; invented hit-rate thresholds cut, status block updated; verified clean"
   },
   "docs/en/CI CD and Deployment/1501.md": {
     "id": 1501,
@@ -368,6 +368,222 @@
       "template": 2
     },
     "notes": "revised: fabricated epidemiology handled (35% vestibular claim, 5-10% adoption, 20/80-vision contrast derivation) — sourced honestly or cut, 14 dash sites cleared; verified clean (Opus)"
+  },
+  "docs/en/Component Architecture and Design Patterns/508.md": {
+    "id": 508,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 1,
+      "references": 1,
+      "factual": 6,
+      "template": 2
+    },
+    "notes": "revised: fabricated micro-frontend decision thresholds removed, Module Federation landscape verified, 15 dash sites cleared; verified clean"
+  },
+  "docs/en/Web Platform Proposals/CSS Experimental/11203.md": {
+    "id": 11203,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 5,
+      "organization": 1,
+      "references": 5,
+      "factual": 1,
+      "template": 2
+    },
+    "notes": "revised: @layer support verified, 19 dash sites cleared, retired sections removed; verified clean"
+  },
+  "docs/en/CI CD and Deployment/1506.md": {
+    "id": 1506,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 2,
+      "references": 3,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised: leaked-key-abuse timing and SLSA levels sourced, OIDC keyless-auth guidance updated, 7 tricolons and 16 dash sites cleared; verified clean"
+  },
+  "docs/en/Rendering and Performance/708.md": {
+    "id": 708,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 2,
+      "organization": 1,
+      "references": 2,
+      "factual": 5,
+      "template": 1
+    },
+    "notes": "revised: HTTP/2 traffic share corrected to Cloudflare Radar 2025 (50/21/29), HPACK numbers sourced, Safari HTTP/3 default-on fixed, packet-loss math corrected, over-splitting tradeoff added; verified clean"
+  },
+  "docs/en/Web Platform Proposals/CSS Experimental/11202.md": {
+    "id": 11202,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 1,
+      "references": 2,
+      "factual": 5,
+      "template": 3
+    },
+    "notes": "revised: CSS nesting version/date claims verified against caniuse and postcss-nesting changelog, relaxed-syntax currency updated; verified clean"
+  },
+  "docs/en/Browser APIs and Web Platform/414.md": {
+    "id": 414,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 2,
+      "references": 1,
+      "factual": 4,
+      "template": 1
+    },
+    "notes": "revised: SharedWorker/BroadcastChannel iOS Safari support de-dated and verified, independent sources added, 17 dash sites cleared; verified clean"
+  },
+  "docs/en/Browser APIs and Web Platform/417.md": {
+    "id": 417,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 4,
+      "organization": 1,
+      "references": 3,
+      "factual": 4,
+      "template": 3
+    },
+    "notes": "revised: corpus-record 50 dash sites cleared, DataCloneError/ResizableArrayBuffer support verified, independent sources added; verified clean"
+  },
+  "docs/en/Security/1201.md": {
+    "id": 1201,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 1,
+      "references": 2,
+      "factual": 5,
+      "template": 1
+    },
+    "notes": "revised: CSP nonce/strict-dynamic claims verified against spec, 33 dash sites and 3 aphorisms cleared; verified clean"
+  },
+  "docs/en/State Management/610.md": {
+    "id": 610,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 2,
+      "organization": 2,
+      "references": 3,
+      "factual": 3,
+      "template": 2
+    },
+    "notes": "revised: step-count numbers reframed as illustrative, 50MB heuristic removed, Immer enablePatches (v6) verified, redux-undo archived-2026 noted, useUndoable owner corrected, Yjs UndoManager added, O(1)-vs-O(n) nuance; verified clean"
+  },
+  "docs/en/Accessibility/1008.md": {
+    "id": 1008,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 2,
+      "organization": 3,
+      "references": 2,
+      "factual": 4,
+      "template": 2
+    },
+    "notes": "revised: Grade-8 readability cited to WCAG 3.1.5, corpus-high tone load (24 dash/6 tricolon/8 not-X-but-Y/3 aphorism) cleared; verified clean"
+  },
+  "docs/en/Browser APIs and Web Platform/404.md": {
+    "id": 404,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 1,
+      "references": 3,
+      "factual": 4,
+      "template": 3
+    },
+    "notes": "revised: storage quota claims verified/corrected against current MDN (Safari limit, storage buckets), independent sources added, retired sections removed; verified clean"
+  },
+  "docs/en/CI CD and Deployment/1510.md": {
+    "id": 1510,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 2,
+      "organization": 4,
+      "references": 3,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised: isolate-vs-container cold-start sourced to Cloudflare, other ops numbers reframed as hypotheticals, edge-runtime landscape updated; verified clean"
+  },
+  "docs/en/Web Platform Proposals/CSS Experimental/11100.md": {
+    "id": 11100,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 1,
+      "references": 1,
+      "factual": 7,
+      "template": 1
+    },
+    "notes": "revised: scroll/view-timeline support verified against caniuse, off-main-thread claim checked, 15 dash sites cleared; verified clean"
+  },
+  "docs/en/Web Platform Proposals/CSS Experimental/11201.md": {
+    "id": 11201,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 2,
+      "organization": 1,
+      "references": 2,
+      "factual": 3,
+      "template": 4
+    },
+    "notes": "revised: Firefox @property/registerProperty both v128 (not 110) corrected, dangerous FF110-127 advice removed, syntax table fixed (length-percentage/transform-list), dead Chrome ref replaced, animated example added; verified clean"
+  },
+  "docs/en/Progressive Web Apps and Offline/es-module-service-workers.md": {
+    "id": 1315,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 0,
+      "organization": 1,
+      "references": 3,
+      "factual": 3,
+      "template": 1
+    },
+    "notes": "revised (light): specific Firefox 147/Bugzilla claims verified and source-anchored (caniuse 92.55%, W3C feature-detection issue), Workbox injectManifest note; verified clean"
+  },
+  "docs/en/Web Platform Proposals/HTML and DOM Proposals/12001.md": {
+    "id": 12001,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 1,
+      "references": 1,
+      "factual": 4,
+      "template": 3
+    },
+    "notes": "revised: Scoped Custom Element Registry constructor status verified, delay-framing kept factual, corpus-heavy tone load (26 dash/5 tricolon/6 not-X-but-Y/2 aphorism) cleared; verified clean"
+  },
+  "docs/en/Build Tooling and Module Systems/810.md": {
+    "id": 810,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 1,
+      "references": 2,
+      "factual": 6,
+      "template": 4
+    },
+    "notes": "revised: tsc-with-emit speed multipliers reframed, isolatedModules/transpile-only vs type-check verified, native TS compiler landscape updated, 23 dash sites cleared; verified clean"
+  },
+  "docs/en/Accessibility/1006.md": {
+    "id": 1006,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 4,
+      "organization": 2,
+      "references": 2,
+      "factual": 4,
+      "template": 1
+    },
+    "notes": "revised: axe-core rule count anchored to version, axe/Lighthouse/Playwright-axe currency verified, heavy tone load cleared; verified clean (opNote had wrong category path; agents self-corrected to Accessibility/1006.md)"
   },
   "docs/en/Codebase Studies/threejs-architecture-tour.md": {
     "id": 1801,
