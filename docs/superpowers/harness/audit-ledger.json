@@ -1064,5 +1064,77 @@
       "template": 3
     },
     "notes": "revised: HSTS preload-removal timeline verified, supply-chain claim grounded (Polyfill.io 2024), security-header currency, 7 dash sites cleared; verified clean"
+  },
+  "docs/en/Web Platform Proposals/TC39 and JS Proposals/10005.md": {
+    "id": 10005,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "lens": "tone-only"
+    },
+    "notes": "tone pass (signals proposal): AI-tone prose patterns stripped, meaning frozen, zh synced; verified clean"
+  },
+  "docs/en/HTML and Semantic Markup/107.md": {
+    "id": 107,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "lens": "tone-only"
+    },
+    "notes": "tone pass (schema.org): AI-tone prose patterns stripped, meaning frozen, zh synced; verified clean"
+  },
+  "docs/en/Component Architecture and Design Patterns/505.md": {
+    "id": 505,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "lens": "tone-only"
+    },
+    "notes": "tone pass (HOC): AI-tone prose patterns stripped, meaning frozen, zh synced; verified clean"
+  },
+  "docs/en/Browser APIs and Web Platform/415.md": {
+    "id": 415,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "lens": "tone-only"
+    },
+    "notes": "tone pass (permissions): AI-tone prose patterns stripped, meaning frozen, zh synced; verified clean"
+  },
+  "docs/en/Component Architecture and Design Patterns/510.md": {
+    "id": 510,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "lens": "tone-only"
+    },
+    "notes": "tone pass (compound components): AI-tone prose patterns stripped, meaning frozen, zh synced; verified clean"
+  },
+  "docs/en/Component Architecture and Design Patterns/502.md": {
+    "id": 502,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "lens": "tone-only"
+    },
+    "notes": "tone pass (reactive state/signals): AI-tone prose patterns stripped, meaning frozen, zh synced; verified clean"
+  },
+  "docs/en/Web Platform Proposals/CSS Experimental/11102.md": {
+    "id": 11102,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "lens": "tone-only"
+    },
+    "notes": "tone pass (calc-size): AI-tone prose patterns stripped, meaning frozen, zh synced; verified clean"
+  },
+  "docs/en/Rendering and Performance/701.md": {
+    "id": 701,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "lens": "tone-only"
+    },
+    "notes": "tone pass (rendering strategies): AI-tone prose patterns stripped, meaning frozen, zh synced; verified clean"
+  },
+  "docs/en/Web Platform Proposals/CSS Experimental/11302.md": {
+    "id": 11302,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "lens": "tone-only"
+    },
+    "notes": "tone pass (customizable select): AI-tone prose patterns stripped, meaning frozen, zh synced; verified clean"
   }
 }
