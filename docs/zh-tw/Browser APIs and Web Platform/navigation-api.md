@@ -3,6 +3,8 @@ id: 418
 title: "Navigation API — 攔截與管理 SPA 導覽"
 state: draft
 slug: navigation-api
+reviewed: hardened
+reviewed_on: 2026-07-13
 ---
 
 # [FEE-418] Navigation API — 攔截與管理 SPA 導覽

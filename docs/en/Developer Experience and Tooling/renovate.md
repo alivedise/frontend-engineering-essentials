@@ -3,6 +3,8 @@ id: 1616
 title: "Renovate Configuration for Frontend Repositories"
 state: draft
 slug: renovate
+reviewed: hardened
+reviewed_on: 2026-07-24
 ---
 
 # [FEE-1616] Renovate Configuration for Frontend Repositories

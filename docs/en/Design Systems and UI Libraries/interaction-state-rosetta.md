@@ -3,6 +3,8 @@ id: 918
 title: "Interaction State Rosetta — Focused, Activated, Selected, Pressed, Current"
 state: draft
 slug: interaction-state-rosetta
+reviewed: hardened
+reviewed_on: 2026-07-25
 ---
 
 # [FEE-918] Interaction State Rosetta — Focused, Activated, Selected, Pressed, Current

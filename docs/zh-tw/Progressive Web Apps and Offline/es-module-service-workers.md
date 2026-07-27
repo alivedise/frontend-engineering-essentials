@@ -3,6 +3,8 @@ id: 1315
 title: "ES 模組 Service Worker（type: 'module'）與靜態 import 遷移"
 state: draft
 slug: es-module-service-workers
+reviewed: hardened
+reviewed_on: 2026-07-25
 ---
 
 # [FEE-1315] ES 模組 Service Worker（type: 'module'）與靜態 import 遷移

@@ -3,6 +3,8 @@ id: 1610
 title: "Oxlint — Rust-based ESLint Successor and Migration Path"
 state: draft
 slug: oxlint
+reviewed: hardened
+reviewed_on: 2026-07-24
 ---
 
 # [FEE-1610] Oxlint — Rust-based ESLint Successor and Migration Path

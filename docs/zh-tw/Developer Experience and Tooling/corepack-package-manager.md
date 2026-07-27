@@ -3,6 +3,8 @@ id: 1614
 title: "Corepack 與 packageManager 欄位：鎖定工具鏈版本"
 state: draft
 slug: corepack-package-manager
+reviewed: hardened
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-1614] Corepack 與 `packageManager` 欄位：鎖定工具鏈版本

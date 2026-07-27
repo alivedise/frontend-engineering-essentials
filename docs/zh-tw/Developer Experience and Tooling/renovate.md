@@ -3,6 +3,8 @@ id: 1616
 title: "前端 repo 的 Renovate 設定"
 state: draft
 slug: renovate
+reviewed: hardened
+reviewed_on: 2026-07-24
 ---
 
 # [FEE-1616] 前端 repo 的 Renovate 設定

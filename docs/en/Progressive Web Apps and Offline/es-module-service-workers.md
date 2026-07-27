@@ -3,6 +3,8 @@ id: 1315
 title: "ES Module Service Workers (type: 'module') and Static Import Migration"
 state: draft
 slug: es-module-service-workers
+reviewed: hardened
+reviewed_on: 2026-07-25
 ---
 
 # [FEE-1315] ES Module Service Workers (type: 'module') and Static Import Migration

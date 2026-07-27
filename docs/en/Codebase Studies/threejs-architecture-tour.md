@@ -4,6 +4,8 @@ title: "Three.js — Architecture Tour"
 state: draft
 slug: threejs-architecture-tour
 studied_at: "three.js r172 (2025-04-15)"
+reviewed: hardened
+reviewed_on: 2026-07-25
 ---
 
 # [FEE-1801] Three.js — Architecture Tour

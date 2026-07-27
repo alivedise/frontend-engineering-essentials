@@ -3,6 +3,8 @@ id: 1614
 title: "Corepack and the packageManager Field for Toolchain Pinning"
 state: draft
 slug: corepack-package-manager
+reviewed: hardened
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-1614] Corepack and the `packageManager` Field for Toolchain Pinning

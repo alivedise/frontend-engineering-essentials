@@ -3,6 +3,8 @@ id: 1610
 title: "Oxlint：以 Rust 為基底的 ESLint 接班人與遷移路徑"
 state: draft
 slug: oxlint
+reviewed: hardened
+reviewed_on: 2026-07-24
 ---
 
 # [FEE-1610] Oxlint：以 Rust 為基底的 ESLint 接班人與遷移路徑
