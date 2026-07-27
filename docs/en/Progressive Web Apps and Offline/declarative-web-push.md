@@ -3,6 +3,8 @@ id: 1316
 title: "Declarative Web Push (Safari 18.4/18.5) and Cross-Browser Push Convergence"
 state: draft
 slug: declarative-web-push
+reviewed: tone
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-1316] Declarative Web Push (Safari 18.4/18.5) and Cross-Browser Push Convergence
@@ -94,7 +96,7 @@ The same `applicationServerKey` subscription model as imperative push is reused,
 
 The trade is between a declared schema and arbitrary code. Imperative Web Push lets the service worker run any logic at notification time: IndexedDB lookups, dynamic body composition, end-to-end-encrypted body decryption. Declarative Web Push fixes the displayable surface to the W3C `NotificationOptions` dictionary (per WWDC25, "anything supported by the W3C standard NotificationOptions dictionary is respected here") and gives up that flexibility in return for the browser displaying the notification without booting a service worker.
 
-WebKit's stated reason for the trade is privacy and energy: "Allowing websites to remotely wake up a device for silent background work is a privacy violation and expends energy." The escape hatch is `mutable: true` — when the proposed notification cannot be displayed as-is (for example, when the body has to be decrypted client-side), the service worker is dispatched with the proposed notification context on the `PushEvent` and shows a replacement. If the server author does not need that escape hatch, the default `mutable: false` keeps the service worker out of the path entirely.
+WebKit's stated reason for the trade is privacy and energy: "Allowing websites to remotely wake up a device for silent background work is a privacy violation and expends energy." The escape hatch is `mutable: true`. When the proposed notification cannot be displayed as-is (for example, when the body has to be decrypted client-side), the service worker is dispatched with the proposed notification context on the `PushEvent` and shows a replacement. If the server author does not need that escape hatch, the default `mutable: false` keeps the service worker out of the path entirely.
 
 ## Deep Dive
 
@@ -102,7 +104,7 @@ Three behaviours:
 
 1. **Parse-path fallback.** Per WWDC25, "what happens if the browser attempts to parse JSON from the push message and fails? In that case it falls back to original Web Push, using a Service Worker to handle the message. It also falls back to original Web Push if the JSON doesn't have the magic key." This is what makes a single payload safe to emit cross-browser: a Chrome or Firefox build with no declarative implementation treats the JSON body as opaque RFC 8030 bytes and dispatches a `push` event to the service worker, which can call `showNotification` itself.
 
-2. **`PushEvent` carries the proposed notification.** The WebKit blog states that "when a Declarative Web Push message arrives and a service worker is installed, a push event is dispatched to it like before. `PushEvent` now has the context of the 'proposed notification' from the Declarative Web Push message." The same post adds "there is no penalty for service workers failing to display a notification" — the browser will render the proposed notification anyway when `mutable` is false or absent.
+2. **`PushEvent` carries the proposed notification.** The WebKit blog states that "when a Declarative Web Push message arrives and a service worker is installed, a push event is dispatched to it like before. `PushEvent` now has the context of the 'proposed notification' from the Declarative Web Push message." The same post adds "there is no penalty for service workers failing to display a notification." The browser will render the proposed notification anyway when `mutable` is false or absent.
 
 3. **`window.pushManager` divergence.** Imperative Web Push exposes only `ServiceWorkerRegistration.pushManager`. The WebKit blog states that Declarative Web Push "also exposes `window.pushManager` to support subscription management without requiring a service worker." The rest of the subscription contract (`userVisibleOnly`, `applicationServerKey`) is unchanged.
 

@@ -5,6 +5,8 @@ state: draft
 slug: satisfies-operator
 category: TypeScript
 level: mid
+reviewed: tone
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-1709] `satisfies` 運算子
@@ -100,7 +102,7 @@ const point6 = { x: 2 } as const satisfies Point;
 
 ## 深入探討
 
-`satisfies` 不會帶來 `as const` 的行為。它不會把屬性轉為 `readonly`、不會把原始字面值縮窄為字面型別，也不會把陣列型別收斂為 tuple 型別。那些效果屬於 `as const`。因此 `as const satisfies T` 的組合有順序意義：先由 `as const` 對字面值進行縮窄與凍結，再由 `satisfies T` 將縮窄後的型別對 `T` 做驗證。
+`satisfies` 不會帶來 `as const` 的行為。把屬性轉為 `readonly`、把原始字面值縮窄為字面型別、把陣列型別收斂為 tuple 型別，都是 `as const` 的作用。因此 `as const satisfies T` 的組合有順序意義：先由 `as const` 對字面值進行縮窄與凍結，再由 `satisfies T` 將縮窄後的型別對 `T` 做驗證。
 
 反過來寫會失敗。TypeScript repo issue `#51173` 紀錄了 `const` 斷言只能套用於列舉成員、字串、數字、布林、陣列或物件字面值的參照。`satisfies` 執行後，表達式不再被視為上述任一形式，所以 `satisfies T as const` 會在 parse/check 階段被拒絕。
 

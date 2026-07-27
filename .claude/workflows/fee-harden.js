@@ -101,6 +101,19 @@ Named AI-tone patterns to hunt (both languages):
   the payoff or cost? says who? If the sentence cannot answer all three,
   replace it with the concrete stake (cost, consequence, mechanism) or
   delete it. This is a content check, not a sentence-shape check.
+- Vacuous windup: "took/pushed X to its logical conclusion / logical extreme /
+  logical endpoint / to the limit", "taken to the extreme"; zh 「將X推向了邏輯的
+  終點 / 推向極致 / 發揮到極致」. Grand framing with no content of its own. The real
+  claim usually follows (often after a colon) or is already in the section
+  heading — delete the windup and lead with that concrete claim. If nothing
+  concrete follows, cut the sentence.
+- Unsourced world-superlative: "the most significant / important / popular /
+  first X in history / in the industry / ever", asserted as fact with no
+  citation; zh 「歷史上最… / 史上最…」. Either cite a source or restate factually,
+  keeping the concrete residual ("powering millions of sites" stays; "the most
+  popular framework in history" goes). CARVE-OUT: the author's in-topic teaching
+  emphasis ("the most important property here is…", immediately justified) ranks
+  things within the article's own argument and is legitimate — leave it.
 Fix rule: replace the pattern with ONE concrete example or a plain statement.
 Rewording the pattern into a fresh tricolon or contrast is a failed fix.`
 

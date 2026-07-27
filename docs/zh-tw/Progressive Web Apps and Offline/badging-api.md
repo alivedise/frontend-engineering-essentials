@@ -3,6 +3,8 @@ id: 1317
 title: "Badging API 與已安裝 PWA 的再參與介面"
 state: draft
 slug: badging-api
+reviewed: tone
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-1317] Badging API 與已安裝 PWA 的再參與介面

@@ -5,6 +5,8 @@ state: draft
 slug: popover-states-and-anchor-positioning
 category: HTML and Semantic Markup
 level: senior
+reviewed: tone
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-111] Popover API 狀態與 Anchor Positioning 整合
@@ -17,7 +19,7 @@ Popover API 提供三種宣告式狀態（`auto`、`manual`、`hint`），用於
 
 HTML `popover` 全域屬性接受三種狀態值：`auto`、`hint`、`manual`（Claim 1）。每種狀態改變 user agent 在 popover 顯示時的行為，以及它與其他可見 popover 互動的方式：
 
-- **`popover="auto"`** 是預設的選單/對話框行為。popover 在外部點擊或按 Esc 時輕量關閉 (light-dismiss)，而顯示新的 auto popover 會關閉任何先前可見且無關聯的 auto popover——除非巢狀嵌套，否則同時僅能顯示一個 auto popover（Claim 2）。
+- **`popover="auto"`** 是預設的選單/對話框行為。popover 在外部點擊或按 Esc 時輕量關閉 (light-dismiss)，顯示新的 auto popover 會關閉任何先前可見且無關聯的 auto popover。除非巢狀嵌套，否則同時僅會顯示一個 auto popover（Claim 2）。
 - **`popover="manual"`** 完全不參與輕量關閉 (light-dismiss)。多個獨立的 manual popover 可同時顯示，且每個僅透過宣告式觸發器 (invoker) 或 `showPopover()` / `hidePopover()` / `togglePopover()` 方法顯示或隱藏（Claim 3）。
 - **`popover="hint"`** 在外部互動時輕量關閉 (light-dismiss) 並關閉其他可見的 hint，但不影響任何開啟中的 auto popover。這讓 `hint` 適合覆蓋於開啟選單之上的 hover 或 focus tooltip（Claim 4）。
 
@@ -125,15 +127,15 @@ HTML 規範將 light dismiss 定義為：當使用者點擊一個 `popover` 屬�
 
 ## Anchor Positioning 整合
 
-CSS anchor positioning 模組將 tooltip 函式庫長期承擔的責任——追蹤參考元素的邊界框並將浮動元素放置於其旁——提升為瀏覽器基元。對 popover 工作而言有三項要點。
+CSS anchor positioning 模組將 tooltip 函式庫長期承擔的責任提升為瀏覽器基元：追蹤參考元素的邊界框並將浮動元素放置於其旁。對 popover 工作而言有三項要點。
 
 **透過觸發器的隱式錨定。** Popover API 在控制項透過 `popovertarget` 或 `togglePopover()` 的 `source` 選項與 popover 關聯時即已建立錨定參考（Claim 11）。常見的「按鈕於下方開啟選單」佈局無需 `anchor-name` 宣告：popover 的 CSS 直接以 `anchor(bottom)`、`anchor(center)` 及其他 `anchor()` 關鍵字讀取觸發器 (invoker) 邊緣。
 
 **明確錨定綁定。** 當錨元素異於觸發器，或一個 popover 錨定至多個錨點時，於錨元素宣告 `anchor-name: --my-anchor`，於被定位元素宣告 `position-anchor: --my-anchor`。兩個屬性皆接受 `<dashed-ident>` 值，且 `anchor-name` 可持有逗號分隔清單，使單一元素服務多個被定位消費者（Claim 12）。
 
-**溢出回退。** `position-try-fallbacks` 接受有序的替代位置清單——如 `flip-block` 與 `flip-inline` 等關鍵字，或具名的 `@position-try` 規則——瀏覽器挑選第一個能讓 popover 留在包含區塊內的選項。若無選項合適，則退回預設位置（Claim 13）。這取代了 tooltip 函式庫歷來以 JavaScript 搭配 `getBoundingClientRect()` 及 resize/scroll 觀察器實作的翻轉重定位邏輯。
+**溢出回退。** `position-try-fallbacks` 接受有序的替代位置清單（如 `flip-block` 與 `flip-inline` 等關鍵字，或具名的 `@position-try` 規則），瀏覽器挑選第一個能讓 popover 留在包含區塊內的選項。若無選項合適，則退回預設位置（Claim 13）。這取代了 tooltip 函式庫歷來以 JavaScript 搭配 `getBoundingClientRect()` 及 resize/scroll 觀察器實作的翻轉重定位邏輯。
 
-**Baseline 時間線。** `anchor-name`、`position-anchor` 與 `position-try-fallbacks` 已達 Baseline 2026——自 2026 年 1 月新增可用，運作於最新裝置與瀏覽器版本（Claim 14）。Popover API 本身已於一年前達 Baseline 2025（Claim 15），因此採用 Baseline 2025 的團隊今日即可出貨 popover，並在支援矩陣跟上後再疊加 anchor positioning，期間退回靜態位置。
+**Baseline 時間線。** `anchor-name`、`position-anchor` 與 `position-try-fallbacks` 已達 Baseline 2026，自 2026 年 1 月新增可用，並運作於最新裝置與瀏覽器版本（Claim 14）。Popover API 本身已於一年前達 Baseline 2025（Claim 15），因此採用 Baseline 2025 的團隊今日即可出貨 popover，並在支援矩陣跟上後再疊加 anchor positioning，期間退回靜態位置。
 
 ## 延伸閱讀
 

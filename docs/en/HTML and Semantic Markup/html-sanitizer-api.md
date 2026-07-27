@@ -5,6 +5,8 @@ state: draft
 slug: html-sanitizer-api
 category: HTML and Semantic Markup
 level: senior
+reviewed: tone
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-115] HTML Sanitizer API — setHTML() vs setHTMLUnsafe() vs innerHTML
@@ -17,9 +19,9 @@ The HTML Sanitizer API introduces two element methods, `setHTML()` and `setHTMLU
 
 The HTML Sanitizer API allows developers to take strings of HTML and filter out unwanted elements, attributes, and other HTML entities when inserting them into the DOM or a shadow DOM ([MDN HTML Sanitizer API](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API)). Three entry points now cover the string-to-DOM boundary with distinct contracts:
 
-- `Element.innerHTML` — parses the string into the host element, performs no sanitization, and silently drops declarative shadow roots.
-- `Element.setHTMLUnsafe(input, options?)` — parses the string and does not perform sanitization by default; if no sanitizer is passed, all HTML entities in the input will be injected ([MDN setHTMLUnsafe](https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTMLUnsafe)). It also parses `<template shadowrootmode>` into actual shadow roots.
-- `Element.setHTML(input, options?)` — parses and sanitizes the string in one step against an XSS-safe allowlist.
+- `Element.innerHTML` parses the string into the host element, performs no sanitization, and silently drops declarative shadow roots.
+- `Element.setHTMLUnsafe(input, options?)` parses the string and does not perform sanitization by default; if no sanitizer is passed, all HTML entities in the input will be injected ([MDN setHTMLUnsafe](https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTMLUnsafe)). It also parses `<template shadowrootmode>` into actual shadow roots.
+- `Element.setHTML(input, options?)` parses and sanitizes the string in one step against an XSS-safe allowlist.
 
 The `Unsafe` variant exists because `innerHTML` silently drops declarative shadow DOM: unlike with `Element.innerHTML`, declarative shadow roots in the input will be parsed into the DOM when using `setHTMLUnsafe()` ([MDN setHTMLUnsafe](https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTMLUnsafe)). Server-rendered components that ship `<template shadowrootmode="open">` markup require this behavior, which is why the platform split the parser from the sanitizer at the API surface.
 
@@ -101,12 +103,12 @@ document.querySelector("#preview").setHTML(userMarkup, { sanitizer: config });
 - **MUST** keep a strict Content Security Policy in place alongside the Sanitizer API. CSP is a defense-in-depth technique that can prevent the execution of malicious scripts, and it is not a substitute for avoiding and promptly fixing XSS bugs ([web.dev strict CSP](https://web.dev/articles/strict-csp)).
 - **SHOULD** feature-detect with `"setHTML" in Element.prototype` before using it, because browser support is not yet universal (see Failure Modes).
 - **SHOULD** install a polyfill fallback for non-supporting browsers. Mozilla's `sanitizer-polyfill` rewrites constructor arguments and calls DOMPurify under the hood ([mozilla/sanitizer-polyfill](https://github.com/mozilla/sanitizer-polyfill)); DOMPurify itself is a DOM-only, XSS sanitizer for HTML, MathML, and SVG ([cure53/DOMPurify](https://github.com/cure53/DOMPurify)).
-- **SHOULD** reserve `setHTMLUnsafe()` for markup you author or control — for example, server-rendered components that ship declarative shadow roots.
+- **SHOULD** reserve `setHTMLUnsafe()` for markup you author or control, for example server-rendered components that ship declarative shadow roots.
 - **MAY** layer a custom `SanitizerConfig` on top of `setHTML()` when the default allowlist is too narrow (for instance, if the product needs `data-*` attributes preserved).
 
 ## Design Thinking
 
-Early drafts of the Sanitizer API returned a sanitized string from a `Sanitizer.sanitize()` method. That shape forced the caller to round-trip the output through `innerHTML`, which re-parses the markup. HTML parsing is context-sensitive — how an input string will be interpreted depends on the current node it is being inserted into ([Frederik Braun, "Why setHTML?"](https://frederikbraun.de/why-sethtml.html)). A string sanitized in one context and re-parsed in another can mutate into something the sanitizer would have rejected; this is the mutation XSS (mXSS) class of bug. The spec authors collapsed sanitize-then-assign into a single element method so that the parser runs once, in the target's context, under the sanitizer's control: "The core feature of the Sanitizer API is actually just `Element.setHTML(input)`… No superfluous parsing. No ambiguous contexts. Just setting HTML." ([Frederik Braun, "Why setHTML?"](https://frederikbraun.de/why-sethtml.html)).
+Early drafts of the Sanitizer API returned a sanitized string from a `Sanitizer.sanitize()` method. That shape forced the caller to round-trip the output through `innerHTML`, which re-parses the markup. HTML parsing is context-sensitive: how an input string will be interpreted depends on the current node it is being inserted into ([Frederik Braun, "Why setHTML?"](https://frederikbraun.de/why-sethtml.html)). A string sanitized in one context and re-parsed in another can mutate into something the sanitizer would have rejected; this is the mutation XSS (mXSS) class of bug. The spec authors collapsed sanitize-then-assign into a single element method so that the parser runs once, in the target's context, under the sanitizer's control: "The core feature of the Sanitizer API is actually just `Element.setHTML(input)`… No superfluous parsing. No ambiguous contexts. Just setting HTML." ([Frederik Braun, "Why setHTML?"](https://frederikbraun.de/why-sethtml.html)).
 
 The userland precedent is DOMPurify, a DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML, and SVG ([cure53/DOMPurify](https://github.com/cure53/DOMPurify)). DOMPurify's `sanitize()` returns a string and thus carries the same double-parse risk the native API now avoids. The platform adopted DOMPurify's allowlist philosophy while dropping the string-returning shape, and the recommended polyfill for the native API delegates to DOMPurify behind a `Sanitizer`-shaped façade ([mozilla/sanitizer-polyfill](https://github.com/mozilla/sanitizer-polyfill)).
 

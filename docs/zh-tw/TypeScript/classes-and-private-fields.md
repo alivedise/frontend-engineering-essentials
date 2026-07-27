@@ -7,6 +7,8 @@ category: TypeScript
 level: mid
 allow_no_custom_section: true
 # reason: article fully covered by standard sections; soft-vs-hard privacy and the deep dive already occupy the topic-specific angle without needing a separate heading.
+reviewed: tone
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-1710] 類別、存取修飾詞與 `#` 私有欄位
@@ -98,7 +100,7 @@ Money.isMoney({ amount: 10 });        // false — no #amount brand
 - **MAY** 省略 `public`：預設可見性即為 `public`，是否寫出關鍵字屬於風格選擇。Handbook 指出：「The default visibility of class members is `public`. A `public` member can be accessed anywhere.」
 - **SHOULD** 將 `protected` 用於基底類別的擴充點。`protected` 成員對宣告類別的子類別可見，子類別可將其放寬為 `public`，但同層類別之間不可存取。
 - **MUST** 在目標為真正封裝時採用 `#` 私有欄位。外部的 JavaScript 呼叫者無法透過方括號存取或任何反射 API 讀取 `#` 欄位；TypeScript 的 `private` 在 emit 時會被擦除。
-- **MUST NOT** 將 TypeScript 修飾詞與 `#` 語法並用。「TypeScript accessibility modifiers like `public` or `private` can't be used on private fields」—— `#` 前綴本身已是唯一的可見性標記。
+- **MUST NOT** 將 TypeScript 修飾詞與 `#` 語法並用。「TypeScript accessibility modifiers like `public` or `private` can't be used on private fields.」`#` 前綴本身已是唯一的可見性標記。
 - **SHOULD** 以 `readonly` 標記僅供建構期寫入的屬性，禁止建構子外的重新指派：「Fields may be prefixed with the `readonly` modifier. This prevents assignments to the field outside of the constructor.」
 - **MAY** 以 `abstract` 建模開放式繼承階層。抽象成員沒有實作；類別本身無法被直接實例化，由具體子類別補上缺少的部分。
 - **SHOULD** 在函式庫內部優先採用 `#` 欄位。TS 3.8 release notes 強調此項契約：「If you're a library author, removing or renaming a private field should never cause a breaking change.」
@@ -107,7 +109,7 @@ Money.isMoney({ amount: 10 });        // false — no #amount brand
 
 TypeScript 原先的 `private` 位於編譯器的型別檢查側。型別系統知道某個成員是私有的，執行期則不知道。TS 3.8 release notes 寫明：「TypeScript's `private` modifiers are fully erased — that means that at runtime, it acts entirely like a normal property and there's no way to tell that it was declared with a `private` modifier.」這種設計通常被稱為「soft privacy」（軟私有性、編譯期私有），因為有心的呼叫者仍可透過方括號存取或移除型別標註來觸及該欄位。
 
-TC39 提案則採取了另一種取捨。私有欄位使用類似 closure 或 WeakMap 的語意，能抵抗反射與 metaprogramming：「This differs from JavaScript properties, which support various kinds of reflection and metaprogramming, and is instead analogous to mechanisms like closures and WeakMap.」這堵住了軟私有性留下的後門，代價是放棄呼叫端有時會仰賴的功能 —— 以 `Object.keys` 迭代、以 spread 複製等。
+TC39 提案則採取了另一種取捨。私有欄位使用類似 closure 或 WeakMap 的語意，能抵抗反射與 metaprogramming：「This differs from JavaScript properties, which support various kinds of reflection and metaprogramming, and is instead analogous to mechanisms like closures and WeakMap.」這堵住了軟私有性留下的後門，代價是放棄呼叫端有時會仰賴的功能：以 `Object.keys` 迭代、以 spread 複製等。
 
 Stage 4 標準化之所以重要有兩個理由。其一，該特性如今屬於語言本身，而非轉譯器附帶的便利設施，因此舊版的 down-level target 不再是預設假設。其二，下游工具（型別檢查器、bundler、debugger）可以仰賴其語意保持穩定。當欄位絕不可外流時採用 `#`。當目標是由 code review 強制、執行期無需介入的 API 契約時，採用 TypeScript `private`。
 
@@ -119,7 +121,7 @@ Stage 4 標準化之所以重要有兩個理由。其一，該特性如今屬於
 
 **不在原型上繼承。** 私有元素不屬於原型鏈，也不被子類別繼承。MDN：「Private elements are not part of the prototypical inheritance model since they can only be accessed within the current class's body and aren't inherited by subclasses. Private elements with the same name within different classes are entirely different and do not interoperate with each other.」觸及 `this.#foo` 的方法僅對宣告 `#foo` 的類別實例有效。
 
-**硬私有性邊界。** 以上規則組合起來構成 TypeScript 團隊所稱的「hard privacy」（硬私有性、執行期私有）：「Private fields can't be accessed or even detected outside of the containing class — even by JS users! Sometimes we call this hard privacy.」外部的任何偵測手段 —— `in`、`hasOwnProperty`、debugger 檢視、`JSON.stringify` —— 都無法顯現該欄位。
+**硬私有性邊界。** 以上規則組合起來構成 TypeScript 團隊所稱的「hard privacy」（硬私有性、執行期私有）：「Private fields can't be accessed or even detected outside of the containing class — even by JS users! Sometimes we call this hard privacy.」外部的任何偵測手段（`in`、`hasOwnProperty`、debugger 檢視、`JSON.stringify`）都無法顯現該欄位。
 
 **多型 `this`。** 私有性之外，TypeScript 在類別本體內提供多型 `this` 型別：「In classes, a special type called `this` refers dynamically to the type of the current class.」回傳 `this` 的 builder 方法在子類別實例上呼叫時會保留子類別型別，使 fluent API 在繼承下也能運作，無需泛型雜技。
 

@@ -5,6 +5,8 @@ state: draft
 slug: zag-and-ark-ui
 category: Design Systems and UI Libraries
 level: senior
+reviewed: tone
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-914] 框架無關的狀態機 — Zag.js 與 Ark UI
@@ -15,7 +17,7 @@ Zag.js 將複雜且具備無障礙能力的 UI 元件建模為有限狀態機，
 
 ## 背景
 
-Zag.js 將自己描述為「a framework agnostic toolkit for implementing complex, interactive, and accessible UI components in your design system and web applications」。核心構想是把每個元件的行為以狀態機形式撰寫一次，再透過小型的適配層暴露給任何框架使用。基礎實作受到 XState 啟發，Zag 也明確致謝「XState for inspiring the base implementation of the state machine」，但 Zag 在執行期並不依賴 XState。
+Zag.js 將自己描述為「a framework agnostic toolkit for implementing complex, interactive, and accessible UI components in your design system and web applications」。核心構想是把每個元件的行為以狀態機形式撰寫一次，再透過小型的適配層暴露給任何框架使用。基礎實作受到 XState 啟發。Zag 也明確致謝「XState for inspiring the base implementation of the state machine」，但 Zag 在執行期並不依賴 XState。
 
 由於機器本身僅是純 JavaScript，相同的元件邏輯可透過薄薄的框架適配器在 React、Vue 與 Solid 之間共用：「We provide adapters for JS frameworks so you can use it in React, Solid, or Vue 3.」Ark UI 即建立在這個基礎之上：它是「a headless library with 45+ accessible components」，其 React、Solid、Vue 與 Svelte 套件共享 Zag 中的單一真相來源。
 
@@ -82,11 +84,11 @@ Zag 的機器加 `connect` 取徑將 React context 替換為兩個純值：`serv
 
 ## 狀態機 Connect API
 
-Zag 的狀態機是「a way to model stateful, reactive behavior using: A finite number of states [and] A finite number of transitions between those states」。每個機器另外攜帶一份響應式的機器內部 context — 即每個實例的資料（current value、selected index、anchor element 等），轉移可讀取與更新這份資料。機器模組本身為宣告式：states、events、transitions、guards 與 actions，皆不直接存取 DOM。
+Zag 的狀態機是「a way to model stateful, reactive behavior using: A finite number of states [and] A finite number of transitions between those states」。每個機器另外攜帶一份響應式的機器內部 context：即每個實例的資料（current value、selected index、anchor element 等），轉移可讀取與更新這份資料。機器模組本身為宣告式：states、events、transitions、guards 與 actions，皆不直接存取 DOM。
 
 `connect` 函式即為機器狀態到 DOM 的橋樑，負責暴露 prop getter：「Methods like getButtonProps() return normalized attributes for elements, encapsulating the machine's state and event handlers for framework-agnostic consumption.」每個 getter 回傳的物件包含事件處理器（`onClick`、`onKeyDown`）、ARIA 屬性（`aria-expanded`、`aria-controls`）、`id`、`role` 與適合當前機器狀態的 `data-*` 屬性。元件作者再把結果展開到對應的 JSX 元素上。
 
-`normalizeProps` 是各框架專屬的墊片，負責調和框架表面差異。它「converts the props of the component into the format that is compatible」於目標框架 — 例如 React 使用駝峰式事件名 `onKeyDown`，而 Vue 樣板使用小寫 `onKeydown`，且各框架的 inline-style 形狀也不同。機器發出規範化的 prop 形狀；`normalizeProps` 負責翻譯。這也是同一份機器與同一個 `connect` 呼叫能在 `@zag-js/react`、`@zag-js/vue` 與 `@zag-js/solid` 之間原封不動運作的原因：唯一改變的只是匯入的 `normalizeProps`。
+`normalizeProps` 是各框架專屬的墊片，負責調和框架表面差異。它「converts the props of the component into the format that is compatible」於目標框架。例如，React 使用駝峰式事件名 `onKeyDown`，而 Vue 樣板使用小寫 `onKeydown`，且各框架的 inline-style 形狀也不同。機器發出規範化的 prop 形狀；`normalizeProps` 負責翻譯。這也是同一份機器與同一個 `connect` 呼叫能在 `@zag-js/react`、`@zag-js/vue` 與 `@zag-js/solid` 之間原封不動運作的原因：唯一改變的只是匯入的 `normalizeProps`。
 
 ## 延伸閱讀
 

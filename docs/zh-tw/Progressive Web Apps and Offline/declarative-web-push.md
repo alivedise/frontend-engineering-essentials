@@ -3,6 +3,8 @@ id: 1316
 title: "宣告式 Web Push（Safari 18.4/18.5）與跨瀏覽器 Push 趨同"
 state: draft
 slug: declarative-web-push
+reviewed: tone
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-1316] 宣告式 Web Push（Safari 18.4/18.5）與跨瀏覽器 Push 趨同
@@ -94,7 +96,7 @@ const subscription = await window.pushManager.subscribe({
 
 權衡點在於宣告式 schema 與任意程式碼之間。命令式 Web Push 允許 service worker 在通知時刻執行任何邏輯：IndexedDB 查詢、動態組合內文、端對端加密內文解密。宣告式 Web Push 將可顯示表面固定到 W3C `NotificationOptions` dictionary（依 WWDC25：「anything supported by the W3C standard NotificationOptions dictionary is respected here」），以放棄這份彈性換取瀏覽器在不啟動 service worker 的前提下顯示通知。
 
-WebKit 對此權衡的官方理由是隱私與能耗：「Allowing websites to remotely wake up a device for silent background work is a privacy violation and expends energy.」逃生口為 `mutable: true`──當提案通知無法直接顯示（例如 body 必須在用戶端解密），就會將提案通知 context 透過 `PushEvent` 派發給 service worker 並顯示替代通知。若伺服器作者不需要這個逃生口，預設 `mutable: false` 會將 service worker 完全排除在路徑之外。
+WebKit 對此權衡的官方理由是隱私與能耗：「Allowing websites to remotely wake up a device for silent background work is a privacy violation and expends energy.」逃生口為 `mutable: true`。當提案通知無法直接顯示（例如 body 必須在用戶端解密），就會將提案通知 context 透過 `PushEvent` 派發給 service worker 並顯示替代通知。若伺服器作者不需要這個逃生口，預設 `mutable: false` 會將 service worker 完全排除在路徑之外。
 
 ## 深入探討
 
@@ -102,7 +104,7 @@ WebKit 對此權衡的官方理由是隱私與能耗：「Allowing websites to r
 
 1. **解析路徑的回退（Parse-path fallback）。** 依 WWDC25：「what happens if the browser attempts to parse JSON from the push message and fails? In that case it falls back to original Web Push, using a Service Worker to handle the message. It also falls back to original Web Push if the JSON doesn't have the magic key.」這正是讓單一 payload 能跨瀏覽器安全發送的關鍵：未實作宣告式的 Chrome 或 Firefox 版本會將 JSON body 視為不透明的 RFC 8030 位元組，並對 service worker 派發 `push` 事件，由 SW 自行呼叫 `showNotification`。
 
-2. **`PushEvent` 攜帶提案通知。** WebKit 部落格指出「when a Declarative Web Push message arrives and a service worker is installed, a push event is dispatched to it like before. `PushEvent` now has the context of the 'proposed notification' from the Declarative Web Push message.」同篇文章補充「there is no penalty for service workers failing to display a notification」──當 `mutable` 為 false 或缺席時，瀏覽器仍會渲染提案通知。
+2. **`PushEvent` 攜帶提案通知。** WebKit 部落格指出「when a Declarative Web Push message arrives and a service worker is installed, a push event is dispatched to it like before. `PushEvent` now has the context of the 'proposed notification' from the Declarative Web Push message.」同篇文章補充「there is no penalty for service workers failing to display a notification.」當 `mutable` 為 false 或缺席時，瀏覽器仍會渲染提案通知。
 
 3. **`window.pushManager` 的分歧。** 命令式 Web Push 僅暴露 `ServiceWorkerRegistration.pushManager`。WebKit 部落格指出宣告式 Web Push「also exposes `window.pushManager` to support subscription management without requiring a service worker.」其餘訂閱契約（`userVisibleOnly`、`applicationServerKey`）則維持不變。
 

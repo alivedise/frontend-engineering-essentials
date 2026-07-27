@@ -3,6 +3,8 @@ id: 1314
 title: "Web Locks API for Cross-Tab and SW-to-Tab Coordination"
 state: draft
 slug: web-locks-api
+reviewed: tone
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-1314] Web Locks API for Cross-Tab and SW-to-Tab Coordination
@@ -13,7 +15,7 @@ The Web Locks API lets scripts in tabs and workers asynchronously acquire a name
 
 ## Context
 
-The Web Locks API was announced for Chrome 69 in Pete LePage's "New in Chrome 69" post on 2018-09-04, framed as an asynchronous primitive to acquire, hold, and release a lock around work (developer.chrome.com/blog/new-in-chrome-69). Its mechanics are now specified by the W3C Web Locks Working Draft and documented across MDN's Web Locks API, LockManager, LockManager.request(), and LockManager.query() pages. The motivating gap, as the W3C Web Locks Explainer states, is that "use cases require coordination across multiple agent clusters; Atomics operations operate on SharedArrayBuffers constrained to a single agent cluster" — so Web Locks fills the cross-cluster mutual-exclusion role that `Atomics` cannot. The W3C Working Draft scopes locks to "agents sharing a storage bucket; this may span multiple agent clusters," which is what allows a service worker and its windows to contend for the same name. Per MDN, locks are origin-isolated: "Locks are scoped to origins; the locks acquired by a tab from `https://example.com` have no effect on the locks acquired by a tab from `https://example.org:8080` as they are separate origins." Baseline Widely available status arrived in March 2022 (MDN Web Locks API).
+The Web Locks API was announced for Chrome 69 in Pete LePage's "New in Chrome 69" post on 2018-09-04, framed as an asynchronous primitive to acquire, hold, and release a lock around work (developer.chrome.com/blog/new-in-chrome-69). Its mechanics are now specified by the W3C Web Locks Working Draft and documented across MDN's Web Locks API, LockManager, LockManager.request(), and LockManager.query() pages. The motivating gap, as the W3C Web Locks Explainer states, is that "use cases require coordination across multiple agent clusters; Atomics operations operate on SharedArrayBuffers constrained to a single agent cluster." Web Locks fills the cross-cluster mutual-exclusion role that `Atomics` cannot. The W3C Working Draft scopes locks to "agents sharing a storage bucket; this may span multiple agent clusters," which is what allows a service worker and its windows to contend for the same name. Per MDN, locks are origin-isolated: "Locks are scoped to origins; the locks acquired by a tab from `https://example.com` have no effect on the locks acquired by a tab from `https://example.org:8080` as they are separate origins." Baseline Widely available status arrived in March 2022 (MDN Web Locks API).
 
 ## Visual
 
@@ -112,7 +114,7 @@ Per MDN LockManager.query() (Claims 11-12), the resolved value contains a `held`
 - **SHOULD** use `'shared'` for read paths and `'exclusive'` for write paths to implement the readers-writer pattern called out in MDN Web Locks API (Claim 5).
 - **SHOULD** prefer `ifAvailable: true` over short polling when the desired behavior is "skip if busy," per MDN LockManager.request() (Claim 6).
 - **SHOULD** bound waits with an `AbortSignal` whose controller aborts on timeout when callers cannot wait indefinitely, per MDN LockManager.request() (Claim 7).
-- **MAY** implement leader election by holding an exclusive lock for the lifetime of the tab — the W3C Web Locks Explainer (Claim 17) endorses the pattern: "A 'primary tab' is designated. This tab is the only one that should be performing some operations ... It holds a lock and never releases it." MDN Web Locks API (Claim 16) names the canonical example: a `"my_net_db_sync"` lock so only one tab syncs network and IndexedDB.
+- **MAY** implement leader election by holding an exclusive lock for the lifetime of the tab. The W3C Web Locks Explainer (Claim 17) endorses the pattern: "A 'primary tab' is designated. This tab is the only one that should be performing some operations ... It holds a lock and never releases it." MDN Web Locks API (Claim 16) names the canonical example: a `"my_net_db_sync"` lock so only one tab syncs network and IndexedDB.
 - **MAY** call `navigator.locks.query()` for diagnostics, since per MDN LockManager.query() (Claim 11) it returns a snapshot of `held` and `pending` for the origin.
 
 ## Design Thinking
@@ -121,13 +123,13 @@ Web Locks trades immediacy for coordination. A request that cannot be granted jo
 
 The cross-cluster scope (W3C Explainer, Claim 15) is what makes Web Locks distinct from `Atomics` on `SharedArrayBuffer`: locks reach across agent clusters, so a service worker and its windows can contend for the same name (W3C Working Draft, Claim 14). The trade is that lock state lives in the browser's per-origin coordination layer rather than in shared memory, so semantics are async-only (the `request()` callback receives a granted `Lock`; the API has no synchronous variant).
 
-`steal: true` is the explicit escape hatch when the queue assumes a holder still exists. Per the W3C Working Draft §3.2.1 (Claim 9), the cost is that the prior holder runs without exclusion guarantees afterward — meaning recovery code must reset whatever shared resource the stolen lock was protecting before the stealing context proceeds.
+`steal: true` is the explicit escape hatch when the queue assumes a holder still exists. Per the W3C Working Draft §3.2.1 (Claim 9), the cost is that the prior holder runs without exclusion guarantees afterward: recovery code must reset whatever shared resource the stolen lock was protecting before the stealing context proceeds.
 
 ## Deep Dive
 
 The grant algorithm is specified in the W3C Working Draft §2.5 and §4.4 (Claim 22). A request becomes grantable when no held lock with the same name conflicts: for `'exclusive'`, no held lock may share the name; for `'shared'`, no held lock with that name may be in `'exclusive'` mode. The queue is processed head-of-line: "Only the first queued request for each resource is evaluated; processing halts if any request is ungrantable." Head-of-line blocking means a single ungrantable request at the head of a queue can stall later grantable requests for the same name; this is intrinsic to the spec's grant semantics.
 
-Lock identity for diagnostics is provided by `LockInfo`. Per MDN LockManager.query() (Claim 12), each entry exposes `name`, `mode` (`"exclusive"` or `"shared"`), and `clientId` — and "`clientId` ... is the same value as `Client.id`," which links lock state to a specific client (window, worker, or service worker client) and lets a service worker correlate held locks with the tabs that own them.
+Lock identity for diagnostics is provided by `LockInfo`. Per MDN LockManager.query() (Claim 12), each entry exposes `name`, `mode` (`"exclusive"` or `"shared"`), and `clientId`. "`clientId` ... is the same value as `Client.id`," which links lock state to a specific client (window, worker, or service worker client) and lets a service worker correlate held locks with the tabs that own them.
 
 Per MDN LockManager.request() (Claim 3), the method returns a `Promise` that resolves with the callback's result after the lock is released, or rejects if the request is aborted. Combined with Claim 2 (lock released when the callback returns or throws), this gives a structured-concurrency shape: the lock's lifetime is exactly the lexical scope of the callback's promise, and there is no `unlock()` to forget.
 
@@ -146,14 +148,14 @@ The findings doc enumerates seven canonical configurations of `mode` plus flags.
 | Recovery from a wedged holder | `'exclusive'` | `steal: true` | Reset shared resource state first; prior holder loses its exclusion guarantee (Claim 9). |
 | Conflict guard (rejected combinations) | n/a | `steal+ifAvailable` is rejected; `signal+steal` and `signal+ifAvailable` are rejected | Spec disallows these combinations; throws `NotSupportedError` (Claim 10). |
 
-The held-vs-pending state machine: a `request()` call enters the pending queue for its name. The grant algorithm (W3C Working Draft §2.5/§4.4, Claim 22) inspects only the head of each per-name queue and admits it iff no held lock conflicts under the mode rule. On admission, the entry moves to held and the user-supplied callback runs; the lock leaves held when the callback's returned promise settles (Claim 2). `navigator.locks.query()` (Claim 11) returns a snapshot of these two arrays — `held` and `pending` — at the moment of the call.
+The held-vs-pending state machine: a `request()` call enters the pending queue for its name. The grant algorithm (W3C Working Draft §2.5/§4.4, Claim 22) inspects only the head of each per-name queue and admits it iff no held lock conflicts under the mode rule. On admission, the entry moves to held and the user-supplied callback runs; the lock leaves held when the callback's returned promise settles (Claim 2). `navigator.locks.query()` (Claim 11) returns a snapshot of these two arrays (`held` and `pending`) at the moment of the call.
 
-`ifAvailable: true` short-circuits the pending step: if any conflicting lock is in held, the callback is invoked with `null` instead of being enqueued (Claim 6). `signal` keeps the entry in pending but removes it on abort, rejecting `request()` with the abort reason (Claim 7). `steal: true` bypasses both queue and grant rule: it forcibly releases any held lock with that name, preempts queued requests, and grants the new request (Claim 8) — at the cost stated in Claim 9, that the prior holder runs without exclusion guarantees thereafter.
+`ifAvailable: true` short-circuits the pending step: if any conflicting lock is in held, the callback is invoked with `null` instead of being enqueued (Claim 6). `signal` keeps the entry in pending but removes it on abort, rejecting `request()` with the abort reason (Claim 7). `steal: true` bypasses both queue and grant rule: it forcibly releases any held lock with that name, preempts queued requests, and grants the new request (Claim 8). The cost, stated in Claim 9, is that the prior holder runs without exclusion guarantees thereafter.
 
 ## Related Topics
 
-- [BroadcastChannel for cross-tab messaging](/en/Browser%20APIs%20and%20Standards/414) — BroadcastChannel is broadcast pub-sub: every subscriber in the origin receives every posted message. Web Locks is mutual exclusion: one holder under `'exclusive'`, or readers-writer under `'shared'`. A common pattern uses both — BroadcastChannel announces "auth token refreshed" while Web Locks ensures only one tab does the refresh.
-- [Service Workers for offline](/en/Progressive%20Web%20Apps%20and%20Offline/1302) — Per the W3C Working Draft (Claim 14), locks are scoped to "agents sharing a storage bucket; this may span multiple agent clusters," so a service worker and the windows it controls can contend for the same lock name. This enables the SW-to-tab coordination pattern named in MDN Web Locks API (Claim 16) for a `"my_net_db_sync"` leader.
+- [BroadcastChannel for cross-tab messaging](/en/Browser%20APIs%20and%20Standards/414). BroadcastChannel is broadcast pub-sub: every subscriber in the origin receives every posted message. Web Locks is mutual exclusion: one holder under `'exclusive'`, or readers-writer under `'shared'`. A common pattern uses both: BroadcastChannel announces "auth token refreshed" while Web Locks ensures only one tab does the refresh.
+- [Service Workers for offline](/en/Progressive%20Web%20Apps%20and%20Offline/1302). Per the W3C Working Draft (Claim 14), locks are scoped to "agents sharing a storage bucket; this may span multiple agent clusters," so a service worker and the windows it controls can contend for the same lock name. This enables the SW-to-tab coordination pattern named in MDN Web Locks API (Claim 16) for a `"my_net_db_sync"` leader.
 
 ## References
 

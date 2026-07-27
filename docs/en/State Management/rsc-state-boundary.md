@@ -3,6 +3,8 @@ id: 618
 title: "React Server Components — The State Boundary"
 state: draft
 slug: rsc-state-boundary
+reviewed: tone
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-618] React Server Components — The State Boundary
@@ -19,9 +21,7 @@ The 2023 React Labs post frames the data-access angle: "Server Components can ru
 
 The trade-off is that Server Components have no client lifecycle. Per the same React reference, "Server Components are not sent to the browser, so they cannot use interactive APIs like `useState`." `useEffect` is unavailable for the same reason.
 
-RSC is "a spec for components that work across compatible React frameworks" (React Labs, March 2023). Frameworks and bundlers — Next.js App Router, Waku, Vite plugins — implement that spec; the React package itself does not ship a runtime that mounts RSC end-to-end.
-
-## Scenario
+RSC is "a spec for components that work across compatible React frameworks" (React Labs, March 2023). Frameworks and bundlers (Next.js App Router, Waku, Vite plugins) implement that spec; the React package itself does not ship a runtime that mounts RSC end-to-end.
 
 Consider a Next.js App Router page that renders a product detail layout: a header with the product title fetched from a database, a description block read from a CMS, a list of reviews paginated server-side, and a single "Add to cart" button that needs `useState` to track an in-flight optimistic update. If the page module is marked `'use client'` to satisfy the button's hook, every imported piece (the product fetcher, the CMS adapter, the reviews list) moves into the client bundle along with its transitive dependencies. The data-access modules now ship to the browser even though their results never need to re-render there.
 
@@ -134,7 +134,7 @@ This is the lever for "lifting state above an RSC." When a tree mixes server dat
 
 The pattern composes with the children-slot example from the previous section: a client interaction shell at the leaf, server data above it, and a server parent that hands the data in as `children` instead of routing it through props that would have to serialize.
 
-## Internal References
+## Related Topics
 
 - [FEE-616 — React 19 Form State](/en/State%20Management/616) covers Server Functions invoked from client form handlers, the same `'use server'` mechanism applied to form-driven mutations.
 - [FEE-613 — TanStack Query](/en/State%20Management/613) addresses server state caching from a client-only stance, useful contrast against RSC's render-on-the-server approach.

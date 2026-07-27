@@ -3,6 +3,8 @@ id: 618
 title: "React Server Components：狀態邊界"
 state: draft
 slug: rsc-state-boundary
+reviewed: tone
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-618] React Server Components：狀態邊界
@@ -19,9 +21,7 @@ React 文件將 Server Components 描述為一種「在 bundling 前、於與你
 
 代價是 Server Components 沒有 client lifecycle。同一份 React 參考文件寫道：「Server Components 不會送到瀏覽器，因此無法使用像 `useState` 這類互動式 API。」`useEffect` 也基於同樣理由無法使用。
 
-RSC 是「一份適用於相容 React frameworks 元件的規格」（React Labs，2023 年 3 月）。Frameworks 與 bundlers，例如 Next.js App Router、Waku 與 Vite plugins，會實作該規格；React 套件本身並未提供能端到端掛載 RSC 的 runtime。
-
-## 情境
+RSC 是「一份適用於相容 React frameworks 元件的規格」（React Labs，2023 年 3 月）。Frameworks 與 bundlers（Next.js App Router、Waku、Vite plugins）會實作該規格；React 套件本身並未提供能端到端掛載 RSC 的 runtime。
 
 設想一個 Next.js App Router 頁面，render 一個產品詳細頁面布局：標題從資料庫取得的 header、從 CMS 讀取的描述區塊、由 server 端分頁的評論清單，以及一個需要 `useState` 來追蹤 in-flight 樂觀更新的「加入購物車」按鈕。如果為了滿足按鈕的 hook 而把整個頁面 module 標記為 `'use client'`，每個被 import 的部分（產品 fetcher、CMS adapter、評論清單）都會連同其遞移依賴一起搬進 client bundle。即使資料存取 module 的結果不需要在瀏覽器重新 render，這些 module 還是會送到瀏覽器。
 
@@ -134,7 +134,7 @@ export default function CartPage() {
 
 該模式可與前一節的 children-slot 範例組合：在葉節點放 client 互動外殼、其上放 server 資料，並由 server 父元件把資料當作 `children` 傳入，而非透過必須序列化的 props 路由。
 
-## 內部參考
+## 延伸閱讀
 
 - [FEE-616 — React 19 Form State](/zh-tw/State%20Management/616) 涵蓋從 client 表單處理器呼叫 Server Functions 的情境，與本文相同的 `'use server'` 機制套用於表單驅動的變更。
 - [FEE-613 — TanStack Query](/zh-tw/State%20Management/613) 從純 client 角度處理 server state 快取，與 RSC 在 server 上 render 的取徑形成對照。

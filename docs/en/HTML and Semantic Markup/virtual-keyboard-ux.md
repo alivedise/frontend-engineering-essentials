@@ -5,12 +5,14 @@ state: draft
 slug: virtual-keyboard-ux
 category: HTML and Semantic Markup
 level: mid
+reviewed: tone
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-114] Virtual Keyboard UX: inputmode, enterkeyhint, and Plaintext Editing
 
 :::info
-Mobile users type into your forms through an on-screen keyboard whose layout and Enter-key label are decided by the browser. HTML exposes four hints that steer that decision: `inputmode`, `enterkeyhint`, `autocapitalize`, and `contenteditable="plaintext-only"`. This article maps each attribute to what it actually controls, where Baseline support stands as of 2026, and why these hints complement — but do not replace — correct `type`, `<label>`, and ARIA semantics.
+Mobile users type into your forms through an on-screen keyboard whose layout and Enter-key label are decided by the browser. HTML exposes four hints that steer that decision: `inputmode`, `enterkeyhint`, `autocapitalize`, and `contenteditable="plaintext-only"`. This article maps each attribute to what it actually controls, where Baseline support stands as of 2026, and why these hints complement, but do not replace, correct `type`, `<label>`, and ARIA semantics.
 :::
 
 ## Context
@@ -63,7 +65,7 @@ The two values produce different keypads. MDN describes `decimal` as a "Fraction
 </form>
 ```
 
-The Enter key on the first two inputs carries a forward-pointing label; on the last it reads "Done" (or an OS-equivalent icon). Moving focus on Enter still requires JavaScript — the attribute changes the label only (covered in Deep Dive).
+The Enter key on the first two inputs carries a forward-pointing label; on the last it reads "Done" (or an OS-equivalent icon). Moving focus on Enter still requires JavaScript. The attribute changes the label only (covered in Deep Dive).
 
 ### Chat composer with `plaintext-only`
 

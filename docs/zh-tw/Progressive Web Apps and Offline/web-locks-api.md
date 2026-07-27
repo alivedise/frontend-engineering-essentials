@@ -3,6 +3,8 @@ id: 1314
 title: "Web Locks API：跨分頁與 Service Worker 對 Tab 協調"
 state: draft
 slug: web-locks-api
+reviewed: tone
+reviewed_on: 2026-07-27
 ---
 
 # [FEE-1314] Web Locks API：跨分頁與 Service Worker 對 Tab 協調
@@ -13,7 +15,7 @@ Web Locks API 讓分頁與 Worker 中的程式碼以非同步方式取得具名�
 
 ## 背景
 
-Web Locks API 在 2018-09-04 由 Pete LePage 於〈New in Chrome 69〉中宣布隨 Chrome 69 推出，定位為一個非同步原語，用於在工作前後取得、持有與釋放鎖定（developer.chrome.com/blog/new-in-chrome-69）。其機制目前由 W3C Web Locks Working Draft 規範，並由 MDN 的 Web Locks API、LockManager、LockManager.request() 與 LockManager.query() 等頁面記錄。如 W3C Web Locks Explainer 所述，所欲填補的缺口是：「使用情境需要跨多個 agent cluster 的協調；Atomics 操作對 SharedArrayBuffer 之操作受限於單一 agent cluster」——因此 Web Locks 補足 `Atomics` 無法承擔的跨 cluster 互斥角色。W3C Working Draft 將鎖定範圍界定為「共用一個儲存區的 agent；可能跨越多個 agent cluster」，這正是 Service Worker 與其視窗能夠競爭同一名稱的根據。據 MDN 所述，鎖定以來源為界進行隔離：「Lock 以來源為範圍；來自 `https://example.com` 分頁所取得的鎖定，對來自 `https://example.org:8080` 分頁所取得的鎖定無任何影響，因為兩者為不同來源。」Baseline 廣泛可用的狀態於 2022 年 3 月達成（MDN Web Locks API）。
+Web Locks API 在 2018-09-04 由 Pete LePage 於〈New in Chrome 69〉中宣布隨 Chrome 69 推出，定位為一個非同步原語，用於在工作前後取得、持有與釋放鎖定（developer.chrome.com/blog/new-in-chrome-69）。其機制目前由 W3C Web Locks Working Draft 規範，並由 MDN 的 Web Locks API、LockManager、LockManager.request() 與 LockManager.query() 等頁面記錄。如 W3C Web Locks Explainer 所述，所欲填補的缺口是：「使用情境需要跨多個 agent cluster 的協調；Atomics 操作對 SharedArrayBuffer 之操作受限於單一 agent cluster」。Web Locks 補足 `Atomics` 無法承擔的跨 cluster 互斥角色。W3C Working Draft 將鎖定範圍界定為「共用一個儲存區的 agent；可能跨越多個 agent cluster」，這正是 Service Worker 與其視窗能夠競爭同一名稱的根據。據 MDN 所述，鎖定以來源為界進行隔離：「Lock 以來源為範圍；來自 `https://example.com` 分頁所取得的鎖定，對來自 `https://example.org:8080` 分頁所取得的鎖定無任何影響，因為兩者為不同來源。」Baseline 廣泛可用的狀態於 2022 年 3 月達成（MDN Web Locks API）。
 
 ## 視覺對比
 
@@ -121,13 +123,13 @@ Web Locks 以即時性換取協調性。無法被授予的請求會加入以名�
 
 跨 cluster 範圍（W3C Explainer，Claim 15）使 Web Locks 與 `Atomics` 對 `SharedArrayBuffer` 的操作有所區隔：鎖定可橫跨 agent cluster，因此 Service Worker 與其視窗能夠競爭同一名稱（W3C Working Draft，Claim 14）。其代價在於鎖定狀態存在於瀏覽器以來源為界的協調層，而非共享記憶體中，因此語意僅為非同步（`request()` 之回呼接收已授予的 `Lock`；此 API 並無同步版本）。
 
-`steal: true` 是當隊列假設持有者仍存在時的明示逃生口。依 W3C Working Draft §3.2.1（Claim 9），其代價是先前持有者其後將失去互斥執行保證——意即復原程式碼必須先重置被偷取鎖定原本所保護的共享資源，搶占的執行環境才得以繼續。
+`steal: true` 是當隊列假設持有者仍存在時的明示逃生口。依 W3C Working Draft §3.2.1（Claim 9），其代價是先前持有者其後將失去互斥執行保證：復原程式碼必須先重置被偷取鎖定原本所保護的共享資源，搶占的執行環境才得以繼續。
 
 ## 深入探討
 
 授予演算法規範於 W3C Working Draft §2.5 與 §4.4（Claim 22）。當沒有同名稱的已持有鎖定產生衝突時，請求即可被授予：對 `'exclusive'` 而言，不可有任何同名的已持有鎖定；對 `'shared'` 而言，不可有任何同名的已持有鎖定處於 `'exclusive'` 模式。隊列以對頭優先方式處理：「每個資源僅評估隊列中的第一個請求；若任一請求無法被授予則停止處理。」對頭阻塞意味著隊列開頭一個無法被授予的請求，會卡住同名稱後續本可被授予的請求；此為規範授予語意的固有特性。
 
-診斷時的鎖定識別資訊由 `LockInfo` 提供。依 MDN LockManager.query()（Claim 12），每筆條目暴露 `name`、`mode`（`"exclusive"` 或 `"shared"`）與 `clientId`——並指出「`clientId` ……與 `Client.id` 為相同值」，此將鎖定狀態關聯至特定 client（視窗、worker 或 service worker client），使 Service Worker 能將已持有鎖定與所屬分頁進行對應。
+診斷時的鎖定識別資訊由 `LockInfo` 提供。依 MDN LockManager.query()（Claim 12），每筆條目暴露 `name`、`mode`（`"exclusive"` 或 `"shared"`）與 `clientId`。「`clientId` ……與 `Client.id` 為相同值」，此將鎖定狀態關聯至特定 client（視窗、worker 或 service worker client），使 Service Worker 能將已持有鎖定與所屬分頁進行對應。
 
 依 MDN LockManager.request()（Claim 3），此方法回傳一個 `Promise`，在鎖定釋放後以回呼結果 resolve，若請求被中止則 reject。結合 Claim 2（鎖定於回呼回傳或拋出時釋放），這構成了結構化並行的形態：鎖定的存活期恰好等於回呼之 Promise 的詞法作用域，且不會有忘記呼叫的 `unlock()`。
 
@@ -137,7 +139,7 @@ Web Locks 以即時性換取協調性。無法被授予的請求會加入以名�
 
 | 使用情境 | mode | flags | 原因 |
 |---|---|---|---|
-| 僅一個分頁更新 auth token | `'exclusive'` | （無）——首位呼叫者勝出，其餘排隊並於完成時 resolve | 預設 mutex；達成工作去重，因為排隊回呼會繼承已更新的 token。 |
+| 僅一個分頁更新 auth token | `'exclusive'` | （無）；首位呼叫者勝出，其餘排隊並於完成時 resolve | 預設 mutex；達成工作去重，因為排隊回呼會繼承已更新的 token。 |
 | 跨分頁序列化 IDB 寫入 | `'exclusive'` | （無） | 包覆 IDB transaction，使同一時間僅有一個分頁處於寫入中。 |
 | 多讀者單寫者（快取設定） | 讀者 `'shared'`，寫者 `'exclusive'` | （無） | readers-writer 模式（MDN Web Locks API，Claim 5）。 |
 | 忙碌時跳過的背景更新 | `'exclusive'` | `ifAvailable: true` | 若另一分頁已在更新，直接退出而不排隊（Claim 6）。 |
@@ -148,12 +150,12 @@ Web Locks 以即時性換取協調性。無法被授予的請求會加入以名�
 
 held 與 pending 的狀態機：一次 `request()` 呼叫進入該名稱的 pending 隊列。授予演算法（W3C Working Draft §2.5/§4.4，Claim 22）僅檢查每個名稱隊列的頭部，並在依模式規則無已持有鎖定衝突時放行。放行時，條目移至 held，使用者提供的回呼開始執行；當回呼回傳之 Promise 結算時，鎖定離開 held（Claim 2）。`navigator.locks.query()`（Claim 11）回傳呼叫當下 `held` 與 `pending` 兩陣列的快照。
 
-`ifAvailable: true` 短路了 pending 步驟：若有任何衝突的鎖定處於 held，回呼即以 `null` 被呼叫，而非進入隊列（Claim 6）。`signal` 將條目保留於 pending，但於 abort 時將其移除，並以 abort reason reject `request()`（Claim 7）。`steal: true` 同時繞過隊列與授予規則：強制釋放任何同名的已持有鎖定，搶占排隊中的請求並授予新請求（Claim 8）——其代價如 Claim 9 所述，先前持有者其後失去互斥執行保證。
+`ifAvailable: true` 短路了 pending 步驟：若有任何衝突的鎖定處於 held，回呼即以 `null` 被呼叫，而非進入隊列（Claim 6）。`signal` 將條目保留於 pending，但於 abort 時將其移除，並以 abort reason reject `request()`（Claim 7）。`steal: true` 同時繞過隊列與授予規則：強制釋放任何同名的已持有鎖定，搶占排隊中的請求並授予新請求（Claim 8）。其代價如 Claim 9 所述，是先前持有者其後失去互斥執行保證。
 
 ## 延伸閱讀
 
-- [BroadcastChannel for cross-tab messaging](/zh-tw/Browser%20APIs%20and%20Standards/414) — BroadcastChannel 為廣播式 pub-sub：來源內每個訂閱者都會收到每則發出的訊息。Web Locks 為互斥：在 `'exclusive'` 下單一持有者，或在 `'shared'` 下的 readers-writer。常見模式是兩者並用——以 BroadcastChannel 公告「auth token 已更新」，同時以 Web Locks 確保僅一個分頁負責更新。
-- [Service Workers for offline](/zh-tw/Progressive%20Web%20Apps%20and%20Offline/1302) — 依 W3C Working Draft（Claim 14），鎖定範圍涵蓋「共用一個儲存區的 agent；可能跨越多個 agent cluster」，因此 Service Worker 與其控制的視窗可競爭同一鎖定名稱。此性質啟用 MDN Web Locks API（Claim 16）所述以 `"my_net_db_sync"` 為 leader 的 SW 與分頁協調模式。
+- [BroadcastChannel for cross-tab messaging](/zh-tw/Browser%20APIs%20and%20Standards/414)。BroadcastChannel 為廣播式 pub-sub：來源內每個訂閱者都會收到每則發出的訊息。Web Locks 為互斥：在 `'exclusive'` 下單一持有者，或在 `'shared'` 下的 readers-writer。常見模式是兩者並用：以 BroadcastChannel 公告「auth token 已更新」，同時以 Web Locks 確保僅一個分頁負責更新。
+- [Service Workers for offline](/zh-tw/Progressive%20Web%20Apps%20and%20Offline/1302)。依 W3C Working Draft（Claim 14），鎖定範圍涵蓋「共用一個儲存區的 agent；可能跨越多個 agent cluster」，因此 Service Worker 與其控制的視窗可競爭同一鎖定名稱。此性質啟用 MDN Web Locks API（Claim 16）所述以 `"my_net_db_sync"` 為 leader 的 SW 與分頁協調模式。
 
 ## 參考資料
 
