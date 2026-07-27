@@ -180,7 +180,7 @@ title: FEE list
 - [1303.Caching Strategies](1303)
 - [1304.Workbox & PWA Tooling](1304)
 - [1305.Offline UX Patterns](1305)
-- [1306.Push Notifications & Background Sync](1306)
+- [1306.Web Push Notifications](1306)
 - [1307.PWA in Production](1307)
 - [1308.App Shell Architecture](1308)
 - [1309.Update Detection & Refresh Prompts](1309)
