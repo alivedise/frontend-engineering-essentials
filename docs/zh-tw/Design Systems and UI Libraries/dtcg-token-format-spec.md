@@ -10,7 +10,7 @@ level: mid
 # [FEE-910] W3C DTCG Format Module — 完整 Token 規格參考
 
 :::info
-W3C Design Tokens Community Group（DTCG）Format Module 定義了一套以 JSON 為基礎的設計 token 交換格式。它於 2025 年 10 月 28 日推出第一個穩定版本 2025.10。本文涵蓋檔案結構、型別原語、七種複合型別、別名解析與工具生態。當你要在設計工具與程式碼流程之間採用 `.tokens.json` 時，可以將本文當作參考。
+W3C Design Tokens Community Group（DTCG）Format Module 定義了一套以 JSON 為基礎的設計 token 交換格式。它於 2025 年 10 月 28 日推出第一個穩定版本 2025.10。本文涵蓋檔案結構、七種基本型別、六種複合型別、別名解析與工具生態。當你要在設計工具與程式碼流程之間採用 `.tokens.json` 時，可以將本文當作參考。
 :::
 
 ## 背景
@@ -81,27 +81,27 @@ DTCG 在設計上做了兩個值得理解的取捨，導入前先掌握它們有
 
 **複合型別內的成員別名。** 在複合型別中，每個成員欄位本身 MAY 為別名。這正是讓 shadow 的 `color` 成員指向品牌色，同時其他成員維持內嵌字面值的機制。
 
+**屬性層級參照。** `{group.token}` 語法一律解析為另一個 token 的完整 `$value`。2025.10 規格新增第二種機制，用來指向單一子值：一個依 RFC 6901 使用 JSON Pointer 表示法的 `$ref` 屬性。規格要求「Tools MUST support JSON Pointer references as defined by [RFC 6901], using the `$ref` property.」像 `#/colors/blue/$value/components/0` 這樣的指標會解析為色彩值中的單一元件，這是 `{group.token}` 無法表達的，因為它永遠只會回傳完整的 `$value`。
+
 ## DTCG 複合型別對照
 
-Format Module 定義八種型別原語與七種複合型別。複合型別會引用原語；部分複合型別也會引用其他複合型別（例如 `border.style` 為 `strokeStyle`）。
+Format Module 定義七種基本型別與六種複合型別。複合型別會引用基本型別；部分複合型別也會引用其他複合型別（例如 `border.style` 為 `strokeStyle`）。
 
 | Type | Category | `$value` shape | 備註 |
 | --- | --- | --- | --- |
-| `color` | Primitive | Hex 字串或結構化物件 | 表示 UI 中的色彩 |
-| `dimension` | Primitive | 數值 + 單位（如 `"16px"`、`"1rem"`） | 表示距離量值 |
-| `duration` | Primitive | 毫秒（數字或 `"100ms"`） | 時間長度，供轉場使用 |
-| `fontFamily` | Primitive | 字串或字串陣列 | 單一字型族或回退堆疊 |
-| `fontWeight` | Primitive | 1-1000 數字或具名關鍵字 | 例如 `400`、`"bold"` |
-| `number` | Primitive | 數字 | 無單位純量 |
-| `cubicBezier` | Primitive (composite-feeder) | `[x1, y1, x2, y2]` | 供 `transition.timingFunction` 使用 |
-| `strokeStyle` | Primitive (composite-feeder) | 關鍵字字串或虛線樣式物件 | 供 `border.style` 使用 |
+| `color` | Basic | Hex 字串或結構化物件 | 表示 UI 中的色彩 |
+| `dimension` | Basic | 數值 + 單位（如 `"16px"`、`"1rem"`） | 表示距離量值 |
+| `duration` | Basic | 毫秒（數字或 `"100ms"`） | 時間長度，供轉場使用 |
+| `fontFamily` | Basic | 字串或字串陣列 | 單一字型族或回退堆疊 |
+| `fontWeight` | Basic | 1-1000 數字或具名關鍵字 | 例如 `400`、`"bold"` |
+| `number` | Basic | 數字 | 無單位純量 |
+| `cubicBezier` | Basic | `[x1, y1, x2, y2]` | 供 `transition.timingFunction` 使用 |
 | `shadow` | Composite | `{color, offsetX, offsetY, blur, spread}` 或陣列 | 單一陰影或堆疊陣列；每個成員 MAY 使用別名 |
 | `border` | Composite | `{color, width, style}` | `style` 為 `strokeStyle` |
+| `strokeStyle` | Composite | 關鍵字字串或虛線樣式物件 | 定義於 Format Module 第 9.3 節；供 `border.style` 使用 |
 | `transition` | Composite | `{duration, delay, timingFunction}` | `timingFunction` 為 `cubicBezier` |
-| `typography` | Composite | `{fontFamily, fontSize, fontWeight, letterSpacing, lineHeight}` | 聚合五個原語 |
+| `typography` | Composite | `{fontFamily, fontSize, fontWeight, letterSpacing, lineHeight}` | 聚合五個基本型別 |
 | `gradient` | Composite | 色彩節點的陣列 | 完整成員結構參見 Format Module draft |
-| Stroke style (composite) | Composite | 虛線樣式物件 | `strokeStyle` 的物件形式；用於邊框內部 |
-| Composed token | Composite | 視變體而定 | 規格保留納入額外複合型別的空間 |
 
 規格條文直接支援這些型別：「Represents a shadow style. The $type property MUST be set to the string shadow」、「Represents a border style. The $type property MUST be set to the string border」、「Represents a animated transition between two states」，以及 typography 型別「An object with the following properties: ... fontFamily ... fontSize ... fontWeight ... letterSpacing ... lineHeight.」
 
@@ -109,9 +109,9 @@ Format Module 定義八種型別原語與七種複合型別。複合型別會引
 
 截至 2025.10，三個參考實作覆蓋多數正式環境的處理流程：
 
-- **Style Dictionary 4+。** 依 [DTCG 整合頁面](https://styledictionary.com/info/dtcg/)，「As of version 4, Style Dictionary has first-class support for the DTCG format.」第 5 版追蹤 2025.10 後續調整。Style Dictionary 仍是從 `.tokens.json` 轉換為各平台輸出（CSS variables、iOS、Android、Tailwind config）最常見的轉換管線。
+- **Style Dictionary 4+。** 依 [DTCG 整合頁面](https://styledictionary.com/info/dtcg/)，「As of version 4, Style Dictionary has first-class support for the DTCG format.」這裡指的是 2025.10 之前的 editor's-draft 格式。完整的 2025.10 支援仍在第 5 版中開發中。Style Dictionary 仍是從 `.tokens.json` 轉換為各平台輸出（CSS variables、iOS、Android、Tailwind config）最常見的轉換管線。
 - **Tokens Studio for Figma。** [token format 文件](https://docs.tokens.studio/manage-settings/token-format)指出「The DTCG format prefixes the properties of a design token in the JSON file with the dollar sign ($).」Tokens Studio 預設採用 DTCG，並提供將整份 token JSON 在舊版與 DTCG 結構之間一鍵轉換的功能。
-- **Terrazzo。** 在 2025.10 公告中與 Style Dictionary、Tokens Studio 並列為參考實作。
+- **[Terrazzo](https://terrazzo.app/docs/reference/about/)。** 一套開源、採用 MIT 授權的設計 token CLI 與建置管線，前身名為 Cobalt（亦稱 Cobalt UI）。Terrazzo 在 2025.10 公告中與 Style Dictionary、Tokens Studio 並列為參考實作。
 
 Figma 第一方的 Variables REST API 匯出在 typography、shadow 與 gradient 來回傳輸上仍有缺口。若需要從 Figma 取得完整的複合型別保真度，建議改走 Tokens Studio，或對 Variables 匯出結果進行後處理。
 
@@ -127,4 +127,5 @@ Figma 第一方的 Variables REST API 匯出在 typography、shadow 與 gradient
 - Design Tokens Community Group, "Glossary," designtokens.org (2025). https://www.designtokens.org/glossary/
 - Style Dictionary, "DTCG Format Support," styledictionary.com (2025). https://styledictionary.com/info/dtcg/
 - Tokens Studio, "Token Format," docs.tokens.studio (2025). https://docs.tokens.studio/manage-settings/token-format
+- Terrazzo, "About Terrazzo," terrazzo.app (2025). https://terrazzo.app/docs/reference/about/
 - Design Tokens Community Group, "community-group repository," GitHub (2025). https://github.com/design-tokens/community-group

@@ -824,5 +824,245 @@
       "template": 3
     },
     "notes": "revised: Testing Library 1000ms default verified, 5%-flaky threshold reframed as heuristic, 23 dash sites cleared; verified clean"
+  },
+  "docs/en/Codebase Studies/threejs-architecture-tour.md": {
+    "id": 1801,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 3,
+      "references": 1,
+      "factual": 2,
+      "template": 2
+    },
+    "notes": "revised: methodology counts re-verified against real r172 clone (54 Node subclasses, substring-vs-word-boundary grep bug fixed), version dated (r172->r185), independent sources added, 34 dash sites cleared; verified clean"
+  },
+  "docs/en/Observability and Error Tracking/1407.md": {
+    "id": 1407,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 4,
+      "organization": 3,
+      "references": 1,
+      "factual": 6,
+      "template": 3
+    },
+    "notes": "revised: Sentry replay version verified, retention default reframed as policy-dependent, kept technique-focused (vendor-neutral), 13 dash sites cleared; verified clean"
+  },
+  "docs/en/Web Platform Proposals/TC39 and JS Proposals/10100.md": {
+    "id": 10100,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 4,
+      "organization": 1,
+      "references": 1,
+      "factual": 3,
+      "template": 4
+    },
+    "notes": "revised: Iterator Helpers Stage-4/ES2025 shipping verified (Chrome 122/Firefox 131/Safari 18.4), status block updated; verified clean. NOTE: Stage-4 shipped -> graduation candidate per FEE-12000"
+  },
+  "docs/en/Build Tooling and Module Systems/805.md": {
+    "id": 805,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 2,
+      "organization": 4,
+      "references": 2,
+      "factual": 3,
+      "template": 2
+    },
+    "notes": "revised: monorepo tooling landscape verified (Nx/Turborepo/Lerna-deprecated/pnpm/Bun workspaces), 20 dash sites cleared; verified clean"
+  },
+  "docs/en/Developer Experience and Tooling/1606.md": {
+    "id": 1606,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 2,
+      "organization": 0,
+      "references": 2,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised: LSP-2016 origin and ESLint language-server claims verified, editor-tooling landscape updated, 5 not-X-but-Y cleared; verified clean"
+  },
+  "docs/en/Developer Experience and Tooling/1608.md": {
+    "id": 1608,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 2,
+      "organization": 2,
+      "references": 2,
+      "factual": 4,
+      "template": 2
+    },
+    "notes": "revised: DevTools throttling presets verified against source (Slow-3G corrected 400ms->2000ms applied), CPU comparison grounded in Lighthouse model, logpoint-security self-contradiction fixed; verified clean"
+  },
+  "docs/en/Component Architecture and Design Patterns/509.md": {
+    "id": 509,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 2,
+      "references": 2,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised: FSD thresholds reframed as heuristics, spec date verified, corpus-high 6 not-X-but-Y and 25 dash sites cleared; verified clean"
+  },
+  "docs/en/Build Tooling and Module Systems/801.md": {
+    "id": 801,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 2,
+      "references": 1,
+      "factual": 3,
+      "template": 3
+    },
+    "notes": "revised: bundler timings reframed illustrative, Vite/Rolldown/Rspack/Turbopack landscape updated; verified clean"
+  },
+  "docs/en/CSS and Layout Systems/206.md": {
+    "id": 206,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 3,
+      "organization": 1,
+      "references": 3,
+      "factual": 4,
+      "template": 2
+    },
+    "notes": "revised: Tailwind v4/Oxide date verified, 5x multiplier sourced/cut, CSS framework landscape (UnoCSS/Panda) updated; verified clean"
+  },
+  "docs/en/Progressive Web Apps and Offline/1303.md": {
+    "id": 1303,
+    "lastAudited": "2026-07-25",
+    "findings": {
+      "tone": 2,
+      "organization": 3,
+      "references": 2,
+      "factual": 3,
+      "template": 1
+    },
+    "notes": "revised: cache-timeout durations reframed illustrative, idempotent rule kept, 24 dash sites cleared; verified clean"
+  },
+  "docs/en/Rendering and Performance/710.md": {
+    "id": 710,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 2,
+      "organization": 2,
+      "references": 1,
+      "factual": 4,
+      "template": 1
+    },
+    "notes": "revised: GPU-memory formula made explicit worked example (width*height*DPR^2*4), 256-512MB mobile figure generalized, compositor property list corrected (filter/clip-path), will-change cleanup fixed, 14 dash sites cleared; verified clean"
+  },
+  "docs/en/State Management/606.md": {
+    "id": 606,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 2,
+      "organization": 3,
+      "references": 1,
+      "factual": 2,
+      "template": 2
+    },
+    "notes": "revised: Navigation API availability verified/cross-ref FEE-418, URL-state libs (nuqs/TanStack) updated, 8 dash sites cleared; verified clean"
+  },
+  "docs/en/Web Platform Proposals/CSS Experimental/11101.md": {
+    "id": 11101,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 3,
+      "organization": 2,
+      "references": 1,
+      "factual": 4,
+      "template": 1
+    },
+    "notes": "revised: version claims verified against caniuse, 24 dash sites cleared, retired sections removed; verified clean"
+  },
+  "docs/en/Build Tooling and Module Systems/804.md": {
+    "id": 804,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 3,
+      "organization": 2,
+      "references": 1,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised: Windows MAX_PATH=260 sourced, npm package count verified/generalized, package-manager landscape (Bun/corepack) updated, 19 dash sites cleared; verified clean"
+  },
+  "docs/en/Observability and Error Tracking/1409.md": {
+    "id": 1409,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 3,
+      "organization": 1,
+      "references": 3,
+      "factual": 4,
+      "template": 4
+    },
+    "notes": "revised: retention periods reframed policy-dependent, GDPR guidance updated, kept vendor-neutral, 16 dash sites cleared; verified clean"
+  },
+  "docs/en/Progressive Web Apps and Offline/1304.md": {
+    "id": 1304,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 4,
+      "organization": 1,
+      "references": 2,
+      "factual": 4,
+      "template": 2
+    },
+    "notes": "revised: Serwist-vs-next-pwa landscape updated, precache-vs-runtime precedence corrected, fabricated App-Router-scope claim removed, timeouts reframed illustrative; verified clean"
+  },
+  "docs/en/Rendering and Performance/711.md": {
+    "id": 711,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 3,
+      "organization": 3,
+      "references": 2,
+      "factual": 5,
+      "template": 2
+    },
+    "notes": "revised: connection-setup latency sourced, resource-hints/fetchpriority/speculation-rules currency, 19 dash sites cleared; verified clean"
+  },
+  "docs/en/Design Systems and UI Libraries/dtcg-token-format-spec.md": {
+    "id": 910,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 0,
+      "organization": 1,
+      "references": 1,
+      "factual": 2,
+      "template": 0
+    },
+    "notes": "revised (light): DTCG spec org-count and type-primitive counts verified/cited; tone was already clean; verified clean"
+  },
+  "docs/en/Developer Experience and Tooling/corepack-package-manager.md": {
+    "id": 1614,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 1,
+      "organization": 2,
+      "references": 2,
+      "factual": 0,
+      "template": 1
+    },
+    "notes": "revised (light): Corepack Node-inclusion and auto-pin-v0.33.0 claims verified/anchored; verified clean"
+  },
+  "docs/en/Security/1206.md": {
+    "id": 1206,
+    "lastAudited": "2026-07-27",
+    "findings": {
+      "tone": 4,
+      "organization": 2,
+      "references": 3,
+      "factual": 1,
+      "template": 3
+    },
+    "notes": "revised: HSTS preload-removal timeline verified, supply-chain claim grounded (Polyfill.io 2024), security-header currency, 7 dash sites cleared; verified clean"
   }
 }
