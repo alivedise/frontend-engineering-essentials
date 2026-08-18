@@ -9,7 +9,7 @@ slug: application-architecture-overview
 # [FEE-1900] Application Architecture & Scaling Patterns Overview
 
 :::info
-This category covers the decisions that shape a frontend application above the component tree: how source code is organized and which imports are legal (Feature-Sliced Design), how domain logic is isolated from frameworks (Clean & Hexagonal Architecture, Domain-Driven Design), how the API boundary is drawn (Backend-for-Frontend), and how the application is split across teams and deployments (Micro-Frontends, Server-Driven UI). The category sits at 1900-1999. Its sibling, [Component Architecture & Design Patterns](/en/Component Architecture and Design Patterns/500) (500s), answers a different question: how to design a component and its API. Here the unit of analysis is the module, the dependency direction, and the team boundary; there it is the component.
+This category covers the decisions that shape a frontend application above the component tree: how source code is organized and which imports are legal (Feature-Sliced Design), how domain logic is isolated from frameworks (Clean & Hexagonal Architecture, Domain-Driven Design), how the API boundary is drawn (Backend-for-Frontend), and how the application is split across teams and deployments (Micro-Frontends, Server-Driven UI). The category sits at 1900-1999. Its sibling, [Component Architecture & Design Patterns](/500) (500s), answers a different question: how to design a component and its API. Here the unit of analysis is the module, the dependency direction, and the team boundary; there it is the component.
 :::
 
 ## Context
@@ -29,12 +29,12 @@ Category map, in suggested reading order:
 
 | id | Article | The decision it covers |
 |---|---|---|
-| 1902 | [Feature-Sliced Design & Folder-Level Architecture](/en/Application Architecture and Scaling Patterns/feature-sliced-design) | Where code lives; which imports are legal |
-| 1903 | [Clean & Hexagonal Architecture in the Frontend](/en/Application Architecture and Scaling Patterns/clean-hexagonal-frontend) | Keeping domain logic independent of framework and I/O |
-| 1904 | [Domain-Driven Design for the Frontend](/en/Application Architecture and Scaling Patterns/frontend-ddd) | Carving the app along business domains; bounded contexts |
-| 1905 | [Backend-for-Frontend & the API Boundary](/en/Application Architecture and Scaling Patterns/backend-for-frontend) | What the server owes each client; where tokens live |
-| 1906 | [Server-Driven UI](/en/Application Architecture and Scaling Patterns/server-driven-ui) | Letting the server decide what the client renders |
-| 1901 | [Micro-Frontend Architecture](/en/Application Architecture and Scaling Patterns/micro-frontend-architecture) | Splitting one product across independently deployed apps |
+| 1902 | [Feature-Sliced Design & Folder-Level Architecture](/feature-sliced-design) | Where code lives; which imports are legal |
+| 1903 | [Clean & Hexagonal Architecture in the Frontend](/clean-hexagonal-frontend) | Keeping domain logic independent of framework and I/O |
+| 1904 | [Domain-Driven Design for the Frontend](/frontend-ddd) | Carving the app along business domains; bounded contexts |
+| 1905 | [Backend-for-Frontend & the API Boundary](/backend-for-frontend) | What the server owes each client; where tokens live |
+| 1906 | [Server-Driven UI](/server-driven-ui) | Letting the server decide what the client renders |
+| 1901 | [Micro-Frontend Architecture](/micro-frontend-architecture) | Splitting one product across independently deployed apps |
 
 FSD, Clean/Hexagonal, and DDD form one arc (organizing a single codebase, from folders to dependencies to domains); BFF, SDUI, and micro-frontends form the second (distributing responsibility across services, servers, and teams).
 
@@ -44,10 +44,10 @@ The recurring trade in this category is **structure now versus speed now**. Ever
 
 ## Related Topics
 
-- [Component Architecture & Design Patterns Overview](/en/Component Architecture and Design Patterns/500)
-- [Monorepos & Workspaces](/en/Build Tooling and Module Systems/805)
-- [State Management Overview](/en/State Management/600)
-- [Codebase Studies Overview](/en/Codebase Studies/codebase-studies-overview)
+- [Component Architecture & Design Patterns Overview](/500)
+- [Monorepos & Workspaces](/805)
+- [State Management Overview](/600)
+- [Codebase Studies Overview](/codebase-studies-overview)
 
 ## References
 

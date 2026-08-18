@@ -260,7 +260,7 @@ export default defineConfig({
 
 **使用路徑別名讓匯入路徑可讀。** FSD 在 layer 之間導覽時，會產生像 `../../entities/product/model/types` 這樣的匯入路徑。這種相對路徑冗長又脆弱：把檔案移動一個目錄層級，就得更新每一個參照到它的匯入。設定 TypeScript 的 `paths`（以及對應的 Vite 或 Webpack alias），允許使用絕對匯入：`@entities/product`、`@features/add-to-cart`、`@shared/ui`。這讓 layer 歸屬在任何匯入陳述式中都一目了然，也不必再計算 `../` 的層數。別名慣例也讓 `eslint-plugin-boundaries` 和 Steiger 的規則更容易設定，因為前綴一致的絕對匯入更容易用 glob 模式比對。
 
-## 設計思考
+## 設計思維
 
 FSD 的六個 layer 各自對應前端程式碼必須處理的一種特定責任，而每個邊界則對應依賴規則所防止的一種特定耦合。
 
@@ -296,12 +296,14 @@ FSD 的六個 layer 各自對應前端程式碼必須處理的一種特定責任
 
 **把太多關注點搬進 widget layer。** 一個包含分頁邏輯、排序 mutation、分析追蹤和空狀態文案的 `ProductGrid` widget，已經變成縮小版的頁面；組合才是它唯一的工作。當 widget 成長超出版面組合和本地 UI 狀態管理的範圍時，把多出來的部分提取到專用的 feature slices（分頁作為 `features/paginate-products`，排序作為 `features/sort-products`），並把 widget 縮減回版面組合器的角色。
 
-## 相關主題
+## 延伸閱讀
 
-- [元件組合模式](/zh-tw/Component%20Architecture%20and%20Design%20Patterns/501)：FSD 依 layer 組織組合單位；理解組合模式能釐清為什麼 widgets 與 features 分離，以及它們如何組合 entities。
-- [微前端架構](/zh-tw/Application%20Architecture%20and%20Scaling%20Patterns/micro-frontend-architecture)：每個微前端各自使用 FSD，是大規模時常見的搭配；每個 MFE 擁有自己的 layer 層級，並向 shell 暴露版本化的公開 API。
-- [Monorepo 與工作區](/zh-tw/Build%20Tooling%20and%20Module%20Systems/805)：路徑別名強制執行匯入慣例；monorepo workspace 套件可以乾淨地對應到 FSD layers 或跨 layer 的共享套件。
-- [使用 Testing Library 進行元件測試](/zh-tw/Testing%20Strategies/1102)：layer 邊界直接對應到測試隔離邊界；一個沒有向上匯入的 feature slice 可以在隔離於 pages 和 widgets 的狀態下測試。
+- [前端的 Clean 與六角架構](/zh-tw/clean-hexagonal-frontend)：FSD 切片承載 layer 階層；埠與轉接器則在承載真實邏輯的切片內選擇性套用。
+- [前端的 Domain-Driven Design](/zh-tw/frontend-ddd)：切片家族實作的正是 bounded context；ubiquitous language 為切片命名。
+- [元件組合模式](/zh-tw/501)：FSD 依 layer 組織組合單位；理解組合模式能釐清為什麼 widgets 與 features 分離，以及它們如何組合 entities。
+- [微前端架構](/zh-tw/micro-frontend-architecture)：每個微前端各自使用 FSD，是大規模時常見的搭配；每個 MFE 擁有自己的 layer 層級，並向 shell 暴露版本化的公開 API。
+- [Monorepo 與工作區](/zh-tw/805)：路徑別名強制執行匯入慣例；monorepo workspace 套件可以乾淨地對應到 FSD layers 或跨 layer 的共享套件。
+- [使用 Testing Library 進行元件測試](/zh-tw/1102)：layer 邊界直接對應到測試隔離邊界；一個沒有向上匯入的 feature slice 可以在隔離於 pages 和 widgets 的狀態下測試。
 
 ## 參考資料
 

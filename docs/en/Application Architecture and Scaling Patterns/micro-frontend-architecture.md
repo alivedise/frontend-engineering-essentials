@@ -304,9 +304,11 @@ A secondary performance consideration is the shared chunk graph. When Module Fed
 
 ## Related Topics
 
-- [FEE-805: Monorepos & Workspaces](../Build%20Tooling%20and%20Module%20Systems/805.md): the common host for MFE packages before federation. Turborepo and pnpm workspaces set up the package boundaries that Module Federation then exposes at runtime.
-- [FEE-702: Virtual DOM, Reconciliation & Diffing](../Rendering%20and%20Performance/702.md): code splitting and lazy loading as the host-side runtime model. `React.lazy` and `Suspense` are the same primitives used for route-level code splitting in a monolith, applied here to cross-remote boundaries.
-- [FEE-901: Design Tokens](../Design%20Systems%20and%20UI%20Libraries/901.md): shared design tokens as the cross-MFE visual contract. Tokens published as a versioned npm package let each remote consume the same visual language without sharing a runtime dependency.
+- [FEE-1902: Feature-Sliced Design & Folder-Level Architecture](/feature-sliced-design): FSD per micro-frontend is the common pairing at scale; each remote owns its own layer hierarchy.
+- [FEE-1904: Domain-Driven Design for the Frontend](/frontend-ddd): a bounded context is what a micro-frontend should be a deployment of; the context map is the input to the split.
+- [FEE-805: Monorepos & Workspaces](/805): the common host for MFE packages before federation. Turborepo and pnpm workspaces set up the package boundaries that Module Federation then exposes at runtime.
+- [FEE-705: Code Splitting, Lazy Loading & Tree Shaking](/705): code splitting and lazy loading as the host-side runtime model. `React.lazy` and `Suspense` are the same primitives used for route-level code splitting in a monolith, applied here to cross-remote boundaries.
+- [FEE-901: Design Tokens](/901): shared design tokens as the cross-MFE visual contract. Tokens published as a versioned npm package let each remote consume the same visual language without sharing a runtime dependency.
 
 ## References
 

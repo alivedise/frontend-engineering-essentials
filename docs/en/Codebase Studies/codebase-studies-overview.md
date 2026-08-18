@@ -2,6 +2,7 @@
 id: 1800
 title: "Codebase Studies Overview"
 state: draft
+overview: true
 slug: codebase-studies-overview
 ---
 

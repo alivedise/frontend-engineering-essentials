@@ -298,10 +298,12 @@ Another common design question is how to handle intra-page state that is too spe
 
 ## Related Topics
 
-- [Component Composition Patterns](/en/Component%20Architecture%20and%20Design%20Patterns/501): FSD organizes composed units by layer; understanding composition patterns clarifies why widgets are separate from features and how they compose entities.
-- [Micro-Frontend Architecture](/en/Application%20Architecture%20and%20Scaling%20Patterns/micro-frontend-architecture): FSD per micro-frontend is a common pairing at scale; each MFE owns its own layer hierarchy and exposes a versioned public API to the shell.
-- [Monorepos & Workspaces](/en/Build%20Tooling%20and%20Module%20Systems/805): path aliases enforce the import convention; monorepo workspace packages can map cleanly to FSD layers or cross-layer shared packages.
-- [Component Testing with Testing Library](/en/Testing%20Strategies/1102): layer boundaries map directly to test isolation boundaries; a feature slice with no upward imports can be tested in isolation from pages and widgets.
+- [Clean & Hexagonal Architecture in the Frontend](/clean-hexagonal-frontend): FSD slices carry the layer hierarchy; ports and adapters apply selectively inside slices that hold real logic.
+- [Domain-Driven Design for the Frontend](/frontend-ddd): bounded contexts are what slice families implement; the ubiquitous language names the slices.
+- [Component Composition Patterns](/501): FSD organizes composed units by layer; understanding composition patterns clarifies why widgets are separate from features and how they compose entities.
+- [Micro-Frontend Architecture](/micro-frontend-architecture): FSD per micro-frontend is a common pairing at scale; each MFE owns its own layer hierarchy and exposes a versioned public API to the shell.
+- [Monorepos & Workspaces](/805): path aliases enforce the import convention; monorepo workspace packages can map cleanly to FSD layers or cross-layer shared packages.
+- [Component Testing with Testing Library](/1102): layer boundaries map directly to test isolation boundaries; a feature slice with no upward imports can be tested in isolation from pages and widgets.
 
 ## References
 

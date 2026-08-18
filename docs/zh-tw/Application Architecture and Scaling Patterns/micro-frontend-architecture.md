@@ -304,9 +304,11 @@ Module Federation 生成的執行期使用頂層 `await`，因此建置目標必
 
 ## 延伸閱讀
 
-- [FEE-805：Monorepo 與工作區](../Build%20Tooling%20and%20Module%20Systems/805.md)：federation 之前，所有 MFE 套件共同的主機。Turborepo 和 pnpm workspaces 建立了 Module Federation 之後在執行期暴露的套件邊界。
-- [FEE-702：虛擬 DOM、協調與差異比較](../Rendering%20and%20Performance/702.md)：程式碼分割和懶載入作為主機端執行期模型。`React.lazy` 和 `Suspense` 是在單體中用於路由層級程式碼分割的相同原語，在這裡應用於跨遠端邊界。
-- [FEE-901：設計代幣](../Design%20Systems%20and%20UI%20Libraries/901.md)：共享設計代幣作為跨 MFE 的視覺契約。以版本化 npm 套件發布的代幣，讓每個遠端能使用相同的視覺語言，而無需共享執行期依賴。
+- [FEE-1902：Feature-Sliced Design 與資料夾架構](/zh-tw/feature-sliced-design)：每個微前端各自使用 FSD 是大規模時常見的搭配；每個 remote 擁有自己的 layer 層級。
+- [FEE-1904：前端的 Domain-Driven Design](/zh-tw/frontend-ddd)：微前端理想上是一個 bounded context 的部署形式；context map 正是切分決策的輸入。
+- [FEE-805：Monorepo 與工作區](/zh-tw/805)：federation 之前，所有 MFE 套件共同的主機。Turborepo 和 pnpm workspaces 建立了 Module Federation 之後在執行期暴露的套件邊界。
+- [FEE-705：虛擬 DOM、協調與差異比較](/zh-tw/705)：程式碼分割和懶載入作為主機端執行期模型。`React.lazy` 和 `Suspense` 是在單體中用於路由層級程式碼分割的相同原語，在這裡應用於跨遠端邊界。
+- [FEE-901：設計代幣](/zh-tw/901)：共享設計代幣作為跨 MFE 的視覺契約。以版本化 npm 套件發布的代幣，讓每個遠端能使用相同的視覺語言，而無需共享執行期依賴。
 
 ## 參考資料
 

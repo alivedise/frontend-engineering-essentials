@@ -9,7 +9,7 @@ slug: application-architecture-overview
 # [FEE-1900] 應用架構與擴展模式總覽
 
 :::info
-本分類涵蓋元件樹**之上**、形塑整個前端應用的決策：原始碼怎麼組織、哪些 import 合法（Feature-Sliced Design）、領域邏輯如何與框架隔離（Clean 與六角架構、Domain-Driven Design）、API 邊界劃在哪裡（Backend-for-Frontend），以及應用如何跨團隊與部署切分（微前端、Server-Driven UI）。分類位於 1900-1999。它的兄弟分類[元件架構與設計模式](/zh-tw/Component Architecture and Design Patterns/500)（500s）回答的是另一個問題：單一元件與其 API 該怎麼設計。這裡的分析單位是模組、依賴方向與團隊邊界；那裡的分析單位是元件。
+本分類涵蓋元件樹**之上**、形塑整個前端應用的決策：原始碼怎麼組織、哪些 import 合法（Feature-Sliced Design）、領域邏輯如何與框架隔離（Clean 與六角架構、Domain-Driven Design）、API 邊界劃在哪裡（Backend-for-Frontend），以及應用如何跨團隊與部署切分（微前端、Server-Driven UI）。分類位於 1900-1999。它的兄弟分類[元件架構與設計模式](/zh-tw/500)（500s）回答的是另一個問題：單一元件與其 API 該怎麼設計。這裡的分析單位是模組、依賴方向與團隊邊界；那裡的分析單位是元件。
 :::
 
 ## 背景
@@ -29,12 +29,12 @@ slug: application-architecture-overview
 
 | id | 文章 | 涵蓋的決策 |
 |---|---|---|
-| 1902 | [Feature-Sliced Design 與資料夾架構](/zh-tw/Application Architecture and Scaling Patterns/feature-sliced-design) | 程式碼住哪裡；哪些 import 合法 |
-| 1903 | [前端的 Clean 與六角架構](/zh-tw/Application Architecture and Scaling Patterns/clean-hexagonal-frontend) | 讓領域邏輯獨立於框架與 I/O |
-| 1904 | [前端的 Domain-Driven Design](/zh-tw/Application Architecture and Scaling Patterns/frontend-ddd) | 沿業務領域切分應用；bounded context |
-| 1905 | [Backend-for-Frontend 與 API 邊界](/zh-tw/Application Architecture and Scaling Patterns/backend-for-frontend) | 伺服器欠每個用戶端什麼；token 放哪裡 |
-| 1906 | [Server-Driven UI](/zh-tw/Application Architecture and Scaling Patterns/server-driven-ui) | 讓伺服器決定用戶端渲染什麼 |
-| 1901 | [微前端架構](/zh-tw/Application Architecture and Scaling Patterns/micro-frontend-architecture) | 把一個產品切成獨立部署的多個應用 |
+| 1902 | [Feature-Sliced Design 與資料夾架構](/zh-tw/feature-sliced-design) | 程式碼住哪裡；哪些 import 合法 |
+| 1903 | [前端的 Clean 與六角架構](/zh-tw/clean-hexagonal-frontend) | 讓領域邏輯獨立於框架與 I/O |
+| 1904 | [前端的 Domain-Driven Design](/zh-tw/frontend-ddd) | 沿業務領域切分應用；bounded context |
+| 1905 | [Backend-for-Frontend 與 API 邊界](/zh-tw/backend-for-frontend) | 伺服器該為每個用戶端提供什麼；token 放哪裡 |
+| 1906 | [Server-Driven UI](/zh-tw/server-driven-ui) | 讓伺服器決定用戶端渲染什麼 |
+| 1901 | [微前端架構](/zh-tw/micro-frontend-architecture) | 把一個產品切成獨立部署的多個應用 |
 
 FSD、Clean/六角、DDD 構成第一條弧線（組織單一 codebase：從資料夾到依賴到領域）；BFF、SDUI、微前端構成第二條（把責任分散到服務、伺服器與團隊）。
 
@@ -44,10 +44,10 @@ FSD、Clean/六角、DDD 構成第一條弧線（組織單一 codebase：從資�
 
 ## 延伸閱讀
 
-- [Component Architecture & Design Patterns Overview](/zh-tw/Component Architecture and Design Patterns/500)
-- [Monorepos & Workspaces](/zh-tw/Build Tooling and Module Systems/805)
-- [State Management Overview](/zh-tw/State Management/600)
-- [Codebase Studies Overview](/zh-tw/Codebase Studies/codebase-studies-overview)
+- [元件架構與設計模式總覽](/zh-tw/500)
+- [Monorepos & Workspaces](/zh-tw/805)
+- [狀態管理總覽](/zh-tw/600)
+- [Codebase Studies 概覽](/zh-tw/codebase-studies-overview)
 
 ## 參考資料
 
