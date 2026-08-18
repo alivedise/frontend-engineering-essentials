@@ -21,6 +21,7 @@ title: FEE 全列表
 - [114.虛擬鍵盤 UX — `inputmode`、`enterkeyhint` 與純文字編輯](virtual-keyboard-ux)
 - [115.HTML Sanitizer API — `setHTML()` vs `setHTMLUnsafe()` vs `innerHTML`](html-sanitizer-api)
 - [116.`<datalist>` 與原生 Combobox 模式](datalist-combobox)
+- [117.Shadow DOM 封裝](shadow-dom-encapsulation)
 - [200.CSS 與排版系統總覽](200)
 - [201.層疊、優先級與繼承](201)
 - [202.盒模型與排版模式](202)

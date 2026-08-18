@@ -21,6 +21,7 @@ title: FEE list
 - [114.Virtual Keyboard UX — `inputmode`, `enterkeyhint`, and Plaintext Editing](virtual-keyboard-ux)
 - [115.HTML Sanitizer API — `setHTML()` vs `setHTMLUnsafe()` vs `innerHTML`](html-sanitizer-api)
 - [116.`<datalist>` and the Native Combobox Pattern](datalist-combobox)
+- [117.Shadow DOM Encapsulation](shadow-dom-encapsulation)
 - [200.CSS & Layout Systems Overview](200)
 - [201.The Cascade, Specificity & Inheritance](201)
 - [202.Box Model & Layout Modes](202)

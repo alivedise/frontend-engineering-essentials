@@ -54,6 +54,23 @@ AI-tone patterns to remove from PROSE (code, tables, frontmatter are exempt):
 - Empty aphorisms (grand claims with no testable content). Owner's three-question
   test: what exactly is at stake? what is the payoff/cost? says who? If a sentence
   answers none, replace it with the concrete point or delete it.
+- Vacuous windup phrases ("took/pushed X to its logical conclusion / logical
+  extreme / logical endpoint / to the limit", "taken to the extreme"; zh
+  「將X推向了邏輯的終點 / 推向極致 / 發揮到極致 / 推到極限」). These claim grandeur
+  with no content of their own. A concrete claim usually follows, often after a
+  colon (e.g. "took X to its logical conclusion: it drops the virtual DOM"). DELETE
+  the windup and lead with that concrete claim. If nothing concrete follows, the
+  sentence is empty — cut it. The article's section HEADING often already states
+  the real point; use it as the lead.
+- Unsourced world-superlatives ("the most significant / important / popular /
+  consequential / first X in history / in the industry / ever", stated as fact
+  with no citation; zh 「歷史上最… / 史上最… / 這個提案歷史上最重大的…」). Either attach a
+  source or restate as a plain factual description, KEEPING the concrete residual
+  ("powering millions of sites" stays; "the most popular framework in history"
+  goes). CARVE-OUT — do NOT touch the author's in-topic teaching emphasis ("the
+  most important property here is…", "the most consequential decision is…") when it
+  ranks things WITHIN the article's own argument and is immediately justified.
+  That is legitimate pedagogy, not an unsourced claim about the outside world.
 Fix rule: replace each with ONE concrete statement or split into two sentences.
 Rewording a pattern into a FRESH tricolon/contrast is a failed fix.`
 
@@ -81,7 +98,11 @@ function verifyPrompt(a) {
 diff: run \`git diff -- "${a.enPath}"\`. Do NOT do web research. Check three things:
 1. MEANING PRESERVED: no factual claim, number, version, name, code identifier, or
    qualifier changed between the two sides of the diff. Any semantic change is a
-   finding (this pass is punctuation-only).
+   finding (this pass is punctuation-only). EXCEPTION: deleting a vacuous windup
+   phrase or an unsourced world-superlative per the patterns below is an APPROVED
+   tone fix, not a meaning change, PROVIDED the concrete residual claim survives
+   (e.g. dropping "the most popular framework in history" while keeping "powering
+   millions of sites" is fine; dropping "millions of sites" too is a finding).
 2. NO NEW TONE PATTERNS: the fix did not introduce a fresh em-dash appositive,
    tricolon, "not X but Y", or aphorism.
 ${PATTERNS}
