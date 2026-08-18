@@ -13,7 +13,7 @@ Clean Architecture and Hexagonal Architecture (Ports & Adapters) are two formula
 
 ## Context
 
-Hexagonal Architecture was named by Alistair Cockburn in the mid-2000s to solve a backend problem: business logic that leaks into UI and database code until neither can change independently, and nothing can be tested in isolation. Robert C. Martin's Clean Architecture (2012) unified it with several sibling patterns (Onion Architecture among them) into concentric circles governed by a single Dependency Rule. Frontends inherited the same disease with different symptoms. Components accumulate pricing rules, validation, and workflow logic; the day the framework changes shape (class components to hooks, hooks to server components) or the API layer migrates (REST to GraphQL), the business logic migrates with it, by hand, because it was never separated. The pattern arrived late to the frontend because early frontends had little domain logic worth protecting. Offline-capable apps, editors, carts, and dashboards changed that. This article shows the frontend translation: what goes in the core, what a port looks like in TypeScript, and where the pattern stops paying. Its siblings are [Feature-Sliced Design](/en/Application Architecture and Scaling Patterns/feature-sliced-design), which organizes code by domain slice, and [Domain-Driven Design](/en/Application Architecture and Scaling Patterns/frontend-ddd), which decides what the domain even is.
+Hexagonal Architecture was named by Alistair Cockburn in 2005 to solve an application-design problem: business logic that leaks into UI and database code until neither can change independently, and nothing can be tested in isolation. Robert C. Martin's Clean Architecture (2012) unified it with several sibling patterns (Onion Architecture among them) into concentric circles governed by a single Dependency Rule. Frontends inherited the same disease with different symptoms. Components accumulate pricing rules, validation, and workflow logic; the day the framework changes shape (class components to hooks, hooks to server components) or the API layer migrates (REST to GraphQL), the business logic migrates with it, by hand, because it was never separated. The pattern arrived late to the frontend because early frontends had little domain logic worth protecting. Offline-capable apps, editors, carts, and dashboards changed that. This article shows the frontend translation: what goes in the core, what a port looks like in TypeScript, and where the pattern stops paying. Its siblings are [Feature-Sliced Design](/feature-sliced-design), which organizes code by domain slice, and [Domain-Driven Design](/frontend-ddd), which decides what the domain even is.
 
 ## Visual
 
@@ -47,10 +47,12 @@ flowchart LR
 
 ## Example
 
-The core is plain TypeScript. The domain layer holds entities and pure rules; the application layer holds use cases and *defines the ports it needs*. Note the direction: the interface lives with its consumer, not with its implementation. That inversion is the whole trick.
+The core is plain TypeScript. The domain layer holds entities and pure rules; the application layer holds use cases and *defines the ports it needs*. Note the direction: the interface lives with its consumer, not with its implementation. That ownership choice is what makes the dependency arrow point inward.
 
 ```ts
-// core/domain/cart.ts -- pure rules, imports nothing from outside the core
+// core/domain/cart.ts -- intra-core imports are fine; the rule bars the outside
+import { add, ZERO, type Money } from "./money";
+
 export interface Cart { items: CartItem[]; coupon?: Coupon; }
 
 export function cartTotal(cart: Cart): Money {
@@ -88,8 +90,12 @@ export const httpPayment: PaymentGateway = {
   async pay(amount) {
     const res = await fetch("/api/pay", {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ cents: amount.cents, currency: amount.currency }),
     });
+    // failures are translated here too, never re-thrown as transport errors
+    if (res.status === 402) return { ok: false, reason: "insufficient-funds" };
+    if (!res.ok) return { ok: false, reason: "gateway-error" };
     const dto = await res.json();          // transport shape
     return { ok: dto.status === "OK", transactionId: dto.tx_id }; // domain shape
   },
@@ -104,16 +110,20 @@ export const checkout = makeCheckout({ payment: httpPayment, storage: localCartS
 
 // ui/CheckoutButton.tsx -- framework code stays thin
 function CheckoutButton() {
-  const [state, setState] = useState<"idle" | "paying" | "done">("idle");
+  const [state, setState] = useState<"idle" | "paying" | "done" | "failed">("idle");
   return (
-    <button onClick={async () => { setState("paying"); await checkout(); setState("done"); }}>
+    <button onClick={async () => {
+      setState("paying");
+      const result = await checkout();
+      setState(result.ok ? "done" : "failed");
+    }}>
       {state === "paying" ? "Processing..." : "Pay"}
     </button>
   );
 }
 ```
 
-The payoff shows up in tests: the same use case runs against in-memory fakes, no DOM, no network, no mocking library gymnastics:
+The payoff shows up in tests: the same use case runs against in-memory fakes, with no DOM or network involved:
 
 ```ts
 test("checkout empties the cart on success", async () => {
@@ -140,15 +150,17 @@ test("checkout empties the cart on success", async () => {
 
 **The rule is one sentence; the discipline is the hard part.** "Dependencies point inward" costs nothing to state and a code review culture to keep. Every shortcut has a plausible excuse: importing the API client "just once" into a use case, letting a component compute a price "because it is only used here". The reason to enforce mechanically is that each individual violation is defensible and the sum is the big ball of mud the pattern exists to prevent.
 
-**Frontends are adapter-heavy by nature, and that changes the economics.** A backend service might be 70% domain and 30% plumbing; a typical frontend inverts that ratio, because rendering, routing, and data fetching are the job. The pattern's value therefore concentrates in the minority of code that is genuinely domain: pricing, permissions, document models, offline merge rules. Extracting that minority into a pure core is cheap and pays immediately in tests; wrapping the majority (plain fetch-and-render screens) in four layers is where teams sour on the pattern. Size the architecture to the domain, not to the app.
+**Frontends are adapter-heavy by nature, and that changes the economics.** A backend service is often mostly domain wrapped in a thin shell of plumbing; a typical frontend inverts that ratio, because rendering, routing, and data fetching are the job. The pattern's value therefore concentrates in the minority of code that is genuinely domain: pricing, permissions, document models, offline merge rules. Extracting that minority into a pure core is cheap and pays immediately in tests; wrapping the majority (plain fetch-and-render screens) in four layers is where teams sour on the pattern. Size the architecture to the domain, not to the app.
 
-**Framework churn is the frontend's specific version of "the database is a detail".** Backend clean architecture treats the database as swappable; few teams ever swap it. Frontend frameworks, by contrast, actually do churn, and even within one framework the idioms churn (class components, hooks, server components). A core with no framework imports is the only code that crosses those migrations untouched, which is why the pattern's insurance value is arguably higher on the frontend than where it was invented.
+**Framework churn is the frontend's specific version of "the database is a detail".** Backend clean architecture treats the database as swappable; few teams ever swap it. Frontend frameworks, by contrast, actually do churn, and even within one framework the idioms churn (class components, hooks, server components). A core with no framework imports is the only code that crosses those migrations untouched.
 
 **Against FSD, the two patterns compose rather than compete.** FSD slices the codebase vertically by domain (entities, features, widgets); Clean/Hexagonal layers it horizontally by technical role (domain, application, adapters). FSD's `api` and `ui` segments inside a slice are adapter positions; its `model` segment is the core position. Teams already on FSD get most of the dependency rule from the layer hierarchy and can apply ports selectively inside slices that carry real logic.
 
 ## Deep Dive
 
-**Dependency inversion in TypeScript specifically.** The language makes the pattern cheap: `interface` + structural typing means adapters implement ports without importing a base class, and `import type` guarantees a type-only dependency that vanishes at runtime. The factory-function style (`makeCheckout(deps)`) is the frontend-idiomatic composition mechanism; class-based DI containers add little in a codebase without decorators and runtime reflection, and a hand-wired composition root keeps the object graph visible and tree-shakeable.
+**Dependency inversion in TypeScript specifically.** The language makes the pattern cheap: `interface` plus structural typing (types match by shape, not by declared name) means adapters implement ports without importing a base class, and `import type` guarantees a type-only dependency that vanishes at runtime. The factory-function style (`makeCheckout(deps)`) is the frontend-idiomatic composition mechanism; class-based dependency-injection (DI) containers add little in a codebase without decorators and runtime reflection, and a hand-wired composition root keeps the object graph visible and tree-shakeable.
+
+**How components obtain use cases.** The sample's module-level import from the composition root is the simplest delivery mechanism and fine for application code; its cost is that component tests must mock modules. The alternative is passing wired use cases down through props or a context provider, which turns component tests back into plain dependency injection; the cited frontend literature builds exactly this hook-based delivery. Choose per component: leaves that render results need neither, containers that trigger use cases benefit from injection.
 
 **Primary and secondary ports are not symmetric.** Cockburn's distinction: primary (driving) actors call the application (UI, tests, a CLI); secondary (driven) actors are called by it (storage, payment, notifications). On the frontend the asymmetry is sharper than on the backend, because the dominant driving adapter (the component tree) is also the largest body of code. The practical consequence: driving-side "ports" are usually just the use-case function signatures themselves, while driven-side ports are explicit interfaces. Spending interface ceremony on the driven side only is the right default.
 
@@ -158,7 +170,7 @@ test("checkout empties the cart on success", async () => {
 
 ## Layer Mapping Reference
 
-The three vocabularies describe overlapping territory; this is the translation table for a frontend codebase.
+The three vocabularies describe overlapping territory; this is one workable mapping for a frontend codebase (the FSD docs describe segments more narrowly, so treat the middle column as community practice rather than spec).
 
 | Clean Architecture | Hexagonal | FSD position | Typical frontend artifacts |
 |---|---|---|---|
@@ -166,16 +178,16 @@ The three vocabularies describe overlapping territory; this is the translation t
 | Use cases | Inside the hexagon | `features/*/model` | `makeCheckout`, workflow orchestration, port declarations |
 | Interface adapters | Adapters | `*/api`, stores | API clients, DTO mappers, state-manager bindings |
 | Frameworks & drivers | External actors | `app/`, `*/ui` | Component tree, router, build tooling, browser APIs |
-| (composition) | Configurator | `app/providers` | Composition root wiring ports to adapters |
+| (composition) | (wiring, outside the hexagon) | `app/providers` | Composition root wiring ports to adapters |
 
 Two boundary rules carry most of the value if you adopt nothing else: core files import no framework, and DTOs stop at the adapter.
 
 ## Related Topics
 
-- [Feature-Sliced Design & Folder-Level Architecture](/en/Application Architecture and Scaling Patterns/feature-sliced-design)
-- [Domain-Driven Design for the Frontend](/en/Application Architecture and Scaling Patterns/frontend-ddd)
-- [Testing Component Contracts](/en/Component Architecture and Design Patterns/513)
-- [State Management Overview](/en/State Management/600)
+- [Feature-Sliced Design & Folder-Level Architecture](/feature-sliced-design)
+- [Domain-Driven Design for the Frontend](/frontend-ddd)
+- [Testing Component Contracts](/513)
+- [State Management Overview](/600)
 
 ## References
 
