@@ -1,15 +1,15 @@
 ---
-id: 508
+id: 1901
 title: 微前端架構
 state: draft
 slug: micro-frontend-architecture
-category: Component Architecture and Design Patterns
+category: Application Architecture and Scaling Patterns
 level: senior
 reviewed: hardened
 reviewed_on: 2026-07-25
 ---
 
-# [FEE-508] 微前端架構
+# [FEE-1901] 微前端架構
 
 :::info
 微前端將 Web 應用程式分解為可獨立部署的 UI 單元，與團隊或領域邊界對齊。團隊 MUST 在 Module Federation 設定中宣告共享函式庫的 singleton（`react`、`react-dom`、router）。重複的實例會導致 React context 失效與「invalid hook call」錯誤。團隊 MUST NOT 透過共享全域狀態來耦合微前端；跨 MFE 通訊 SHOULD 使用自訂 event bus 或最小化、版本化的共享契約。除非跨多個團隊的獨立部署節奏是實際且已量測的瓶頸，否則團隊 SHOULD NOT 採用微前端；單一團隊，或是能靠 monorepo 搭配套件邊界組織好的程式碼庫，很少值得付出這樣的操作開銷。

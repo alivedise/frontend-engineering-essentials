@@ -1,15 +1,15 @@
 ---
-id: 509
+id: 1902
 title: Feature-Sliced Design 與資料夾架構
 state: draft
-category: Component Architecture and Design Patterns
+category: Application Architecture and Scaling Patterns
 level: senior
 slug: feature-sliced-design
 reviewed: hardened
 reviewed_on: 2026-07-25
 ---
 
-# [FEE-509] Feature-Sliced Design 與資料夾架構
+# [FEE-1902] Feature-Sliced Design 與資料夾架構
 
 :::info
 Feature-Sliced Design（FSD）是一套最多六個 layer 的固定詞彙，搭配嚴格的單向依賴規則：`app → pages → widgets → features → entities → shared`。較高的 layer 可以匯入較低的 layer；反向匯入是無條件禁止的。並非每個專案都需要用滿六個 layer：大多數專案從 `app`、`shared`、`pages` 開始，再隨著領域成長逐步加入 `entities`、`features`、`widgets`。團隊 MUST 使用架構 lint 工具（例如 FSD 官方的零設定工具 Steiger，或 `eslint-plugin-boundaries`）強制執行所採用的 layer。沒有工具強制執行的非正式慣例會在數週內崩潰。在只有少數路由、一兩位開發者的小型應用程式上，FSD 的 layer 開銷往往超過其效益；等到跨領域耦合或所有權不清開始造成摩擦時再導入。
@@ -299,7 +299,7 @@ FSD 的六個 layer 各自對應前端程式碼必須處理的一種特定責任
 ## 相關主題
 
 - [元件組合模式](/zh-tw/Component%20Architecture%20and%20Design%20Patterns/501)：FSD 依 layer 組織組合單位；理解組合模式能釐清為什麼 widgets 與 features 分離，以及它們如何組合 entities。
-- [微前端架構](/zh-tw/Component%20Architecture%20and%20Design%20Patterns/508)：每個微前端各自使用 FSD，是大規模時常見的搭配；每個 MFE 擁有自己的 layer 層級，並向 shell 暴露版本化的公開 API。
+- [微前端架構](/zh-tw/Application%20Architecture%20and%20Scaling%20Patterns/micro-frontend-architecture)：每個微前端各自使用 FSD，是大規模時常見的搭配；每個 MFE 擁有自己的 layer 層級，並向 shell 暴露版本化的公開 API。
 - [Monorepo 與工作區](/zh-tw/Build%20Tooling%20and%20Module%20Systems/805)：路徑別名強制執行匯入慣例；monorepo workspace 套件可以乾淨地對應到 FSD layers 或跨 layer 的共享套件。
 - [使用 Testing Library 進行元件測試](/zh-tw/Testing%20Strategies/1102)：layer 邊界直接對應到測試隔離邊界；一個沒有向上匯入的 feature slice 可以在隔離於 pages 和 widgets 的狀態下測試。
 

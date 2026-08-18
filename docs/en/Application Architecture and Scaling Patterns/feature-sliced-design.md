@@ -1,15 +1,15 @@
 ---
-id: 509
+id: 1902
 title: Feature-Sliced Design & Folder-Level Architecture
 state: draft
-category: Component Architecture and Design Patterns
+category: Application Architecture and Scaling Patterns
 level: senior
 slug: feature-sliced-design
 reviewed: hardened
 reviewed_on: 2026-07-25
 ---
 
-# [FEE-509] Feature-Sliced Design & Folder-Level Architecture
+# [FEE-1902] Feature-Sliced Design & Folder-Level Architecture
 
 :::info
 Feature-Sliced Design (FSD) is a fixed vocabulary of up to six layers with a strict unidirectional dependency rule: `app → pages → widgets → features → entities → shared`. Higher layers may import from lower layers; the reverse is unconditionally forbidden. Not every project needs every layer: most start with `app`, `shared`, and `pages`, and add `entities`, `features`, and `widgets` as the domain grows. Teams MUST enforce whichever layers they adopt with an architectural linter such as Steiger (FSD's own zero-config tool) or `eslint-plugin-boundaries`. Informal convention without tooling enforcement erodes within weeks. FSD's layer overhead tends to exceed its benefit on small applications with a handful of routes and one or two developers; adopt it once cross-domain coupling or unclear ownership starts causing friction.
@@ -299,7 +299,7 @@ Another common design question is how to handle intra-page state that is too spe
 ## Related Topics
 
 - [Component Composition Patterns](/en/Component%20Architecture%20and%20Design%20Patterns/501): FSD organizes composed units by layer; understanding composition patterns clarifies why widgets are separate from features and how they compose entities.
-- [Micro-Frontend Architecture](/en/Component%20Architecture%20and%20Design%20Patterns/508): FSD per micro-frontend is a common pairing at scale; each MFE owns its own layer hierarchy and exposes a versioned public API to the shell.
+- [Micro-Frontend Architecture](/en/Application%20Architecture%20and%20Scaling%20Patterns/micro-frontend-architecture): FSD per micro-frontend is a common pairing at scale; each MFE owns its own layer hierarchy and exposes a versioned public API to the shell.
 - [Monorepos & Workspaces](/en/Build%20Tooling%20and%20Module%20Systems/805): path aliases enforce the import convention; monorepo workspace packages can map cleanly to FSD layers or cross-layer shared packages.
 - [Component Testing with Testing Library](/en/Testing%20Strategies/1102): layer boundaries map directly to test isolation boundaries; a feature slice with no upward imports can be tested in isolation from pages and widgets.
 

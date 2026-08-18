@@ -1,15 +1,15 @@
 ---
-id: 508
+id: 1901
 title: "Micro-Frontend Architecture"
 state: draft
 slug: micro-frontend-architecture
-category: Component Architecture and Design Patterns
+category: Application Architecture and Scaling Patterns
 level: senior
 reviewed: hardened
 reviewed_on: 2026-07-25
 ---
 
-# [FEE-508] Micro-Frontend Architecture
+# [FEE-1901] Micro-Frontend Architecture
 
 :::info
 Micro-frontends decompose a web application into independently deployable UI units aligned with team or domain boundaries. Teams MUST declare shared library singletons (`react`, `react-dom`, router) in Module Federation config. Duplicate instances cause broken React context and "invalid hook call" errors. Teams MUST NOT couple micro-frontends via shared global state; inter-MFE communication SHOULD use a custom event bus or a minimal, versioned shared contract. Teams SHOULD NOT adopt micro-frontends unless independent deploy cadence across multiple teams is an actual, measured bottleneck; a single team, or a codebase that a monorepo with package boundaries can organize, rarely clears the overhead.
