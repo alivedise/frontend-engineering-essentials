@@ -67,7 +67,7 @@ flowchart LR
 
 ```json
 {
-  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "$schema": "https://unpkg.com/knip@5.88.1/schema.json",
   "entry": ["src/app/**/page.{ts,tsx}", "src/app/**/layout.{ts,tsx}", "src/middleware.ts"],
   "project": ["src/**/*.{ts,tsx}"],
   "ignoreExportsUsedInFile": true,
@@ -151,7 +151,7 @@ Knip 的設定是一個分層模型：根 → workspaces → 外掛 → entry/pr
 
 ```json
 {
-  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "$schema": "https://unpkg.com/knip@5.88.1/schema.json",
   "ignoreExportsUsedInFile": true,
   "workspaces": {
     ".": {

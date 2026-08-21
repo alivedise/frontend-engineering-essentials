@@ -92,13 +92,13 @@ WCAG 2.1 Success Criterion 1.4.4 (AA) requires that "text can be resized without
 ## References
 
 - web.dev, "Baseline in action: How to use fluid type and space," web.dev (2024). https://web.dev/articles/baseline-in-action-fluid-type
-- MDN contributors, "clamp() — CSS," MDN Web Docs. https://developer.mozilla.org/en-US/docs/Web/CSS/clamp
-- MDN contributors, "pow() — CSS," MDN Web Docs. https://developer.mozilla.org/en-US/docs/Web/CSS/pow
+- MDN contributors, "clamp() — CSS," MDN Web Docs. https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/clamp
+- MDN contributors, "pow() — CSS," MDN Web Docs. https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/pow
 - W3C, "Understanding Success Criterion 1.4.4: Resize text," WCAG 2.1 Understanding Documents. https://www.w3.org/WAI/WCAG21/Understanding/resize-text.html
 - Adrian Roselli, "Responsive Type and Zoom," adrianroselli.com (2019). https://adrianroselli.com/2019/12/responsive-type-and-zoom.html
 - Maxwell Barvian, "Addressing Accessibility Concerns With Using Fluid Type," Smashing Magazine (2023). https://www.smashingmagazine.com/2023/11/addressing-accessibility-concerns-fluid-type/
 - Utopia, "Fluid type scale calculator," utopia.fyi. https://utopia.fyi/type/calculator/
 - James Gilyead and Trys Mudford, "CSS clamp() as a fluid calculator," utopia.fyi. https://utopia.fyi/blog/clamp/
-- James Gilyead and Trys Mudford, "Designing with fluid type scales," utopia.fyi. https://utopia.fyi/blog/designing-with-fluid-type-scales
-- Design Tokens Community Group, "Design Tokens Format Module (Draft)," designtokens.org. https://www.designtokens.org/TR/drafts/format/
+- James Gilyead and Trys Mudford, "Designing with fluid type scales," utopia.fyi. https://utopia.fyi/blog/designing-with-fluid-type-scales/
+- Design Tokens Community Group, "Design Tokens Format Module (Draft)," designtokens.org. https://www.designtokens.org/tr/drafts/format/
 - Material Web, "Typography theming," material-web.dev. https://material-web.dev/theming/typography/

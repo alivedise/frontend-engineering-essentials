@@ -128,5 +128,5 @@ Corepack 近期歷史中影響最大的設計選擇，是反轉自動鎖定的�
 - pnpm project, "pnpm 10.0.0," GitHub Releases (2025). https://github.com/pnpm/pnpm/releases/tag/v10.0.0
 - Yarn project, "Corepack," yarnpkg.com (2025). https://yarnpkg.com/corepack
 - Yarn project, "yarn set version," yarnpkg.com (2025). https://yarnpkg.com/cli/set/version
-- npm CLI project, "package.json — devEngines," docs.npmjs.com (2024). https://docs.npmjs.com/cli/v10/configuring-npm/package-json
+- npm CLI project, "package.json — devEngines," docs.npmjs.com (2024). https://docs.npmjs.com/cli/v10/configuring-npm/package-json/
 - Zsolt Ero, "The curious case of the packageManager field in package.json," Hyperknot Blog (2024). https://blog.hyperknot.com/p/corepacks-packagemanager-field

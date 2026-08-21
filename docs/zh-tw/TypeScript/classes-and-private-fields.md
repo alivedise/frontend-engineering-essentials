@@ -136,4 +136,4 @@ Stage 4 標準化之所以重要有兩個理由。其一，該特性如今屬於
 - Daniel Rosenwasser, "Announcing TypeScript 3.8," Microsoft DevBlogs (2020). https://devblogs.microsoft.com/typescript/announcing-typescript-3-8/
 - Daniel Rosenwasser, "Announcing TypeScript 5.0," Microsoft DevBlogs (2023). https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/
 - TC39, "Class field declarations for JavaScript (proposal-class-fields)," TC39 proposals (2021). https://github.com/tc39/proposal-class-fields
-- MDN contributors, "Private properties — JavaScript," MDN Web Docs (2024). https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties
+- MDN contributors, "Private properties — JavaScript," MDN Web Docs (2024). https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_elements

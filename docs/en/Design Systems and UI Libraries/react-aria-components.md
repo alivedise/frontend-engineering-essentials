@@ -101,7 +101,7 @@ Adobe's long-term plan, stated in the RFC, is that "Many of the simpler componen
 
 - Adobe, "Introducing React Spectrum," React Spectrum blog (2020). https://react-aria.adobe.com/blog/introducing-react-spectrum
 - Adobe, "RFC: React Aria Components," react-spectrum GitHub (2023). https://github.com/adobe/react-spectrum/blob/main/rfcs/2023-react-aria-components.md
-- Adobe, "December 20, 2023 Release," React Spectrum releases (2023). https://react-spectrum.adobe.com/releases/2023-12-20.html
+- Adobe, "December 20, 2023 Release," React Spectrum releases (2023). https://react-spectrum.adobe.com/v3/releases/2023-12-20.html
 - Adobe, "Advanced Customization," React Aria docs. https://react-aria.adobe.com/customization
 - Adobe, "Styling," React Aria docs. https://react-aria.adobe.com/styling
 - Adobe, "Select," React Aria docs. https://react-aria.adobe.com/Select

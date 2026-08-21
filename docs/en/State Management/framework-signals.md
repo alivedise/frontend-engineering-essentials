@@ -108,10 +108,10 @@ The distilled contrast: a signal effect is created once, subscribed through auto
 
 ## References
 
-- Ryan Carniato, "The Evolution of Signals in JavaScript," dev.to (2023). https://dev.to/this-is-learning/the-evolution-of-signals-in-javascript-8ob
+- Ryan Carniato, "The Evolution of Signals in JavaScript," dev.to (2023). https://dev.to/playfulprogramming/the-evolution-of-signals-in-javascript-8ob
 - Ryan Carniato, "A Hands-on Introduction to Fine-Grained Reactivity," dev.to (2021). https://dev.to/ryansolid/a-hands-on-introduction-to-fine-grained-reactivity-3ndf
 - Joachim Viide, "Signal Boosting," preactjs.com (2022). https://preactjs.com/blog/signal-boosting/
-- Lee Mighdoll, "Super Charging Fine-Grained Reactive Performance," dev.to (2022). https://dev.to/modderme123/super-charging-fine-grained-reactive-performance-47ph
+- Lee Mighdoll, "Super Charging Fine-Grained Reactive Performance," dev.to (2022). https://dev.to/milomg/super-charging-fine-grained-reactive-performance-47ph
 - Johnson Chu, "alien-signals," GitHub (2026). https://github.com/stackblitz/alien-signals
 - Johnson Chu, "vuejs/core PR #12349 (alien-signals reactivity port)," GitHub (2024). https://github.com/vuejs/core/pull/12349
 - Vue.js, "v3.6.0-alpha.1," GitHub Releases (2025). https://github.com/vuejs/core/releases/tag/v3.6.0-alpha.1
