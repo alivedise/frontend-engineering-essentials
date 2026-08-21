@@ -1,0 +1,39 @@
+# Opens fee-writer article PRs under the github-actions bot identity.
+# Reason: a PR's author cannot Approve or Request Changes on GitHub; article
+# PRs must not be authored by the human whose approval is the merge gate.
+# Dispatched by the fee-ops runner after a branch is pushed.
+# Note: GITHUB_TOKEN-created PRs do not trigger pull_request workflows —
+# acceptable for this lane (lint runs in fee-ops before the PR; the
+# deterministic reviewer never approves this lane anyway).
+name: fee-writer-pr
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: Head branch (fee-writer/*)
+        required: true
+      title:
+        description: PR title
+        required: true
+      body:
+        description: PR body (markdown)
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  open-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create PR as bot
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr create -R "${{ github.repository }}" \
+            --head "${{ inputs.branch }}" --base main \
+            --title "${{ inputs.title }}" \
+            --body "${{ inputs.body }}" \
+            --label "fee-writer:article"
