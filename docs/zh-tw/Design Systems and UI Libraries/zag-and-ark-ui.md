@@ -97,12 +97,12 @@ Zag 的狀態機是「a way to model stateful, reactive behavior using: A finite
 
 - Zag.js, "Introduction." https://zagjs.com/overview/introduction
 - Zag.js, "Homepage." https://zagjs.com/
-- Zag.js, "What's a Machine?" https://zagjs.com/overview/whats-a-machine
+- Zag.js, "What's a Machine?" https://zagjs.com/guides/building-machines
 - Zag.js, "Installation." https://zagjs.com/overview/installation
 - Chakra Systems, "chakra-ui/zag (GitHub repository)." https://github.com/chakra-ui/zag
 - Chakra Systems, "Zag.js LICENSE (MIT)." https://github.com/chakra-ui/zag/blob/main/LICENSE
 - Ark UI, "Homepage." https://ark-ui.com/
 - Chakra Systems, "chakra-ui/ark (GitHub repository)." https://github.com/chakra-ui/ark
 - Segun Adebayo, "The Future of Chakra UI." https://www.adebayosegun.com/blog/the-future-of-chakra-ui
-- LogRocket, "Headless UI alternatives: Radix Primitives, React Aria, Ark UI." https://blog.logrocket.com/headless-ui-alternatives-radix-primitives-react-aria-ark-ui/
+- LogRocket, "Headless UI alternatives: Radix Primitives, React Aria, Ark UI." https://blog.logrocket.com/headless-ui-alternatives/
 - Adobe, "React Aria — Advanced (Contexts)." https://react-spectrum.adobe.com/react-aria/advanced.html

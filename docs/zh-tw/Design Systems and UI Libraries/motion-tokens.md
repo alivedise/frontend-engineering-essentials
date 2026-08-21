@@ -84,7 +84,7 @@ DTCG 形狀的複合 `transition` 權杖會引用 duration 與 easing 原語，C
 }
 ```
 
-`@media (prefers-reduced-motion: reduce)` 區塊是抑制全站動效的標準位置（[MDN, `prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)）。
+`@media (prefers-reduced-motion: reduce)` 區塊是抑制全站動效的標準位置（[MDN, `prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion)）。
 
 ## 最佳實踐
 
@@ -103,15 +103,15 @@ DTCG 的 `transition` 型別是刻意設計的組合。`transition` 權杖的 `$
 
 ## Reduced-Motion 權杖策略
 
-`prefers-reduced-motion: reduce` 是使用者發出的訊號，表示動畫應被移除、削減或替換 — 例如把 slide 換成 fade — 以照顧前庭（vestibular）失調以及其他動效敏感狀況（[MDN, `prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)）。WCAG 2.3.3（AAA，「Animation from Interactions」）要求互動觸發的動效必須能被停用，除非該動畫對於所傳達的功能或資訊是必要的；遵循 `prefers-reduced-motion` 被列為一項充分技術（[W3C, Understanding SC 2.3.3](https://www.w3.org/WAI/WCAG21/Understanding/animation-from-interactions.html)）。權杖化系統有三種可行策略可達成該門檻。
+`prefers-reduced-motion: reduce` 是使用者發出的訊號，表示動畫應被移除、削減或替換 — 例如把 slide 換成 fade — 以照顧前庭（vestibular）失調以及其他動效敏感狀況（[MDN, `prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion)）。WCAG 2.3.3（AAA，「Animation from Interactions」）要求互動觸發的動效必須能被停用，除非該動畫對於所傳達的功能或資訊是必要的；遵循 `prefers-reduced-motion` 被列為一項充分技術（[W3C, Understanding SC 2.3.3](https://www.w3.org/WAI/WCAG21/Understanding/animation-from-interactions.html)）。權杖化系統有三種可行策略可達成該門檻。
 
-**策略 1：在權杖層歸零。** 在 `@media (prefers-reduced-motion: reduce)` 內，將每個 duration 自訂屬性覆寫為 `0ms`。元件保留既有的 `transition` 宣告不變；duration 收斂為零，transition 立即完成。這是最簡單的模式，也是 MDN 範例所展示的做法（[MDN, `prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)）。
+**策略 1：在權杖層歸零。** 在 `@media (prefers-reduced-motion: reduce)` 內，將每個 duration 自訂屬性覆寫為 `0ms`。元件保留既有的 `transition` 宣告不變；duration 收斂為零，transition 立即完成。這是最簡單的模式，也是 MDN 範例所展示的做法（[MDN, `prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion)）。
 
 **策略 2：純量乘數。** 定義 `--motion-duration-scalar` 自訂屬性（預設為 `1`），用於倍增每個輸出的 duration。在 reduced motion 下，把純量設為 `0`，所有從權杖推導 duration 的元件便自動遵循偏好設定 — 不需逐元件覆寫（[Norton Design System, Motion foundations](https://wwnorton.github.io/design-system/docs/foundations/motion/)）。該純量也可用於非無障礙的調校，例如以半速跑完所有 transition 的 debug 模式。
 
 **策略 3：必要子集。** WCAG 為對功能或資訊必要的動畫保留例外（[W3C, Understanding SC 2.3.3](https://www.w3.org/WAI/WCAG21/Understanding/animation-from-interactions.html)）。權杖系統的對應做法，是把一小部分權杖 — 例如 loading spinner 的 duration、progress bar 的 timing — 標記為必要，並在 reduced-motion 覆寫中跳過它們。其餘目錄仍然歸零，但 spinner 持續轉動。策略 1 或 2 承擔主要負擔；必要子集則是針對性的補充。
 
-預設模式是在 `:root` 為每個權杖宣告一個 CSS 自訂屬性，並用 `@media (prefers-reduced-motion: reduce)` 在全站重寫 duration（[MDN, `prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)）。
+預設模式是在 `:root` 為每個權杖宣告一個 CSS 自訂屬性，並用 `@media (prefers-reduced-motion: reduce)` 在全站重寫 duration（[MDN, `prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion)）。
 
 ## 延伸閱讀
 
@@ -129,5 +129,5 @@ DTCG 的 `transition` 型別是刻意設計的組合。`transition` 權杖的 `$
 - Design Tokens Substack, "Motion tokens: naming your movement." https://designtokens.substack.com/p/motion-tokens-naming-your-movement
 - W. W. Norton Design System, "Foundations / Motion." https://wwnorton.github.io/design-system/docs/foundations/motion/
 - W3C, "Understanding Success Criterion 2.3.3 — Animation from Interactions." https://www.w3.org/WAI/WCAG21/Understanding/animation-from-interactions.html
-- MDN Web Docs, "@media / prefers-reduced-motion." https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion
+- MDN Web Docs, "@media / prefers-reduced-motion." https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion
 - Design Systems, "5 steps for including motion design in your system." https://www.designsystems.com/5-steps-for-including-motion-design-in-your-system/

@@ -164,7 +164,7 @@ The decision is rarely either-or on capability. Teams that already live inside G
 - Renovate maintainers, "Automerge," Renovate Docs (2026). https://docs.renovatebot.com/key-concepts/automerge/
 - Renovate maintainers, "Bot Comparison," Renovate Docs (2026). https://docs.renovatebot.com/bot-comparison/
 - Renovate maintainers, "npm Manager," Renovate Docs (2026). https://docs.renovatebot.com/modules/manager/npm/
-- GitHub, "Configuration options for the dependabot.yml file," GitHub Docs (2026). https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+- GitHub, "Configuration options for the dependabot.yml file," GitHub Docs (2026). https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference
 - GitHub, "Dependabot supports configuration of a minimum package age," GitHub Changelog (2025). https://github.blog/changelog/2025-07-01-dependabot-supports-configuration-of-a-minimum-package-age/
 - GitHub, "Dependabot version updates introduce default package cooldown," GitHub Changelog (2026). https://github.blog/changelog/2026-07-14-dependabot-version-updates-introduce-default-package-cooldown/
 - CISA, "Widespread Supply Chain Compromise Impacting npm Ecosystem," Cybersecurity Advisory (2025). https://www.cisa.gov/news-events/alerts/2025/09/23/widespread-supply-chain-compromise-impacting-npm-ecosystem

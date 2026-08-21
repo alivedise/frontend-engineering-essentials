@@ -259,9 +259,9 @@ A handful of related states outside the five-row vocabulary follow the same card
 - MDN Contributors, "ARIA: aria-selected attribute," MDN Web Docs (2025). https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-selected
 - MDN Contributors, "ARIA: aria-pressed attribute," MDN Web Docs (2025). https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-pressed
 - MDN Contributors, "ARIA: aria-activedescendant attribute," MDN Web Docs (2025). https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-activedescendant
-- MDN Contributors, ":focus-visible," MDN Web Docs (2025). https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible
-- MDN Contributors, ":focus-within," MDN Web Docs (2025). https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-within
-- MDN Contributors, ":active," MDN Web Docs (2025). https://developer.mozilla.org/en-US/docs/Web/CSS/:active
+- MDN Contributors, ":focus-visible," MDN Web Docs (2025). https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible
+- MDN Contributors, ":focus-within," MDN Web Docs (2025). https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-within
+- MDN Contributors, ":active," MDN Web Docs (2025). https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:active
 - MDN Contributors, "Document: activeElement property," MDN Web Docs (2025). https://developer.mozilla.org/en-US/docs/Web/API/Document/activeElement
 - WHATWG, "HTML Living Standard — Focus," WHATWG (2026). https://html.spec.whatwg.org/multipage/interaction.html#focus
 - Adobe, "Selection," React Aria documentation (2025). https://react-aria.adobe.com/selection
