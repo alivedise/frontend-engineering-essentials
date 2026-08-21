@@ -147,7 +147,7 @@ The CSS anchor positioning module promotes a long-standing tooltip-library respo
 - MDN, "popover (global attribute)," MDN Web Docs. https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/popover
 - MDN, "HTMLElement: togglePopover() method," MDN Web Docs. https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/togglePopover
 - WHATWG, "HTML Standard — Popover," whatwg.org. https://html.spec.whatwg.org/multipage/popover.html
-- MDN, "Using CSS anchor positioning," MDN Web Docs. https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Anchor_positioning/Using
-- MDN, "anchor-name," MDN Web Docs. https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/anchor-name
-- MDN, "position-anchor," MDN Web Docs. https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/position-anchor
-- MDN, "position-try-fallbacks," MDN Web Docs. https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/position-try-fallbacks
+- MDN, "Using CSS anchor positioning," MDN Web Docs. https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning/Using
+- MDN, "anchor-name," MDN Web Docs. https://developer.mozilla.org/en-US/docs/Web/CSS/anchor-name
+- MDN, "position-anchor," MDN Web Docs. https://developer.mozilla.org/en-US/docs/Web/CSS/position-anchor
+- MDN, "position-try-fallbacks," MDN Web Docs. https://developer.mozilla.org/en-US/docs/Web/CSS/position-try-fallbacks

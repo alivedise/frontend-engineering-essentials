@@ -113,7 +113,7 @@ https://example.com/post#:~:text=first%20highlight&text=second%20highlight
 - MDN Web Docs, "Text fragments," Mozilla. https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment/Text_fragments
 - WICG, "Scroll To Text Fragment" (Editor's Draft). https://wicg.github.io/scroll-to-text-fragment/
 - Thomas Steiner, "Boldly link where no one has linked before: Text Fragments," web.dev (2020). https://web.dev/articles/text-fragments
-- MDN Web Docs, "::target-text," Mozilla. https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::target-text
+- MDN Web Docs, "::target-text," Mozilla. https://developer.mozilla.org/en-US/docs/Web/CSS/::target-text
 - Mozilla, "Firefox 131 for developers," MDN. https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/131
 - Jen Simmons et al., "WebKit Features in Safari 18.2," WebKit Blog (2024). https://webkit.org/blog/16301/webkit-features-in-safari-18-2/
 - WICG, "Accessibility of text fragments (issue #142)," GitHub. https://github.com/WICG/scroll-to-text-fragment/issues/142

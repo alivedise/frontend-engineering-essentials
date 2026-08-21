@@ -123,4 +123,4 @@ JAWS、NVDA 與 VoiceOver 等螢幕報讀器會透過瀏覽器的無障礙 API �
 - W3C WAI, "Search Landmark Example," ARIA Authoring Practices Guide. https://www.w3.org/WAI/ARIA/apg/patterns/landmarks/examples/search.html
 - W3C, "ARIA in HTML: `<search>`." https://w3c.github.io/html-aria/#el-search
 - Scott O'Hara, "The search element," scottohara.me (2023). https://www.scottohara.me/blog/2023/03/24/search-element.html
-- WebKit, "News from WWDC23: Web Features in Safari 17 beta" (2023). https://webkit.org/blog/14445/webkit-features-in-safari-17-0/
+- WebKit, "News from WWDC23: Web Features in Safari 17 beta" (2023). https://webkit.org/blog/14445/news-from-wwdc23-web-features-in-safari-17-beta/

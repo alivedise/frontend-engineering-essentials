@@ -84,7 +84,7 @@ A DTCG-shaped composite `transition` token references duration and easing primit
 }
 ```
 
-The `@media (prefers-reduced-motion: reduce)` block is the canonical place to suppress motion site-wide ([MDN, `prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion)).
+The `@media (prefers-reduced-motion: reduce)` block is the canonical place to suppress motion site-wide ([MDN, `prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)).
 
 ## Best Practices
 
@@ -103,15 +103,15 @@ A `duration` token serialises as `{ "value": <number>, "unit": "ms" | "s" }`, wh
 
 ## Reduced-Motion Token Strategy
 
-`prefers-reduced-motion: reduce` is the user signal that animations should be removed, reduced, or replaced — for example, swapping a slide for a fade — to accommodate vestibular disorders and other motion sensitivities ([MDN, `prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion)). WCAG 2.3.3 (AAA, "Animation from Interactions") requires that interaction-triggered motion can be disabled unless the animation is essential to the functionality or information being conveyed; honoring `prefers-reduced-motion` is listed as a sufficient technique ([W3C, Understanding SC 2.3.3](https://www.w3.org/WAI/WCAG21/Understanding/animation-from-interactions.html)). A token-based system has three viable strategies for meeting that bar.
+`prefers-reduced-motion: reduce` is the user signal that animations should be removed, reduced, or replaced — for example, swapping a slide for a fade — to accommodate vestibular disorders and other motion sensitivities ([MDN, `prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)). WCAG 2.3.3 (AAA, "Animation from Interactions") requires that interaction-triggered motion can be disabled unless the animation is essential to the functionality or information being conveyed; honoring `prefers-reduced-motion` is listed as a sufficient technique ([W3C, Understanding SC 2.3.3](https://www.w3.org/WAI/WCAG21/Understanding/animation-from-interactions.html)). A token-based system has three viable strategies for meeting that bar.
 
-**Strategy 1: zero-out at the token layer.** Inside `@media (prefers-reduced-motion: reduce)`, override every duration custom property to `0ms`. Components keep their existing `transition` declarations untouched; the durations collapse to zero and the transitions complete instantly. This is the simplest pattern and the one MDN's reference example demonstrates ([MDN, `prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion)).
+**Strategy 1: zero-out at the token layer.** Inside `@media (prefers-reduced-motion: reduce)`, override every duration custom property to `0ms`. Components keep their existing `transition` declarations untouched; the durations collapse to zero and the transitions complete instantly. This is the simplest pattern and the one MDN's reference example demonstrates ([MDN, `prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)).
 
 **Strategy 2: scalar multiplier.** Define a `--motion-duration-scalar` custom property (default `1`) that multiplies every emitted duration. Under reduced motion, set the scalar to `0`, and every component that derives its duration from a token honors the preference automatically — no per-component override required ([Norton Design System, Motion foundations](https://wwnorton.github.io/design-system/docs/foundations/motion/)). The scalar is also useful for non-accessibility tuning, such as a debug mode that runs all transitions at half speed.
 
 **Strategy 3: essential subset.** WCAG carves out an exception for animations essential to functionality or information ([W3C, Understanding SC 2.3.3](https://www.w3.org/WAI/WCAG21/Understanding/animation-from-interactions.html)). The token-system response is to mark a small subset of tokens — a loading-spinner duration, a progress-bar timing — as essential and skip them in the reduced-motion override. The remaining catalog still zeroes out, but the spinner keeps spinning. Strategies 1 or 2 carry the bulk of the work; the essential subset is a targeted addendum.
 
-The default pattern declares one CSS custom property per token at `:root` and uses `@media (prefers-reduced-motion: reduce)` to rewrite the durations site-wide ([MDN, `prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion)).
+The default pattern declares one CSS custom property per token at `:root` and uses `@media (prefers-reduced-motion: reduce)` to rewrite the durations site-wide ([MDN, `prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)).
 
 ## Related Topics
 
@@ -129,5 +129,5 @@ The default pattern declares one CSS custom property per token at `:root` and us
 - Design Tokens Substack, "Motion tokens: naming your movement." https://designtokens.substack.com/p/motion-tokens-naming-your-movement
 - W. W. Norton Design System, "Foundations / Motion." https://wwnorton.github.io/design-system/docs/foundations/motion/
 - W3C, "Understanding Success Criterion 2.3.3 — Animation from Interactions." https://www.w3.org/WAI/WCAG21/Understanding/animation-from-interactions.html
-- MDN Web Docs, "@media / prefers-reduced-motion." https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion
+- MDN Web Docs, "@media / prefers-reduced-motion." https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion
 - Design Systems, "5 steps for including motion design in your system." https://www.designsystems.com/5-steps-for-including-motion-design-in-your-system/

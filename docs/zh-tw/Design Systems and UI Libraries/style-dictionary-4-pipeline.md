@@ -151,4 +151,4 @@ Style Dictionary 4 帶來機械式套用即可、但在部分升級時容易遺�
 - Style Dictionary, "Configuration." https://styledictionary.com/reference/config/
 - Style Dictionary, "DTCG Support." https://styledictionary.com/info/dtcg/
 - Style Dictionary, "v4 Migration Guide." https://styledictionary.com/versions/v4/migration/
-- Amazon, "style-dictionary v4.0.0 release notes," GitHub (2024). https://github.com/style-dictionary/style-dictionary/releases/tag/v4.0.0
+- Amazon, "style-dictionary v4.0.0 release notes," GitHub (2024). https://github.com/amzn/style-dictionary/releases/tag/v4.0.0

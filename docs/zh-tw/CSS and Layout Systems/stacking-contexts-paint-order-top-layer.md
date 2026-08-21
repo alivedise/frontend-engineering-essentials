@@ -127,4 +127,4 @@ Top layer 直接讓這場競爭消失：
 - Elika J. Etemad, Tab Atkins Jr., "CSS Positioned Layout Module Level 3," W3C Working Draft (2025). https://www.w3.org/TR/css-position-3/
 - MDN contributors, "Top layer," MDN Web Docs Glossary (2025). https://developer.mozilla.org/en-US/docs/Glossary/Top_layer
 - Jhey Tompkins, "Meet the top layer: a solution to z-index:10000," Chrome for Developers Blog (2022). https://developer.chrome.com/blog/what-is-the-top-layer
-- MDN contributors, "isolation," MDN Web Docs (2025). https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/isolation
+- MDN contributors, "isolation," MDN Web Docs (2025). https://developer.mozilla.org/en-US/docs/Web/CSS/isolation

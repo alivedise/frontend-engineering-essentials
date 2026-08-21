@@ -131,13 +131,13 @@ For pagination beyond a single page, `useInfiniteQuery` exposes `data.pages`, `d
 
 ## References
 
-- TanStack, "Query Options," TanStack Query v5 docs (2024). https://tanstack.com/query/latest/docs/framework/react/guides/query-options
-- TanStack, "Suspense," TanStack Query v5 docs (2024). https://tanstack.com/query/latest/docs/framework/react/guides/suspense
-- TanStack, "Migrating to TanStack Query v5," TanStack Query v5 docs (2024). https://tanstack.com/query/latest/docs/framework/react/guides/migrating-to-v5
-- TanStack, "Infinite Queries," TanStack Query v5 docs (2024). https://tanstack.com/query/latest/docs/framework/react/guides/infinite-queries
-- TanStack, "Prefetching & Router Integration," TanStack Query v5 docs (2024). https://tanstack.com/query/latest/docs/framework/react/guides/prefetching
-- TanStack, "Query Invalidation," TanStack Query v5 docs (2024). https://tanstack.com/query/latest/docs/framework/react/guides/query-invalidation
-- TanStack, "Optimistic Updates," TanStack Query v5 docs (2024). https://tanstack.com/query/latest/docs/framework/react/guides/optimistic-updates
-- TanStack, "Devtools," TanStack Query v5 docs (2024). https://tanstack.com/query/latest/docs/framework/react/devtools
-- TanStack, "Caching," TanStack Query v5 docs (2024). https://tanstack.com/query/latest/docs/framework/react/guides/caching
-- TanStack, "useQuery Reference," TanStack Query v5 docs (2024). https://tanstack.com/query/latest/docs/framework/react/reference/useQuery
+- TanStack, "Query Options," TanStack Query v5 docs (2024). https://tanstack.com/query/v5/docs/framework/react/guides/query-options
+- TanStack, "Suspense," TanStack Query v5 docs (2024). https://tanstack.com/query/v5/docs/framework/react/guides/suspense
+- TanStack, "Migrating to TanStack Query v5," TanStack Query v5 docs (2024). https://tanstack.com/query/v5/docs/framework/react/guides/migrating-to-v5
+- TanStack, "Infinite Queries," TanStack Query v5 docs (2024). https://tanstack.com/query/v5/docs/framework/react/guides/infinite-queries
+- TanStack, "Prefetching & Router Integration," TanStack Query v5 docs (2024). https://tanstack.com/query/v5/docs/framework/react/guides/prefetching
+- TanStack, "Query Invalidation," TanStack Query v5 docs (2024). https://tanstack.com/query/v5/docs/framework/react/guides/query-invalidation
+- TanStack, "Optimistic Updates," TanStack Query v5 docs (2024). https://tanstack.com/query/v5/docs/framework/react/guides/optimistic-updates
+- TanStack, "Devtools," TanStack Query v5 docs (2024). https://tanstack.com/query/v5/docs/framework/react/devtools
+- TanStack, "Caching," TanStack Query v5 docs (2024). https://tanstack.com/query/v5/docs/framework/react/guides/caching
+- TanStack, "useQuery Reference," TanStack Query v5 docs (2024). https://tanstack.com/query/v5/docs/framework/react/reference/useQuery

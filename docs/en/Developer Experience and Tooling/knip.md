@@ -67,7 +67,7 @@ A Next.js application with Vitest tests. The repo's `knip.json` looks like this:
 
 ```json
 {
-  "$schema": "https://unpkg.com/knip@5.88.1/schema.json",
+  "$schema": "https://unpkg.com/knip@5/schema.json",
   "entry": ["src/app/**/page.{ts,tsx}", "src/app/**/layout.{ts,tsx}", "src/middleware.ts"],
   "project": ["src/**/*.{ts,tsx}"],
   "ignoreExportsUsedInFile": true,
@@ -151,7 +151,7 @@ Knip's configuration is a layered model: root → workspaces → plugins → ent
 
 ```json
 {
-  "$schema": "https://unpkg.com/knip@5.88.1/schema.json",
+  "$schema": "https://unpkg.com/knip@5/schema.json",
   "ignoreExportsUsedInFile": true,
   "workspaces": {
     ".": {
