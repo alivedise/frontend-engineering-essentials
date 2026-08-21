@@ -1,0 +1,59 @@
+# Post-merge subgraph for link-doctor PRs:
+#   merge -> post_merge_verify -> (pass: END | fail: revert PR)
+# Re-runs the deterministic verifier against the merged PR's diff. On failure,
+# opens an unlabeled revert PR (defaults to the human review lane) instead of
+# touching main directly.
+name: link-doctor-postmerge
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  post-merge-verify:
+    if: >
+      github.event.pull_request.merged == true &&
+      contains(github.event.pull_request.labels.*.name, 'link-doctor:mechanical') &&
+      startsWith(github.event.pull_request.head.ref, 'link-doctor/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Re-verify merged substitutions
+        id: verify
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          set +e
+          node .github/scripts/verify-mechanical-pr.mjs "$PR" > report.md
+          echo "verdict=$?" >> "$GITHUB_OUTPUT"
+          cat report.md
+      - name: Report pass
+        if: steps.verify.outputs.verdict == '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr comment "${{ github.event.pull_request.number }}" \
+            --body "post_merge_verify: PASS — all substituted targets re-verified on main."
+      - name: Open revert PR
+        if: steps.verify.outputs.verdict != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.event.pull_request.merge_commit_sha }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          git config user.name "link-doctor"
+          git config user.email "link-doctor@users.noreply.github.com"
+          BRANCH="link-doctor/revert-pr$PR"
+          git checkout -b "$BRANCH"
+          git revert --no-edit "$SHA"
+          git push -u origin "$BRANCH"
+          gh pr create --title "Revert #$PR: post_merge_verify failed" \
+            --body-file report.md
+          gh pr comment "$PR" --body "post_merge_verify: FAIL — revert PR opened, see branch $BRANCH."
