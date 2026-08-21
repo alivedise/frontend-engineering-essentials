@@ -41,8 +41,15 @@ jobs:
         run: |
           gh pr comment "${{ github.event.pull_request.number }}" \
             --body "post_merge_verify: PASS — all substituted targets re-verified on main."
-      - name: Open revert PR
-        if: steps.verify.outputs.verdict != '0'
+      - name: Report target defects (proportional response — no revert)
+        if: steps.verify.outputs.verdict == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          { echo "post_merge_verify: target-level defects flagged; the regular scan loop re-probes and repairs them. No revert — revert is reserved for structural contract violations."; echo; cat report.md; } > comment.md
+          gh pr comment "${{ github.event.pull_request.number }}" --body-file comment.md
+      - name: Open revert PR (structural violation only)
+        if: steps.verify.outputs.verdict == '2'
         env:
           GH_TOKEN: ${{ github.token }}
           SHA: ${{ github.event.pull_request.merge_commit_sha }}
