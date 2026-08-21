@@ -1,0 +1,58 @@
+# Review lanes for link-doctor PRs (graph interrupt nodes, executed by Actions)
+#
+# Lane A - mechanical (label: link-doctor:mechanical)
+#   Deterministic reviewer: verifies every change is a pure URL substitution
+#   with a live target, then APPROVES via github-actions bot. This approval
+#   satisfies branch protection. Merge stays manual unless the PR also carries
+#   label link-doctor:auto, which enables auto-merge.
+#
+# Lane B - llm-repair (label: link-doctor:llm-repair, Phase 1)
+#   Agent review is advisory only (comment, never approve); branch protection
+#   is satisfied only by a human approval.
+#
+# Guards: label can only be set by write-access users; head branch must be an
+# in-repo link-doctor/* branch (forks cannot create those).
+name: link-doctor-review
+on:
+  pull_request:
+    types: [opened, synchronize, labeled]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  mechanical-review:
+    if: >
+      contains(github.event.pull_request.labels.*.name, 'link-doctor:mechanical') &&
+      startsWith(github.event.pull_request.head.ref, 'link-doctor/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deterministic verify
+        id: verify
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          set +e
+          node .github/scripts/verify-mechanical-pr.mjs "$PR" > report.md
+          echo "verdict=$?" >> "$GITHUB_OUTPUT"
+          cat report.md
+      - name: Approve
+        if: steps.verify.outputs.verdict == '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr review "${{ github.event.pull_request.number }}" --approve --body-file report.md
+      - name: Enable auto-merge (opt-in via link-doctor:auto label)
+        if: >
+          steps.verify.outputs.verdict == '0' &&
+          contains(github.event.pull_request.labels.*.name, 'link-doctor:auto')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr merge "${{ github.event.pull_request.number }}" --auto --squash
+      - name: Request changes
+        if: steps.verify.outputs.verdict != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr review "${{ github.event.pull_request.number }}" --request-changes --body-file report.md
