@@ -1,0 +1,24 @@
+# Pushes submitted-review events on article PRs to fee-ops immediately.
+# Dispatch-only: never checks out or executes PR code, so running with
+# secrets on this event is safe (workflow definition comes from main).
+# Requires secret FEE_OPS_DISPATCH_PAT: fine-grained PAT scoped to the
+# fee-ops repo only, contents read/write (needed for repository_dispatch).
+# The 30-min poll in fee-ops stays as fallback if a dispatch is missed.
+name: fee-writer-review-dispatch
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  dispatch:
+    if: contains(github.event.pull_request.labels.*.name, 'fee-writer:article')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch to fee-ops
+        env:
+          GH_TOKEN: ${{ secrets.FEE_OPS_DISPATCH_PAT }}
+        run: |
+          gh api repos/alivedise/fee-ops/dispatches \
+            -f event_type=review-submitted \
+            -F 'client_payload[pr]=${{ github.event.pull_request.number }}' \
+            -F 'client_payload[state]=${{ github.event.review.state }}'
